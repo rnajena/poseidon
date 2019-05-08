@@ -18,6 +18,8 @@ of the below mentioned tools manually.
 
 The PoSeiDon pipeline comprises in-frame alignment of homologous protein-coding sequences, detection of putative recombination events and evolutionary breakpoints, phylogenetic reconstructions and detection of positively selected sites in the full alignment and all possible fragments. Finally, all results are combined and visualized in a user-friendly and clear HTML web page. The resulting alignment fragments are indicated with colored bars in the HTML output.
 
+Please find an example output of the pipeline <a href="http://www.rna.uni-jena.de/supplements/mx1_bats/full_aln/">here</a>. (<a href="https://doi.org/10.1128/JVI.00361-17">Fuchs _et al_., 2017, Journal of Virology</a>)
+
 ### The PoSeiDon pipeline is based on the following tools and scripts:
 
 * TranslatorX (v1.1), Abascal et al. (2010);  <a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/20435676">20435676</a>
