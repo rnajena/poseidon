@@ -1,0 +1,29 @@
+###############################
+## PoSeiDon Sources, 25 March 2017
+###############################
+
+Here we provide all ruby scripts used to run the PoSeiDon pipeline.
+
+PLEASE NOTE: with this scripts the pipeline can not be run out of the
+box, because PoSeiDon relies on a variety of different third-party
+tools that are not included here:
+
+TranslatorX (v1.1), Abascal et al. (2010); 20435676
+Muscle (v3.8.31), Edgar (2004); 15034147
+RAxML (v8.0.25), Stamatakis (2014); 24451623
+Newick Utilities (v1.6), Junier and Zdobnov (2010); 20472542
+MODELTEST , Posada and Crandall (1998); 9918953
+HyPhy (v2.2), Pond et al. (2005); 15509596
+GARD , Pond et al. (2006); 17110367
+PaML/CodeML (v4.8), Yang (2007); 17483113
+Ruby (v2.3.1)
+Inkscape (v0.48.5)
+pdfTeX (v3.14)
+
+For a future release of PoSeiDon, we will provide a complete Docker
+container that can be easily executed without the need to install each
+of the above mentioned tools manually.
+
+For the moment, we encourage users to use our web server to run the
+pipeline. Nevertheless, advanced users can also access the complete
+ruby code here.
