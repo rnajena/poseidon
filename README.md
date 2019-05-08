@@ -14,7 +14,7 @@ of the below mentioned tools manually.
 
 ## Workflow of the PoSeiDon pipeline and example output
 
-<a target="_blank" href="https://github.com/hoelzer/poseidon/blob/master/images/pipeline_landscape.pdf"><img src="https://github.com/hoelzer/poseidon/blob/master/images/pipeline_landscape.svg" alt="PoSeiDon workflow" /></a>
+<a target="_blank" href="https://github.com/hoelzer/poseidon/blob/master/images/pipeline_landscape.pdf"><img src="https://github.com/hoelzer/poseidon/blob/master/images/pipeline_landscape.png" alt="PoSeiDon workflow" /></a>
 
 The PoSeiDon pipeline comprises in-frame alignment of homologous protein-coding sequences, detection of putative recombination events and evolutionary breakpoints, phylogenetic reconstructions and detection of positively selected sites in the full alignment and all possible fragments. Finally, all results are combined and visualized in a user-friendly and clear HTML web page. The resulting alignment fragments are indicated with colored bars in the HTML output.
 
