@@ -12,6 +12,10 @@
 
 tools/openmpi/
 tools/hyphy/
+ruby/messages.*
+ruby/errors.*
+messages.*
+errors.*
 
 # Used by dotenv library to load environment variables.
 # .env
