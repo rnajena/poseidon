@@ -9,7 +9,10 @@ class Gard
 
   #OPENMPI = '../tools/openmpi/bin/mpirun'
   OPENMPI = 'mpirun'
-  HYPHYMPI = '../tools/hyphy/bin/HYPHYMPI'
+  OPENMPI_RUN = '--allow-run-as-root' # ONLY USE THIS FOR THE DOCKER IMAGE
+  #HYPHYMPI = '../tools/hyphy/bin/HYPHYMPI'
+  HYPHYMPI = 'hyphympi' # ONLY USE THIS FOR THE DOCKER IMAGE
+
 
   def initialize(aln, nuc_bias, rate_variation, rate_classes, output, threads, kh_insignificant_bp, parameter_string)
 
@@ -110,7 +113,7 @@ class Gard
     parameter_string << "(echo \"#{aln}\"; echo \"#{aln}\"; echo \"#{nuc_bias}\"; echo \"#{rate_variation}\"; echo \"#{rate_classes}\"; echo \"#{output}\") | mpirun -np #{threads} HYPHYMPI GARD.bf\n\n"
     unless File.exists?("#{File.dirname(output)}/gard.log")
       gard_log = File.open("#{File.dirname(output)}/gard.log",'w')
-      gard_log << `(echo "#{aln}"; echo "#{aln}"; echo "#{nuc_bias}"; echo "#{rate_variation}"; echo "#{rate_classes}"; echo "#{output}") | #{OPENMPI} -np #{threads} #{HYPHYMPI} #{GARD_TEMPLATE_BATCH}`
+      gard_log << `(echo "#{aln}"; echo "#{aln}"; echo "#{nuc_bias}"; echo "#{rate_variation}"; echo "#{rate_classes}"; echo "#{output}") | #{OPENMPI} #{OPENMPI_RUN} -np #{threads} #{HYPHYMPI} #{GARD_TEMPLATE_BATCH}`
       gard_log.close
       `mv #{output} #{output}.html`
     end
@@ -126,7 +129,7 @@ class Gard
     #THIS ALSO RUNS KH TEST, see gard_processor_log!
     unless File.exists?("#{File.dirname(output)}/gard_processor.log")
       gard_processor_log = File.open("#{File.dirname(output)}/gard_processor.log",'w')
-      gard_processor_log << `(echo "#{gard_result_file}"; echo "#{gard_splits_file}") | #{OPENMPI} -np #{threads} #{HYPHYMPI} #{GARD_PROCESSOR_TEMPLATE_BATCH}`
+      gard_processor_log << `(echo "#{gard_result_file}"; echo "#{gard_splits_file}") | #{OPENMPI} #{OPENMPI_RUN} -np #{threads} #{HYPHYMPI} #{GARD_PROCESSOR_TEMPLATE_BATCH}`
       gard_processor_log.close
     end
   end

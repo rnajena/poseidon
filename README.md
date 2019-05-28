@@ -4,18 +4,39 @@ Here we present __PoSeiDon__, a pipeline to detect significant positively select
 
 We provide all ruby scripts needed to run the PoSeiDon pipeline.
 
-PLEASE NOTE: with this scripts the pipeline can not be run out of the box,
-because PoSeiDon relies on a variety of different third-party tools (see below).
-Most tools are also included in this repository. However, the larger software
-packages for HYPHY and OPENMPI can be downloaded here and need to be added and
-extracted manually to the `tools` folder:
+__Please note__: we aimed that with these scripts the pipeline can be run _out
+of the box_, however, PoSeiDon relies on a variety of different third-party
+tools (see below). Binaries for most tools are also included in this repository
+(`tools`) and PoSeiDon assumes them to be located in this folder. The larger
+software package for HYPHY can be downloaded here directly and needs to be added
+and extracted manually to the `tools` folder:
 
 * <a href="https://www.rna.uni-jena.de/supplements/poseidon/hyphy.zip">hyphy.zip</a>
-* <a href="https://www.rna.uni-jena.de/supplements/poseidon/openmpi.zip">openmpi.zip</a>
+<!--* <a href="https://www.rna.uni-jena.de/supplements/poseidon/openmpi.zip">openmpi.zip</a>-->
 
-For a future release of PoSeiDon, we will provide a complete Docker
-container that can be easily executed without the need to install each
-of the below mentioned tools manually.
+Furthermore, you will need inkscape, pdflatex, ruby (tested with v2.4.2) and
+some ruby gems (packages) as well as mpirun (Open MPI; tested with v2.0.2). If
+you don't have anything of this installed, you can try on a Linux system:
+
+````
+apt-get install ruby
+gem install bio
+gem install mail
+gem install encrypted_strings
+
+apt-get install inkscape
+
+apt-get install texlive-latex-base
+
+apt-get install openmpi-bin
+
+````
+
+__We heavily recommend__ to use our Docker image that can be easily executed without the need to install tools manually.:
+
+````
+docker run mhoelzer/poseidon <TODO>
+````
 
 ## Workflow of the PoSeiDon pipeline and example output
 

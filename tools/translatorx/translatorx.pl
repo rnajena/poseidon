@@ -1164,21 +1164,21 @@ if ($function == 1) {
 		$muscleoutfile=$out_file . '.aa_ali.fasta';	
 		open(LOG, ">$out_file.$pauser.log") || die "Cannot create file outfile.pauser.log: $out_file.$pauser.log\n";
 		#my $pid = open(PH, "$path"."muscle -in $muscleinfile -out $muscleoutfile 2>&1 |");              # or with an open pipe
-  		my $pid = open(PH, "$path"."/home/hoelzer/RubymineProjects/positive_selection/tools/muscle/muscle -in $muscleinfile -out $muscleoutfile 2>&1 |");        
+  		my $pid = open(PH, "$path"."../tools/muscle/muscle -in $muscleinfile -out $muscleoutfile 2>&1 |");        
 		while(<PH>) {
 			print STDERR $_;
 			print LOG $_;
 		}
 		close(LOG);
 		#system "$path/muscle -in $muscleinfile -out $muscleoutfile";
-		print STDERR "$path"."/home/hoelzer/RubymineProjects/positive_selection/tools/muscle/muscle -in $muscleinfile -out $muscleoutfile\n";
+		print STDERR "$path"."../tools/muscle/muscle -in $muscleinfile -out $muscleoutfile\n";
 	}
 	
 	elsif ($pauser eq "mafft") {
 		$muscleoutfile=$out_file . '.aa_ali.fasta';	
-		print STDERR "/mnt/prostlocal/programs/mafft/mafft-7.215-with-extensions/bin/mafft --auto $muscleinfile > $muscleoutfile\n";
+		print STDERR "mafft --auto $muscleinfile > $muscleoutfile\n";
 		open(LOG, ">$out_file.$pauser.log") || die "Cannot create file outfile.pauser.log: $out_file.$pauser.log\n";
-		my $pid = open(PH, "/mnt/prostlocal/programs/mafft/mafft-7.215-with-extensions/bin/mafft --auto $muscleinfile 2>&1 1>$muscleoutfile |");              # or with an open pipe
+		my $pid = open(PH, "mafft --auto $muscleinfile 2>&1 1>$muscleoutfile |");              # or with an open pipe
 		while(<PH>) {
 			print STDERR $_;
 			print LOG $_;

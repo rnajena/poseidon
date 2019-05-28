@@ -61,9 +61,10 @@ class Main
     @query_sequence_name = query_sequence_name.upcase.gsub('.','_').gsub('-','_').gsub(':','_').gsub(',','_').gsub(';','_')
 
     @dir = "#{dir}/results/#{@timestamp}"
+    `mkdir -p #{dir}/results/`
     unless stamp
       # we have a generated time stamp, check if this time stamp already exist in some output folder
-      while Dir.exists?("/mnt/fass2/poseidon-webserver-prost/results/#{@timestamp}") || Dir.exists?("/mnt/fass2/poseidon-webserver-mahlzeit/results/#{@timestamp}") || Dir.exists?("/mnt/fass2/poseidon-webserver-dessert/results/#{@timestamp}")
+      while Dir.exists?("#{@dir}")
         @timestamp += 1
         @dir = "#{dir}/results/#{@timestamp}"
       end
@@ -930,5 +931,6 @@ fasta = '../test_data/bats_mx1_small.fasta'
 project_title = 'MX1 in bats'
 root_species = %w(Rousettus_aegyptiacus Pteropus_alecto Hypsignatus_monstrosus Eidolon_helvum)
 query_sequence_name = ''
-Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', '2019-001')
+#Main.new('/home/hoelzer/poseidon', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', '001')
+Main.new('/home/hoelzer/poseidon', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', nil)
 
