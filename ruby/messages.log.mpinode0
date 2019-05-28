@@ -1,0 +1,1117 @@
+
+Loaded 'lib2014/IOFunctions.bf' from /home/hoelzer/RubymineProjects/positive_selection/tools/hyphy/lib/hyphy/TemplateBatchFiles/lib2014/IOFunctions.bf
+Overwritten previously defined function:'io.reportProgressMessage'
+Loaded 'ReadDelimitedFiles' from /home/hoelzer/RubymineProjects/positive_selection/tools/hyphy/lib/hyphy/TemplateBatchFiles/Utility/ReadDelimitedFiles.bf
+Variable 'PROMPT_FOR_FILE' was not initialized prior to being used
+Variable 'END_OF_FILE' was not initialized prior to being used
+Variable betaP mapped to class {1,1,1}
+Variable betaQ mapped to class {1,1,1}
+Variable betaP mapped to class {1,1,1,1}
+Variable betaQ mapped to class {1,1,1,1}
+Variable alpha mapped to class {1,1,1,1}
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Row and/or column partition is empty. All the data will be used by default.
+Variable 'methodIndex' was not initialized prior to being used
+Model GTR_Model assigned to CAROLLIA_PERSPICILLATA
+Model GTR_Model assigned to STURNIRA_LILIUM
+Model GTR_Model assigned to ARTIBEUS_JAMAICENSIS
+Model GTR_Model assigned to Node7
+Model GTR_Model assigned to Node5
+Model GTR_Model assigned to EIDOLON_HELVUM
+Model GTR_Model assigned to PTEROPUS_ALECTO
+Model GTR_Model assigned to Node11
+Model GTR_Model assigned to HYPSIGNATUS_MONSTROSUS
+Model GTR_Model assigned to ROUSETTUS_AEGYPTIACUS
+Model GTR_Model assigned to Node14
+Model GTR_Model assigned to Node10
+Model GTR_Model assigned to Node4
+Model GTR_Model assigned to EPTESICUS_FUSCUS
+Model GTR_Model assigned to PIPISTRELLUS_SPEC
+Model GTR_Model assigned to Node17
+Model GTR_Model assigned to Node3
+Model GTR_Model assigned to MYOTIS_LUCIFUGUS
+Model GTR_Model assigned to Node2
+Model GTR_Model assigned to MYOTIS_DAVIDII
+Model GTR_Model assigned to Node1
+Model GTR_Model assigned to MYOTIS_BRANDTII
+Model GTR_Model assigned to MYOTIS_DAUBENTONII
+The tips of the tree:givenTree were matched with the species names from the data as follows {0,1,2,3,6,4,5,11,12,8,7,9,10}
+
+Pseudo-optimal path's cost 1950 vs 2540 for 1..k=> a 1.30256 x improvement
+Partition  reversible model flag computed as 1
+Variable 'singlePart' was not initialized prior to being used
+Variable 'givenTree.CAROLLIA_PERSPICILLATA.t' was not initialized prior to being used
+Variable 'givenTree.STURNIRA_LILIUM.t' was not initialized prior to being used
+Variable 'givenTree.ARTIBEUS_JAMAICENSIS.t' was not initialized prior to being used
+Variable 'givenTree.EIDOLON_HELVUM.t' was not initialized prior to being used
+Variable 'givenTree.PTEROPUS_ALECTO.t' was not initialized prior to being used
+Variable 'givenTree.HYPSIGNATUS_MONSTROSUS.t' was not initialized prior to being used
+Variable 'givenTree.ROUSETTUS_AEGYPTIACUS.t' was not initialized prior to being used
+Variable 'givenTree.EPTESICUS_FUSCUS.t' was not initialized prior to being used
+Variable 'givenTree.PIPISTRELLUS_SPEC.t' was not initialized prior to being used
+Variable 'givenTree.MYOTIS_LUCIFUGUS.t' was not initialized prior to being used
+Variable 'givenTree.MYOTIS_DAVIDII.t' was not initialized prior to being used
+Variable 'givenTree.MYOTIS_BRANDTII.t' was not initialized prior to being used
+Variable 'givenTree.MYOTIS_DAUBENTONII.t' was not initialized prior to being used
+Variable 'givenTree.Node7.t' was not initialized prior to being used
+Variable 'givenTree.Node5.t' was not initialized prior to being used
+Variable 'givenTree.Node11.t' was not initialized prior to being used
+Variable 'givenTree.Node14.t' was not initialized prior to being used
+Variable 'givenTree.Node10.t' was not initialized prior to being used
+Variable 'givenTree.Node4.t' was not initialized prior to being used
+Variable 'givenTree.Node17.t' was not initialized prior to being used
+Variable 'givenTree.Node3.t' was not initialized prior to being used
+Variable 'givenTree.Node2.t' was not initialized prior to being used
+Variable 'givenTree.Node1.t' was not initialized prior to being used
+Set GUI update interval to every 1006-th LF evaluation.
+Initial guess for givenTree.Node1.t is 0.001150220630406475
+Initial guess for givenTree.Node2.t is 0.001545054589675566
+Initial guess for givenTree.Node3.t is 0.008354871821052436
+Initial guess for givenTree.Node4.t is 0.03793478451800603
+Initial guess for givenTree.Node5.t is 0.0244200685567851
+Initial guess for givenTree.CAROLLIA_PERSPICILLATA.t is 0.02727734185097328
+Initial guess for givenTree.Node7.t is 0.0129539376524038
+Initial guess for givenTree.STURNIRA_LILIUM.t is 0.03838609453929573
+Initial guess for givenTree.ARTIBEUS_JAMAICENSIS.t is 0.04189580260198972
+Initial guess for givenTree.Node10.t is 0.05613357037149794
+Initial guess for givenTree.Node11.t is 0.0007466396926838533
+Initial guess for givenTree.EIDOLON_HELVUM.t is 0.03256819463147848
+Initial guess for givenTree.PTEROPUS_ALECTO.t is 0.0314864424987553
+Initial guess for givenTree.Node14.t is 0.01442186851205923
+Initial guess for givenTree.HYPSIGNATUS_MONSTROSUS.t is 0.04471549440313299
+Initial guess for givenTree.ROUSETTUS_AEGYPTIACUS.t is 0.01254515658160971
+Initial guess for givenTree.Node17.t is 0.009783340329143847
+Initial guess for givenTree.EPTESICUS_FUSCUS.t is 0.02345820242009232
+Initial guess for givenTree.PIPISTRELLUS_SPEC.t is 0.01613084025722964
+Initial guess for givenTree.MYOTIS_LUCIFUGUS.t is 0.004156347984928613
+Initial guess for givenTree.MYOTIS_DAVIDII.t is 0.006974014729375434
+Initial guess for givenTree.MYOTIS_BRANDTII.t is -0.0004137754331934249
+Initial guess for givenTree.MYOTIS_DAUBENTONII.t is 0.006456769438608373
+Optimization settings:
+	OPTIMIZATION_METHOD = 4
+	OPTIMIZATION_PRECISION = 0.001
+	MAXIMUM_ITERATIONS_PER_VARIABLE = 5000
+
+Initial parameter values
+
+GT = 1
+CT = 1
+AC = 1
+AT = 1
+CG = 1
+alpha = 0.5
+betaP = 1
+betaQ = 1
+givenTree.CAROLLIA_PERSPICILLATA.t = 0.02727734185097328
+givenTree.STURNIRA_LILIUM.t = 0.03838609453929573
+givenTree.ARTIBEUS_JAMAICENSIS.t = 0.04189580260198972
+givenTree.Node7.t = 0.0129539376524038
+givenTree.Node5.t = 0.0244200685567851
+givenTree.EIDOLON_HELVUM.t = 0.03256819463147848
+givenTree.PTEROPUS_ALECTO.t = 0.0314864424987553
+givenTree.Node11.t = 0.0007466396926838533
+givenTree.HYPSIGNATUS_MONSTROSUS.t = 0.04471549440313299
+givenTree.ROUSETTUS_AEGYPTIACUS.t = 0.01254515658160971
+givenTree.Node14.t = 0.01442186851205923
+givenTree.Node10.t = 0.05613357037149794
+givenTree.Node4.t = 0.03793478451800603
+givenTree.EPTESICUS_FUSCUS.t = 0.02345820242009232
+givenTree.PIPISTRELLUS_SPEC.t = 0.01613084025722964
+givenTree.Node17.t = 0.009783340329143847
+givenTree.Node3.t = 0.008354871821052436
+givenTree.MYOTIS_LUCIFUGUS.t = 0.004156347984928613
+givenTree.Node2.t = 0.001545054589675566
+givenTree.MYOTIS_DAVIDII.t = 0.006974014729375434
+givenTree.Node1.t = 0.001150220630406475
+givenTree.MYOTIS_BRANDTII.t = 0
+givenTree.MYOTIS_DAUBENTONII.t = 0.006456769438608373
+Optimization finished in 18 loop passes.
+4603 likelihood evaluation calls and 160296 matrix exponentiations calls were made
+
+Row and/or column partition is empty. All the data will be used by default.
+Model GTR_Model assigned to CAROLLIA_PERSPICILLATA
+Model GTR_Model assigned to STURNIRA_LILIUM
+Model GTR_Model assigned to ARTIBEUS_JAMAICENSIS
+Model GTR_Model assigned to Node7
+Model GTR_Model assigned to Node5
+Model GTR_Model assigned to EIDOLON_HELVUM
+Model GTR_Model assigned to PTEROPUS_ALECTO
+Model GTR_Model assigned to Node11
+Model GTR_Model assigned to HYPSIGNATUS_MONSTROSUS
+Model GTR_Model assigned to ROUSETTUS_AEGYPTIACUS
+Model GTR_Model assigned to Node14
+Model GTR_Model assigned to Node10
+Model GTR_Model assigned to Node4
+Model GTR_Model assigned to EPTESICUS_FUSCUS
+Model GTR_Model assigned to PIPISTRELLUS_SPEC
+Model GTR_Model assigned to Node17
+Model GTR_Model assigned to Node3
+Model GTR_Model assigned to MYOTIS_LUCIFUGUS
+Model GTR_Model assigned to Node2
+Model GTR_Model assigned to MYOTIS_DAVIDII
+Model GTR_Model assigned to Node1
+Model GTR_Model assigned to MYOTIS_BRANDTII
+Model GTR_Model assigned to MYOTIS_DAUBENTONII
+Row and/or column partition is empty. All the data will be used by default.
+Model GTR_Model assigned to CAROLLIA_PERSPICILLATA
+Model GTR_Model assigned to STURNIRA_LILIUM
+Model GTR_Model assigned to ARTIBEUS_JAMAICENSIS
+Model GTR_Model assigned to Node7
+Model GTR_Model assigned to Node5
+Model GTR_Model assigned to EIDOLON_HELVUM
+Model GTR_Model assigned to PTEROPUS_ALECTO
+Model GTR_Model assigned to Node11
+Model GTR_Model assigned to HYPSIGNATUS_MONSTROSUS
+Model GTR_Model assigned to ROUSETTUS_AEGYPTIACUS
+Model GTR_Model assigned to Node14
+Model GTR_Model assigned to Node10
+Model GTR_Model assigned to Node4
+Model GTR_Model assigned to EPTESICUS_FUSCUS
+Model GTR_Model assigned to PIPISTRELLUS_SPEC
+Model GTR_Model assigned to Node17
+Model GTR_Model assigned to Node3
+Model GTR_Model assigned to MYOTIS_LUCIFUGUS
+Model GTR_Model assigned to Node2
+Model GTR_Model assigned to MYOTIS_DAVIDII
+Model GTR_Model assigned to Node1
+Model GTR_Model assigned to MYOTIS_BRANDTII
+Model GTR_Model assigned to MYOTIS_DAUBENTONII
+
+ReplicateConstraint generated the following contsraints:
+tree_1.CAROLLIA_PERSPICILLATA.t:=S_1*tree_0.CAROLLIA_PERSPICILLATA.t;
+tree_1.STURNIRA_LILIUM.t:=S_1*tree_0.STURNIRA_LILIUM.t;
+tree_1.ARTIBEUS_JAMAICENSIS.t:=S_1*tree_0.ARTIBEUS_JAMAICENSIS.t;
+tree_1.Node7.t:=S_1*tree_0.Node7.t;
+tree_1.Node5.t:=S_1*tree_0.Node5.t;
+tree_1.EIDOLON_HELVUM.t:=S_1*tree_0.EIDOLON_HELVUM.t;
+tree_1.PTEROPUS_ALECTO.t:=S_1*tree_0.PTEROPUS_ALECTO.t;
+tree_1.Node11.t:=S_1*tree_0.Node11.t;
+tree_1.HYPSIGNATUS_MONSTROSUS.t:=S_1*tree_0.HYPSIGNATUS_MONSTROSUS.t;
+tree_1.ROUSETTUS_AEGYPTIACUS.t:=S_1*tree_0.ROUSETTUS_AEGYPTIACUS.t;
+tree_1.Node14.t:=S_1*tree_0.Node14.t;
+tree_1.Node10.t:=S_1*tree_0.Node10.t;
+tree_1.Node4.t:=S_1*tree_0.Node4.t;
+tree_1.EPTESICUS_FUSCUS.t:=S_1*tree_0.EPTESICUS_FUSCUS.t;
+tree_1.PIPISTRELLUS_SPEC.t:=S_1*tree_0.PIPISTRELLUS_SPEC.t;
+tree_1.Node17.t:=S_1*tree_0.Node17.t;
+tree_1.Node3.t:=S_1*tree_0.Node3.t;
+tree_1.MYOTIS_LUCIFUGUS.t:=S_1*tree_0.MYOTIS_LUCIFUGUS.t;
+tree_1.Node2.t:=S_1*tree_0.Node2.t;
+tree_1.MYOTIS_DAVIDII.t:=S_1*tree_0.MYOTIS_DAVIDII.t;
+tree_1.Node1.t:=S_1*tree_0.Node1.t;
+tree_1.MYOTIS_BRANDTII.t:=S_1*tree_0.MYOTIS_BRANDTII.t;
+tree_1.MYOTIS_DAUBENTONII.t:=S_1*tree_0.MYOTIS_DAUBENTONII.t;
+
+The tips of the tree:tree_0 were matched with the species names from the data as follows {0,1,2,3,6,4,5,11,12,8,7,9,10}
+The tips of the tree:tree_1 were matched with the species names from the data as follows {0,1,2,3,6,4,5,11,12,8,7,9,10}
+
+Pseudo-optimal path's cost 1496 vs 1946 for 1..k=> a 1.3008 x improvement
+Partition  reversible model flag computed as 1
+
+Pseudo-optimal path's cost 572 vs 686 for 1..k=> a 1.1993 x improvement
+Partition   reversible model flag computed as 1
+Variable 'multiPart' was not initialized prior to being used
+Variable 'tree_0.CAROLLIA_PERSPICILLATA.t' was not initialized prior to being used
+Variable 'tree_0.STURNIRA_LILIUM.t' was not initialized prior to being used
+Variable 'tree_0.ARTIBEUS_JAMAICENSIS.t' was not initialized prior to being used
+Variable 'tree_0.Node7.t' was not initialized prior to being used
+Variable 'tree_0.Node5.t' was not initialized prior to being used
+Variable 'tree_0.EIDOLON_HELVUM.t' was not initialized prior to being used
+Variable 'tree_0.PTEROPUS_ALECTO.t' was not initialized prior to being used
+Variable 'tree_0.Node11.t' was not initialized prior to being used
+Variable 'tree_0.HYPSIGNATUS_MONSTROSUS.t' was not initialized prior to being used
+Variable 'tree_0.ROUSETTUS_AEGYPTIACUS.t' was not initialized prior to being used
+Variable 'tree_0.Node14.t' was not initialized prior to being used
+Variable 'tree_0.Node10.t' was not initialized prior to being used
+Variable 'tree_0.Node4.t' was not initialized prior to being used
+Variable 'tree_0.EPTESICUS_FUSCUS.t' was not initialized prior to being used
+Variable 'tree_0.PIPISTRELLUS_SPEC.t' was not initialized prior to being used
+Variable 'tree_0.Node17.t' was not initialized prior to being used
+Variable 'tree_0.Node3.t' was not initialized prior to being used
+Variable 'tree_0.MYOTIS_LUCIFUGUS.t' was not initialized prior to being used
+Variable 'tree_0.Node2.t' was not initialized prior to being used
+Variable 'tree_0.MYOTIS_DAVIDII.t' was not initialized prior to being used
+Variable 'tree_0.Node1.t' was not initialized prior to being used
+Variable 'tree_0.MYOTIS_BRANDTII.t' was not initialized prior to being used
+Variable 'tree_0.MYOTIS_DAUBENTONII.t' was not initialized prior to being used
+Set GUI update interval to every 1302-th LF evaluation.
+Optimization settings:
+	OPTIMIZATION_METHOD = 4
+	OPTIMIZATION_PRECISION = 0.001
+	MAXIMUM_ITERATIONS_PER_VARIABLE = 5000
+
+Initial parameter values
+
+S_1 = 1
+tree_0.CAROLLIA_PERSPICILLATA.t = 0.1
+tree_0.STURNIRA_LILIUM.t = 0.1
+tree_0.ARTIBEUS_JAMAICENSIS.t = 0.1
+tree_0.Node7.t = 0.1
+tree_0.Node5.t = 0.1
+tree_0.EIDOLON_HELVUM.t = 0.1
+tree_0.PTEROPUS_ALECTO.t = 0.1
+tree_0.Node11.t = 0.1
+tree_0.HYPSIGNATUS_MONSTROSUS.t = 0.1
+tree_0.ROUSETTUS_AEGYPTIACUS.t = 0.1
+tree_0.Node14.t = 0.1
+tree_0.Node10.t = 0.1
+tree_0.Node4.t = 0.1
+tree_0.EPTESICUS_FUSCUS.t = 0.1
+tree_0.PIPISTRELLUS_SPEC.t = 0.1
+tree_0.Node17.t = 0.1
+tree_0.Node3.t = 0.1
+tree_0.MYOTIS_LUCIFUGUS.t = 0.1
+tree_0.Node2.t = 0.1
+tree_0.MYOTIS_DAVIDII.t = 0.1
+tree_0.Node1.t = 0.1
+tree_0.MYOTIS_BRANDTII.t = 0.1
+tree_0.MYOTIS_DAUBENTONII.t = 0.1
+Optimization finished in 8 loop passes.
+1610 likelihood evaluation calls and 66812 matrix exponentiations calls were made
+
+Row and/or column partition is empty. All the data will be used by default.
+Model GTR_Model assigned to CAROLLIA_PERSPICILLATA
+Branch parameter of CAROLLIA_PERSPICILLATA set to :0.03336811362813599
+Model GTR_Model assigned to STURNIRA_LILIUM
+Branch parameter of STURNIRA_LILIUM set to :0.04916925396930899
+Model GTR_Model assigned to ARTIBEUS_JAMAICENSIS
+Branch parameter of ARTIBEUS_JAMAICENSIS set to :0.01480723798005671
+Model GTR_Model assigned to Node6
+Branch parameter of Node6 set to :0.0436470896105282
+Model GTR_Model assigned to Node4
+Branch parameter of Node4 set to :0.04522174947348614
+Model GTR_Model assigned to EIDOLON_HELVUM
+Branch parameter of EIDOLON_HELVUM set to :0.06650393951165126
+Model GTR_Model assigned to PTEROPUS_ALECTO
+Branch parameter of PTEROPUS_ALECTO set to :0.05062080363384065
+Model GTR_Model assigned to Node10
+Branch parameter of Node10 set to :0.001277418098294194
+Model GTR_Model assigned to HYPSIGNATUS_MONSTROSUS
+Branch parameter of HYPSIGNATUS_MONSTROSUS set to :0.05987316788410224
+Model GTR_Model assigned to ROUSETTUS_AEGYPTIACUS
+Branch parameter of ROUSETTUS_AEGYPTIACUS set to :0.01517787237280065
+Model GTR_Model assigned to Node13
+Branch parameter of Node13 set to :0.03228028001126245
+Model GTR_Model assigned to Node9
+Branch parameter of Node9 set to :0.09879675029093632
+Model GTR_Model assigned to Node3
+Branch parameter of Node3 set to :0.09656773112449464
+Model GTR_Model assigned to EPTESICUS_FUSCUS
+Branch parameter of EPTESICUS_FUSCUS set to :0.0409172716604996
+Model GTR_Model assigned to PIPISTRELLUS_SPEC
+Branch parameter of PIPISTRELLUS_SPEC set to :0.03907994884435741
+Model GTR_Model assigned to Node16
+Branch parameter of Node16 set to :0.0259665508060083
+Model GTR_Model assigned to Node2
+Branch parameter of Node2 set to :0.00543314245035362
+Model GTR_Model assigned to MYOTIS_LUCIFUGUS
+Branch parameter of MYOTIS_LUCIFUGUS set to :0
+Model GTR_Model assigned to Node1
+Branch parameter of Node1 set to :0.003733873618245894
+Model GTR_Model assigned to MYOTIS_DAVIDII
+Branch parameter of MYOTIS_DAVIDII set to :0.01524344455741205
+Model GTR_Model assigned to MYOTIS_BRANDTII
+Branch parameter of MYOTIS_BRANDTII set to :0
+Model GTR_Model assigned to MYOTIS_DAUBENTONII
+Branch parameter of MYOTIS_DAUBENTONII set to :0.01124273410159912
+Model GTR_Model assigned to Node21
+Branch parameter of Node21 set to :0
+Row and/or column partition is empty. All the data will be used by default.
+Model GTR_Model assigned to CAROLLIA_PERSPICILLATA
+Branch parameter of CAROLLIA_PERSPICILLATA set to :0.01643629446403765
+Model GTR_Model assigned to STURNIRA_LILIUM
+Branch parameter of STURNIRA_LILIUM set to :0.068464706485482
+Model GTR_Model assigned to Node4
+Branch parameter of Node4 set to :0.1071358419659622
+Model GTR_Model assigned to ARTIBEUS_JAMAICENSIS
+Branch parameter of ARTIBEUS_JAMAICENSIS set to :0.7944862089007808
+Model GTR_Model assigned to EIDOLON_HELVUM
+Branch parameter of EIDOLON_HELVUM set to :0.01208197029947056
+Model GTR_Model assigned to HYPSIGNATUS_MONSTROSUS
+Branch parameter of HYPSIGNATUS_MONSTROSUS set to :0.1815748835627489
+Model GTR_Model assigned to ROUSETTUS_AEGYPTIACUS
+Branch parameter of ROUSETTUS_AEGYPTIACUS set to :0.03214967039403705
+Model GTR_Model assigned to Node12
+Branch parameter of Node12 set to :0.02428593922820451
+Model GTR_Model assigned to Node10
+Branch parameter of Node10 set to :0.05904564559021245
+Model GTR_Model assigned to PTEROPUS_ALECTO
+Branch parameter of PTEROPUS_ALECTO set to :0
+Model GTR_Model assigned to Node9
+Branch parameter of Node9 set to :0.1676073552735363
+Model GTR_Model assigned to Node7
+Branch parameter of Node7 set to :0.08856848752553782
+Model GTR_Model assigned to Node3
+Branch parameter of Node3 set to :0.06290066341512435
+Model GTR_Model assigned to MYOTIS_LUCIFUGUS
+Branch parameter of MYOTIS_LUCIFUGUS set to :0.03123164614798181
+Model GTR_Model assigned to Node2
+Branch parameter of Node2 set to :0
+Model GTR_Model assigned to EPTESICUS_FUSCUS
+Branch parameter of EPTESICUS_FUSCUS set to :0
+Model GTR_Model assigned to PIPISTRELLUS_SPEC
+Branch parameter of PIPISTRELLUS_SPEC set to :0
+Model GTR_Model assigned to Node17
+Branch parameter of Node17 set to :0.01544184388259471
+Model GTR_Model assigned to Node1
+Branch parameter of Node1 set to :0
+Model GTR_Model assigned to MYOTIS_DAVIDII
+Branch parameter of MYOTIS_DAVIDII set to :0
+Model GTR_Model assigned to MYOTIS_BRANDTII
+Branch parameter of MYOTIS_BRANDTII set to :0
+Model GTR_Model assigned to Node20
+Branch parameter of Node20 set to :0
+Model GTR_Model assigned to MYOTIS_DAUBENTONII
+Branch parameter of MYOTIS_DAUBENTONII set to :0
+The tips of the tree:tree_0 were matched with the species names from the data as follows {0,1,2,3,6,4,5,11,12,8,7,9,10}
+The tips of the tree:tree_1 were matched with the species names from the data as follows {0,1,2,3,4,5,6,8,11,12,7,9,10}
+
+Pseudo-optimal path's cost 1368 vs 1898 for 1..k=> a 1.38743 x improvement
+Partition  reversible model flag computed as 1
+
+Pseudo-optimal path's cost 506 vs 662 for 1..k=> a 1.3083 x improvement
+Partition   reversible model flag computed as 1
+Set GUI update interval to every 952-th LF evaluation.
+Optimization settings:
+	OPTIMIZATION_METHOD = 4
+	OPTIMIZATION_PRECISION = 0.001
+	MAXIMUM_ITERATIONS_PER_VARIABLE = 5000
+
+Initial parameter values
+
+tree_1.CAROLLIA_PERSPICILLATA.t = 0.1
+tree_0.CAROLLIA_PERSPICILLATA.t = 0.1
+tree_1.STURNIRA_LILIUM.t = 0.1
+tree_0.STURNIRA_LILIUM.t = 0.1
+tree_1.Node4.t = 0.1
+tree_0.ARTIBEUS_JAMAICENSIS.t = 0.1
+tree_1.ARTIBEUS_JAMAICENSIS.t = 0.1
+tree_0.Node6.t = 0.1
+tree_1.EIDOLON_HELVUM.t = 0.1
+tree_0.Node4.t = 0.1
+tree_1.HYPSIGNATUS_MONSTROSUS.t = 0.1
+tree_0.EIDOLON_HELVUM.t = 0.1
+tree_1.ROUSETTUS_AEGYPTIACUS.t = 0.1
+tree_0.PTEROPUS_ALECTO.t = 0.1
+tree_1.Node12.t = 0.1
+tree_0.Node10.t = 0.1
+tree_1.Node10.t = 0.1
+tree_0.HYPSIGNATUS_MONSTROSUS.t = 0.1
+tree_1.PTEROPUS_ALECTO.t = 0.1
+tree_0.ROUSETTUS_AEGYPTIACUS.t = 0.1
+tree_1.Node9.t = 0.1
+tree_0.Node13.t = 0.1
+tree_1.Node7.t = 0.1
+tree_0.Node9.t = 0.1
+tree_1.Node3.t = 0.1
+tree_0.Node3.t = 0.1
+tree_1.MYOTIS_LUCIFUGUS.t = 0.1
+tree_0.EPTESICUS_FUSCUS.t = 0.1
+tree_1.Node2.t = 0.1
+tree_0.PIPISTRELLUS_SPEC.t = 0.1
+tree_1.EPTESICUS_FUSCUS.t = 0.1
+tree_0.Node16.t = 0.1
+tree_1.PIPISTRELLUS_SPEC.t = 0.1
+tree_0.Node2.t = 0.1
+tree_1.Node17.t = 0.1
+tree_0.MYOTIS_LUCIFUGUS.t = 0.1
+tree_1.Node1.t = 0.1
+tree_0.Node1.t = 0.1
+tree_1.MYOTIS_DAVIDII.t = 0.1
+tree_0.MYOTIS_DAVIDII.t = 0.1
+tree_1.MYOTIS_BRANDTII.t = 0.1
+tree_0.MYOTIS_BRANDTII.t = 0.1
+tree_1.Node20.t = 0.1
+tree_0.MYOTIS_DAUBENTONII.t = 0.1
+tree_0.Node21.t = 0.1
+tree_1.MYOTIS_DAUBENTONII.t = 0.1
+Optimization finished in 8 loop passes.
+2337 likelihood evaluation calls and 36480 matrix exponentiations calls were made
+
+Serializing multiPart with mode 0
+Row and/or column partition is empty. All the data will be used by default.
+Variable 'OPTIMIZATION_PRECISION' was not initialized prior to being used
+Row and/or column partition is empty. All the data will be used by default.
+Model GTR_Model assigned to CAROLLIA_PERSPICILLATA
+Branch parameter of CAROLLIA_PERSPICILLATA set to :0.03336811362813599
+Model GTR_Model assigned to STURNIRA_LILIUM
+Branch parameter of STURNIRA_LILIUM set to :0.04916925396930899
+Model GTR_Model assigned to ARTIBEUS_JAMAICENSIS
+Branch parameter of ARTIBEUS_JAMAICENSIS set to :0.01480723798005671
+Model GTR_Model assigned to Node6
+Branch parameter of Node6 set to :0.0436470896105282
+Model GTR_Model assigned to Node4
+Branch parameter of Node4 set to :0.04522174947348614
+Model GTR_Model assigned to EIDOLON_HELVUM
+Branch parameter of EIDOLON_HELVUM set to :0.06650393951165126
+Model GTR_Model assigned to PTEROPUS_ALECTO
+Branch parameter of PTEROPUS_ALECTO set to :0.05062080363384065
+Model GTR_Model assigned to Node10
+Branch parameter of Node10 set to :0.001277418098294194
+Model GTR_Model assigned to HYPSIGNATUS_MONSTROSUS
+Branch parameter of HYPSIGNATUS_MONSTROSUS set to :0.05987316788410224
+Model GTR_Model assigned to ROUSETTUS_AEGYPTIACUS
+Branch parameter of ROUSETTUS_AEGYPTIACUS set to :0.01517787237280065
+Model GTR_Model assigned to Node13
+Branch parameter of Node13 set to :0.03228028001126245
+Model GTR_Model assigned to Node9
+Branch parameter of Node9 set to :0.09879675029093632
+Model GTR_Model assigned to Node3
+Branch parameter of Node3 set to :0.09656773112449464
+Model GTR_Model assigned to EPTESICUS_FUSCUS
+Branch parameter of EPTESICUS_FUSCUS set to :0.0409172716604996
+Model GTR_Model assigned to PIPISTRELLUS_SPEC
+Branch parameter of PIPISTRELLUS_SPEC set to :0.03907994884435741
+Model GTR_Model assigned to Node16
+Branch parameter of Node16 set to :0.0259665508060083
+Model GTR_Model assigned to Node2
+Branch parameter of Node2 set to :0.00543314245035362
+Model GTR_Model assigned to MYOTIS_LUCIFUGUS
+Branch parameter of MYOTIS_LUCIFUGUS set to :0
+Model GTR_Model assigned to Node1
+Branch parameter of Node1 set to :0.003733873618245894
+Model GTR_Model assigned to MYOTIS_DAVIDII
+Branch parameter of MYOTIS_DAVIDII set to :0.01524344455741205
+Model GTR_Model assigned to MYOTIS_BRANDTII
+Branch parameter of MYOTIS_BRANDTII set to :0
+Model GTR_Model assigned to MYOTIS_DAUBENTONII
+Branch parameter of MYOTIS_DAUBENTONII set to :0.01124273410159912
+Model GTR_Model assigned to Node21
+Branch parameter of Node21 set to :0
+The tips of the tree:aTree were matched with the species names from the data as follows {0,1,2,3,6,4,5,11,12,8,7,9,10}
+
+Pseudo-optimal path's cost 1368 vs 1898 for 1..k=> a 1.38743 x improvement
+Partition  reversible model flag computed as 1
+Variable 'aLF' was not initialized prior to being used
+Set GUI update interval to every 1612-th LF evaluation.
+Optimization settings:
+	OPTIMIZATION_METHOD = 4
+	OPTIMIZATION_PRECISION = 0
+	MAXIMUM_ITERATIONS_PER_VARIABLE = 5000
+
+Initial parameter values
+
+aTree.CAROLLIA_PERSPICILLATA.t = 0.1
+aTree.STURNIRA_LILIUM.t = 0.1
+aTree.ARTIBEUS_JAMAICENSIS.t = 0.1
+aTree.Node6.t = 0.1
+aTree.Node4.t = 0.1
+aTree.EIDOLON_HELVUM.t = 0.1
+aTree.PTEROPUS_ALECTO.t = 0.1
+aTree.Node10.t = 0.1
+aTree.HYPSIGNATUS_MONSTROSUS.t = 0.1
+aTree.ROUSETTUS_AEGYPTIACUS.t = 0.1
+aTree.Node13.t = 0.1
+aTree.Node9.t = 0.1
+aTree.Node3.t = 0.1
+aTree.EPTESICUS_FUSCUS.t = 0.1
+aTree.PIPISTRELLUS_SPEC.t = 0.1
+aTree.Node16.t = 0.1
+aTree.Node2.t = 0.1
+aTree.MYOTIS_LUCIFUGUS.t = 0.1
+aTree.Node1.t = 0.1
+aTree.MYOTIS_DAVIDII.t = 0.1
+aTree.MYOTIS_BRANDTII.t = 0.1
+aTree.MYOTIS_DAUBENTONII.t = 0.1
+aTree.Node21.t = 0.1
+Optimization finished in 27 loop passes.
+2818 likelihood evaluation calls and 21108 matrix exponentiations calls were made
+
+Row and/or column partition is empty. All the data will be used by default.
+Model GTR_Model assigned to CAROLLIA_PERSPICILLATA
+Branch parameter of CAROLLIA_PERSPICILLATA set to :0.01643629446403765
+Model GTR_Model assigned to STURNIRA_LILIUM
+Branch parameter of STURNIRA_LILIUM set to :0.068464706485482
+Model GTR_Model assigned to Node4
+Branch parameter of Node4 set to :0.1071358419659622
+Model GTR_Model assigned to ARTIBEUS_JAMAICENSIS
+Branch parameter of ARTIBEUS_JAMAICENSIS set to :0.7944862089007808
+Model GTR_Model assigned to EIDOLON_HELVUM
+Branch parameter of EIDOLON_HELVUM set to :0.01208197029947056
+Model GTR_Model assigned to HYPSIGNATUS_MONSTROSUS
+Branch parameter of HYPSIGNATUS_MONSTROSUS set to :0.1815748835627489
+Model GTR_Model assigned to ROUSETTUS_AEGYPTIACUS
+Branch parameter of ROUSETTUS_AEGYPTIACUS set to :0.03214967039403705
+Model GTR_Model assigned to Node12
+Branch parameter of Node12 set to :0.02428593922820451
+Model GTR_Model assigned to Node10
+Branch parameter of Node10 set to :0.05904564559021245
+Model GTR_Model assigned to PTEROPUS_ALECTO
+Branch parameter of PTEROPUS_ALECTO set to :0
+Model GTR_Model assigned to Node9
+Branch parameter of Node9 set to :0.1676073552735363
+Model GTR_Model assigned to Node7
+Branch parameter of Node7 set to :0.08856848752553782
+Model GTR_Model assigned to Node3
+Branch parameter of Node3 set to :0.06290066341512435
+Model GTR_Model assigned to MYOTIS_LUCIFUGUS
+Branch parameter of MYOTIS_LUCIFUGUS set to :0.03123164614798181
+Model GTR_Model assigned to Node2
+Branch parameter of Node2 set to :0
+Model GTR_Model assigned to EPTESICUS_FUSCUS
+Branch parameter of EPTESICUS_FUSCUS set to :0
+Model GTR_Model assigned to PIPISTRELLUS_SPEC
+Branch parameter of PIPISTRELLUS_SPEC set to :0
+Model GTR_Model assigned to Node17
+Branch parameter of Node17 set to :0.01544184388259471
+Model GTR_Model assigned to Node1
+Branch parameter of Node1 set to :0
+Model GTR_Model assigned to MYOTIS_DAVIDII
+Branch parameter of MYOTIS_DAVIDII set to :0
+Model GTR_Model assigned to MYOTIS_BRANDTII
+Branch parameter of MYOTIS_BRANDTII set to :0
+Model GTR_Model assigned to Node20
+Branch parameter of Node20 set to :0
+Model GTR_Model assigned to MYOTIS_DAUBENTONII
+Branch parameter of MYOTIS_DAUBENTONII set to :0
+The tips of the tree:aTree were matched with the species names from the data as follows {0,1,2,3,4,5,6,8,11,12,7,9,10}
+
+Pseudo-optimal path's cost 1406 vs 1954 for 1..k=> a 1.38976 x improvement
+Partition  reversible model flag computed as 1
+Set GUI update interval to every 1700-th LF evaluation.
+Optimization settings:
+	OPTIMIZATION_METHOD = 4
+	OPTIMIZATION_PRECISION = 0
+	MAXIMUM_ITERATIONS_PER_VARIABLE = 5000
+
+Initial parameter values
+
+aTree.CAROLLIA_PERSPICILLATA.t = 0.1
+aTree.STURNIRA_LILIUM.t = 0.1
+aTree.Node4.t = 0.1
+aTree.ARTIBEUS_JAMAICENSIS.t = 0.1
+aTree.EIDOLON_HELVUM.t = 0.1
+aTree.HYPSIGNATUS_MONSTROSUS.t = 0.1
+aTree.ROUSETTUS_AEGYPTIACUS.t = 0.1
+aTree.Node12.t = 0.1
+aTree.Node10.t = 0.1
+aTree.PTEROPUS_ALECTO.t = 0.1
+aTree.Node9.t = 0.1
+aTree.Node7.t = 0.1
+aTree.Node3.t = 0.1
+aTree.MYOTIS_LUCIFUGUS.t = 0.1
+aTree.Node2.t = 0.1
+aTree.EPTESICUS_FUSCUS.t = 0.1
+aTree.PIPISTRELLUS_SPEC.t = 0.1
+aTree.Node17.t = 0.1
+aTree.Node1.t = 0.1
+aTree.MYOTIS_DAVIDII.t = 0.1
+aTree.MYOTIS_BRANDTII.t = 0.1
+aTree.Node20.t = 0.1
+aTree.MYOTIS_DAUBENTONII.t = 0.1
+Optimization finished in 27 loop passes.
+2765 likelihood evaluation calls and 25528 matrix exponentiations calls were made
+
+Variable 'itCound' was not initialized prior to being used
+Row and/or column partition is empty. All the data will be used by default.
+Model GTR_Model assigned to CAROLLIA_PERSPICILLATA
+Branch parameter of CAROLLIA_PERSPICILLATA set to :0.03336811362813599
+Model GTR_Model assigned to STURNIRA_LILIUM
+Branch parameter of STURNIRA_LILIUM set to :0.04916925396930899
+Model GTR_Model assigned to ARTIBEUS_JAMAICENSIS
+Branch parameter of ARTIBEUS_JAMAICENSIS set to :0.01480723798005671
+Model GTR_Model assigned to Node6
+Branch parameter of Node6 set to :0.0436470896105282
+Model GTR_Model assigned to Node4
+Branch parameter of Node4 set to :0.04522174947348614
+Model GTR_Model assigned to EIDOLON_HELVUM
+Branch parameter of EIDOLON_HELVUM set to :0.06650393951165126
+Model GTR_Model assigned to PTEROPUS_ALECTO
+Branch parameter of PTEROPUS_ALECTO set to :0.05062080363384065
+Model GTR_Model assigned to Node10
+Branch parameter of Node10 set to :0.001277418098294194
+Model GTR_Model assigned to HYPSIGNATUS_MONSTROSUS
+Branch parameter of HYPSIGNATUS_MONSTROSUS set to :0.05987316788410224
+Model GTR_Model assigned to ROUSETTUS_AEGYPTIACUS
+Branch parameter of ROUSETTUS_AEGYPTIACUS set to :0.01517787237280065
+Model GTR_Model assigned to Node13
+Branch parameter of Node13 set to :0.03228028001126245
+Model GTR_Model assigned to Node9
+Branch parameter of Node9 set to :0.09879675029093632
+Model GTR_Model assigned to Node3
+Branch parameter of Node3 set to :0.09656773112449464
+Model GTR_Model assigned to EPTESICUS_FUSCUS
+Branch parameter of EPTESICUS_FUSCUS set to :0.0409172716604996
+Model GTR_Model assigned to PIPISTRELLUS_SPEC
+Branch parameter of PIPISTRELLUS_SPEC set to :0.03907994884435741
+Model GTR_Model assigned to Node16
+Branch parameter of Node16 set to :0.0259665508060083
+Model GTR_Model assigned to Node2
+Branch parameter of Node2 set to :0.00543314245035362
+Model GTR_Model assigned to MYOTIS_LUCIFUGUS
+Branch parameter of MYOTIS_LUCIFUGUS set to :0
+Model GTR_Model assigned to Node1
+Branch parameter of Node1 set to :0.003733873618245894
+Model GTR_Model assigned to MYOTIS_DAVIDII
+Branch parameter of MYOTIS_DAVIDII set to :0.01524344455741205
+Model GTR_Model assigned to MYOTIS_BRANDTII
+Branch parameter of MYOTIS_BRANDTII set to :0
+Model GTR_Model assigned to MYOTIS_DAUBENTONII
+Branch parameter of MYOTIS_DAUBENTONII set to :0.01124273410159912
+Model GTR_Model assigned to Node21
+Branch parameter of Node21 set to :0
+The tips of the tree:aTree were matched with the species names from the data as follows {0,1,2,3,6,4,5,11,12,8,7,9,10}
+
+Pseudo-optimal path's cost 518 vs 672 for 1..k=> a 1.2973 x improvement
+Partition  reversible model flag computed as 1
+Set GUI update interval to every 1968-th LF evaluation.
+Optimization settings:
+	OPTIMIZATION_METHOD = 4
+	OPTIMIZATION_PRECISION = 0
+	MAXIMUM_ITERATIONS_PER_VARIABLE = 5000
+
+Initial parameter values
+
+aTree.CAROLLIA_PERSPICILLATA.t = 0.1
+aTree.STURNIRA_LILIUM.t = 0.1
+aTree.ARTIBEUS_JAMAICENSIS.t = 0.1
+aTree.Node6.t = 0.1
+aTree.Node4.t = 0.1
+aTree.EIDOLON_HELVUM.t = 0.1
+aTree.PTEROPUS_ALECTO.t = 0.1
+aTree.Node10.t = 0.1
+aTree.HYPSIGNATUS_MONSTROSUS.t = 0.1
+aTree.ROUSETTUS_AEGYPTIACUS.t = 0.1
+aTree.Node13.t = 0.1
+aTree.Node9.t = 0.1
+aTree.Node3.t = 0.1
+aTree.EPTESICUS_FUSCUS.t = 0.1
+aTree.PIPISTRELLUS_SPEC.t = 0.1
+aTree.Node16.t = 0.1
+aTree.Node2.t = 0.1
+aTree.MYOTIS_LUCIFUGUS.t = 0.1
+aTree.Node1.t = 0.1
+aTree.MYOTIS_DAVIDII.t = 0.1
+aTree.MYOTIS_BRANDTII.t = 0.1
+aTree.MYOTIS_DAUBENTONII.t = 0.1
+aTree.Node21.t = 0.1
+Optimization finished in 22 loop passes.
+2202 likelihood evaluation calls and 15044 matrix exponentiations calls were made
+
+Row and/or column partition is empty. All the data will be used by default.
+Model GTR_Model assigned to CAROLLIA_PERSPICILLATA
+Branch parameter of CAROLLIA_PERSPICILLATA set to :0.01643629446403765
+Model GTR_Model assigned to STURNIRA_LILIUM
+Branch parameter of STURNIRA_LILIUM set to :0.068464706485482
+Model GTR_Model assigned to Node4
+Branch parameter of Node4 set to :0.1071358419659622
+Model GTR_Model assigned to ARTIBEUS_JAMAICENSIS
+Branch parameter of ARTIBEUS_JAMAICENSIS set to :0.7944862089007808
+Model GTR_Model assigned to EIDOLON_HELVUM
+Branch parameter of EIDOLON_HELVUM set to :0.01208197029947056
+Model GTR_Model assigned to HYPSIGNATUS_MONSTROSUS
+Branch parameter of HYPSIGNATUS_MONSTROSUS set to :0.1815748835627489
+Model GTR_Model assigned to ROUSETTUS_AEGYPTIACUS
+Branch parameter of ROUSETTUS_AEGYPTIACUS set to :0.03214967039403705
+Model GTR_Model assigned to Node12
+Branch parameter of Node12 set to :0.02428593922820451
+Model GTR_Model assigned to Node10
+Branch parameter of Node10 set to :0.05904564559021245
+Model GTR_Model assigned to PTEROPUS_ALECTO
+Branch parameter of PTEROPUS_ALECTO set to :0
+Model GTR_Model assigned to Node9
+Branch parameter of Node9 set to :0.1676073552735363
+Model GTR_Model assigned to Node7
+Branch parameter of Node7 set to :0.08856848752553782
+Model GTR_Model assigned to Node3
+Branch parameter of Node3 set to :0.06290066341512435
+Model GTR_Model assigned to MYOTIS_LUCIFUGUS
+Branch parameter of MYOTIS_LUCIFUGUS set to :0.03123164614798181
+Model GTR_Model assigned to Node2
+Branch parameter of Node2 set to :0
+Model GTR_Model assigned to EPTESICUS_FUSCUS
+Branch parameter of EPTESICUS_FUSCUS set to :0
+Model GTR_Model assigned to PIPISTRELLUS_SPEC
+Branch parameter of PIPISTRELLUS_SPEC set to :0
+Model GTR_Model assigned to Node17
+Branch parameter of Node17 set to :0.01544184388259471
+Model GTR_Model assigned to Node1
+Branch parameter of Node1 set to :0
+Model GTR_Model assigned to MYOTIS_DAVIDII
+Branch parameter of MYOTIS_DAVIDII set to :0
+Model GTR_Model assigned to MYOTIS_BRANDTII
+Branch parameter of MYOTIS_BRANDTII set to :0
+Model GTR_Model assigned to Node20
+Branch parameter of Node20 set to :0
+Model GTR_Model assigned to MYOTIS_DAUBENTONII
+Branch parameter of MYOTIS_DAUBENTONII set to :0
+The tips of the tree:aTree were matched with the species names from the data as follows {0,1,2,3,4,5,6,8,11,12,7,9,10}
+
+Pseudo-optimal path's cost 506 vs 662 for 1..k=> a 1.3083 x improvement
+Partition  reversible model flag computed as 1
+Set GUI update interval to every 2202-th LF evaluation.
+Optimization settings:
+	OPTIMIZATION_METHOD = 4
+	OPTIMIZATION_PRECISION = 0
+	MAXIMUM_ITERATIONS_PER_VARIABLE = 5000
+
+Initial parameter values
+
+aTree.CAROLLIA_PERSPICILLATA.t = 0.1
+aTree.STURNIRA_LILIUM.t = 0.1
+aTree.Node4.t = 0.1
+aTree.ARTIBEUS_JAMAICENSIS.t = 0.1
+aTree.EIDOLON_HELVUM.t = 0.1
+aTree.HYPSIGNATUS_MONSTROSUS.t = 0.1
+aTree.ROUSETTUS_AEGYPTIACUS.t = 0.1
+aTree.Node12.t = 0.1
+aTree.Node10.t = 0.1
+aTree.PTEROPUS_ALECTO.t = 0.1
+aTree.Node9.t = 0.1
+aTree.Node7.t = 0.1
+aTree.Node3.t = 0.1
+aTree.MYOTIS_LUCIFUGUS.t = 0.1
+aTree.Node2.t = 0.1
+aTree.EPTESICUS_FUSCUS.t = 0.1
+aTree.PIPISTRELLUS_SPEC.t = 0.1
+aTree.Node17.t = 0.1
+aTree.Node1.t = 0.1
+aTree.MYOTIS_DAVIDII.t = 0.1
+aTree.MYOTIS_BRANDTII.t = 0.1
+aTree.Node20.t = 0.1
+aTree.MYOTIS_DAUBENTONII.t = 0.1
+Optimization finished in 47 loop passes.
+3803 likelihood evaluation calls and 22400 matrix exponentiations calls were made
+
+Node 0 is shutting down
+
+PurgeAll was successful
+Sending shutdown command to node 1.
+Sending shutdown command to node 2.
+Sending shutdown command to node 3.
+Sending shutdown command to node 4.
+Sending shutdown command to node 5.
+Calling MPI_Finalize
+Returned from MPI_Finalize

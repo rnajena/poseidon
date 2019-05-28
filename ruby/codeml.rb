@@ -57,6 +57,7 @@ class Codeml
 
     end
 
+    curr_path = `pwd`.chomp
     codeml_mlcs = {:F61 => [], :F1X4 => [], :F3X4 => []}
     codeml_ctls.each do |ctl|
       dn = File.dirname(ctl)
@@ -66,7 +67,7 @@ class Codeml
       parameter_string << "codeml #{dn}/codeml.ctl\n"
       Process.fork do
         Dir.chdir(dn){
-          log_file << `#{CODEML_BIN} codeml.ctl` unless File.exists?('codeml.mlc') #TODO
+          log_file << `#{curr_path}/#{CODEML_BIN} codeml.ctl` unless File.exists?('codeml.mlc') #TODO
           log_file.close
         }
       end
