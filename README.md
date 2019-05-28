@@ -30,6 +30,7 @@ apt-get install texlive-latex-base
 
 apt-get install openmpi-bin
 
+apt-get install hyphy-mpi
 ````
 
 __We heavily recommend__ to use our Docker image that can be easily executed without the need to install tools manually.:
