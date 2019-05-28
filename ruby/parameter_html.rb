@@ -1,10 +1,10 @@
-#!/home/hoelzer/local/bin/ruby
+#!/usr/bin/env ruby
 
 # 1) summarize all parameter files
 
 class ParameterHtml
 
-  PARAM_TXT = '/home/hoelzer/RubymineProjects/positive_selection/tools/tools.txt'
+  PARAM_TXT = '../tools/tools.txt'
 
   def initialize(parameter_html_out, html_index_file, frag_names, timestamp, version, parameter_strings)
 

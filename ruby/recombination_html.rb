@@ -1,4 +1,4 @@
-#!/home/hoelzer/local/bin/ruby
+#!/usr/bin/env ruby
 
 # 1) if recombination occured, show summary of GARD results
 # 2) make user aware of recombination in his alignment

@@ -1,12 +1,12 @@
-#!/home/hoelzer/local/bin/ruby
+#!/usr/bin/env ruby
 
 class ModelSelection
 
   attr_reader :model
 
-  MODEL_SELECTION_BATCH = '/home/hoelzer/RubymineProjects/positive_selection/tools/hyphy/lib/hyphy/TemplateBatchFiles/ModelTest.bf'
-  OPENMPI = '/home/hoelzer/RubymineProjects/positive_selection/tools/openmpi/bin/mpirun'
-  HYPHY = '/home/hoelzer/RubymineProjects/positive_selection/tools/hyphy/bin/HYPHYMPI'
+  MODEL_SELECTION_BATCH = '../tools/hyphy/lib/hyphy/TemplateBatchFiles/ModelTest.bf'
+  OPENMPI = '../tools/openmpi/bin/mpirun'
+  HYPHY = '../tools/hyphy/bin/HYPHYMPI'
 
   def initialize(aln, tree, rate_classes, model_selection_method, model_rejection_level, model_out_dir, threads, parameter_string)
     @model = '010010' # the default HKY85 model, use this if something happens

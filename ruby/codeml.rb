@@ -1,10 +1,10 @@
-#!/usr/local/bin/ruby
+#!/usr/bin/env ruby
 
 class Codeml
 
   attr_reader :mlcs
 
-  CODEML_BIN = 'tools/paml4/codeml'
+  CODEML_BIN = '../tools/paml4/codeml'
 
   CODON_FREQS = {:F61 => 0, :F1X4 => 1, :F3X4 => 2}
 #  MODELS = [:M0, :M1a, :M2a, :M7, :M8]

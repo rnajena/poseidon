@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby
+#!/usr/bin/env ruby
 
 # 1) codon colored aln with gaps (orientate on translatex output)
 # 2) aa colored aln with gaps
@@ -12,9 +12,9 @@ require 'fileutils'
 
 class Html
 
-  LOGO_PNG = '/home/hoelzer/RubymineProjects/positive_selection/src/poseidon_logo.png'
-  PIPELINE = '/home/hoelzer/RubymineProjects/positive_selection/src/pipeline_landscape'
-  DETAILS_SUMMARY_MASTER = '/home/hoelzer/RubymineProjects/positive_selection/src/details-shim-master'
+  LOGO_PNG = '../images/poseidon_logo.png'
+  PIPELINE = '../images/pipeline_landscape'
+  DETAILS_SUMMARY_MASTER = '../src/details-shim-master'
 
   def initialize(type, html_dir, out, translatorx_html, aa_aln, codeml_results, nt_tree, aa_tree, domain_pos, title, input_fasta, internal2input_species, input2internal_species, aln_length_with_gaps_adjustor, gard_html_file, nucleotide_bias_model, index_html_paths, tex_summary_file_path, tex_summary_file_path_gapped, tex_objects, refactored_aln, version, is_recomb)
 
@@ -640,7 +640,7 @@ end
 
 
 ######################
-## FINAL: MX1 bat species, Jonas cloned ones and additional bats, only one allel per species (see manuscript table)
+## TEST: MX1 bat species, Jonas cloned ones and additional bats, only one allel per species (see manuscript table)
 ######################
 #title = 'MX1 in bat species'
 #html_out = '/home/hoelzer/projects/mx_bat_georg/FINAL_CALCS_120516/FINAL_DATA/html/index.html'

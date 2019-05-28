@@ -1,4 +1,4 @@
-#!/home/hoelzer/local/bin/ruby
+#!/usr/bin/env ruby
 
 class Main
 
@@ -17,7 +17,7 @@ class Main
   require_relative('codeml_html')
   require_relative('parameter_html')
 
-  TRANSLATORX_BIN = 'tools/translatorx/translatorx.pl'
+  TRANSLATORX_BIN = '../tools/translatorx/translatorx.pl'
   POSEIDON_VERSION = '1.2'
 
   attr_reader :timestamp, :succeded_poseidon_run, :mail_notes, :is_recombination
@@ -273,14 +273,14 @@ class Main
     # refactor command paths
     puts @parameters.keys
     @parameters['full_aln'].gsub!(@dir,'$PROJECT_DIR')
-    @parameters['full_aln'].gsub!('tools/','')
+    @parameters['full_aln'].gsub!('../tools/','')
     @parameters['full_aln'].gsub!('translatorx/','')
     @parameters['full_aln'].gsub!('raxml/8.0.25/','')
     @parameters['full_aln'].gsub!('nw_utilities/','')
     @parameters['full_aln'].gsub!('//','/')
     frag_names.each do |frag|
       @parameters[frag].gsub!(@dir,'$PROJECT_DIR')
-      @parameters[frag].gsub!('tools/','')
+      @parameters[frag].gsub!('../tools/','')
       @parameters[frag].gsub!('translatorx/','')
       @parameters[frag].gsub!('raxml/8.0.25/','')
       @parameters[frag].gsub!('nw_utilities/','')

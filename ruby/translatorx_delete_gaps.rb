@@ -1,4 +1,4 @@
-#!/home/hoelzer/local/bin/ruby
+#!/usr/bin/env ruby
 
 require 'bio'
 

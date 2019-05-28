@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby
+#!/usr/bin/env ruby
 
 # 1) summarize all CodeML files (ctl, mlc)
 # 2) build also a table of the LRT tests
