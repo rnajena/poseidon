@@ -10,6 +10,9 @@
 /test/version_tmp/
 /tmp/
 
+tools/openmpi/
+tools/hyphy/
+
 # Used by dotenv library to load environment variables.
 # .env
 
