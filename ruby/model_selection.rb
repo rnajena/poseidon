@@ -5,11 +5,15 @@ class ModelSelection
   attr_reader :model
 
   MODEL_SELECTION_BATCH = '../tools/hyphy/lib/hyphy/TemplateBatchFiles/ModelTest.bf'
+  
   #OPENMPI = '../tools/openmpi/bin/mpirun'
   OPENMPI = 'mpirun'
-  OPENMPI_RUN = '--allow-run-as-root' # ONLY USE THIS FOR THE DOCKER IMAGE
+  
+  #OPENMPI_RUN = '--allow-run-as-root' # ONLY USE THIS FOR THE DOCKER IMAGE
+  OPENMPI_RUN = '' 
+  
   #HYPHYMPI = '../tools/hyphy/bin/HYPHYMPI'
-  HYPHYMPI = 'hyphympi' # ONLY USE THIS FOR THE DOCKER IMAGE
+  HYPHYMPI = 'hyphympi' # ONLY USE THIS FOR THE DOCKER IMAGE, or mioght also work on our systems
 
   def initialize(aln, tree, rate_classes, model_selection_method, model_rejection_level, model_out_dir, threads, parameter_string)
     @model = '010010' # the default HKY85 model, use this if something happens

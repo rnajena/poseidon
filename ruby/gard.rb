@@ -9,9 +9,12 @@ class Gard
 
   #OPENMPI = '../tools/openmpi/bin/mpirun'
   OPENMPI = 'mpirun'
-  OPENMPI_RUN = '--allow-run-as-root' # ONLY USE THIS FOR THE DOCKER IMAGE
+  
+  #OPENMPI_RUN = '--allow-run-as-root' # ONLY USE THIS FOR THE DOCKER IMAGE
+  OPENMPI_RUN = '' 
+  
   #HYPHYMPI = '../tools/hyphy/bin/HYPHYMPI'
-  HYPHYMPI = 'hyphympi' # ONLY USE THIS FOR THE DOCKER IMAGE
+  HYPHYMPI = 'hyphympi' # ONLY USE THIS FOR THE DOCKER IMAGE, or mioght also work on our systems
 
 
   def initialize(aln, nuc_bias, rate_variation, rate_classes, output, threads, kh_insignificant_bp, parameter_string)
