@@ -7,7 +7,8 @@ class Phylo
   RAXML_BIN = '/home/hoelzer/RubymineProjects/positive_selection/tools/raxml/8.0.25/raxmlHPC-PTHREADS-SSE3'
   NW_DISPLAY_BIN = '/home/hoelzer/RubymineProjects/positive_selection/tools/nw_utilities/nw_display'
   NW_REROOT_BIN = '/home/hoelzer/RubymineProjects/positive_selection/tools/nw_utilities/nw_reroot'
-  INKSCAPE_BIN = '/home/hoelzer/RubymineProjects/positive_selection/tools/inkscape'
+  #INKSCAPE_BIN = '/home/hoelzer/RubymineProjects/positive_selection/tools/inkscape'
+  INKSCAPE_BIN = 'inkscape'
 
   attr_accessor :tree_unshod, :tree_corrected, :tree_rooted
 

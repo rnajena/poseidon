@@ -17,8 +17,8 @@ class Main
   require_relative('codeml_html')
   require_relative('parameter_html')
 
-  TRANSLATORX_BIN = '/home/hoelzer/RubymineProjects/positive_selection/tools/translatorx/translatorx.pl'
-  POSEIDON_VERSION = '1.1'
+  TRANSLATORX_BIN = 'tools/translatorx/translatorx.pl'
+  POSEIDON_VERSION = '1.2'
 
   attr_reader :timestamp, :succeded_poseidon_run, :mail_notes, :is_recombination
 
@@ -273,14 +273,14 @@ class Main
     # refactor command paths
     puts @parameters.keys
     @parameters['full_aln'].gsub!(@dir,'$PROJECT_DIR')
-    @parameters['full_aln'].gsub!('/home/hoelzer/RubymineProjects/positive_selection/tools/','')
+    @parameters['full_aln'].gsub!('tools/','')
     @parameters['full_aln'].gsub!('translatorx/','')
     @parameters['full_aln'].gsub!('raxml/8.0.25/','')
     @parameters['full_aln'].gsub!('nw_utilities/','')
     @parameters['full_aln'].gsub!('//','/')
     frag_names.each do |frag|
       @parameters[frag].gsub!(@dir,'$PROJECT_DIR')
-      @parameters[frag].gsub!('/home/hoelzer/RubymineProjects/positive_selection/tools/','')
+      @parameters[frag].gsub!('tools/','')
       @parameters[frag].gsub!('translatorx/','')
       @parameters[frag].gsub!('raxml/8.0.25/','')
       @parameters[frag].gsub!('nw_utilities/','')
@@ -419,7 +419,7 @@ class Main
         end
         puts adjusted_domain_frag_pos
 
-        Html.new(frag, html_dir, html_out, aln_aa_html_sub, aln_aa_sub, "#{@dir}/fragments/#{frag}/codeml/", tree_nt, tree_aa, adjusted_domain_frag_pos, project_title, @fasta_file.path, @internal2input_species, @input2internal_species, aln_length_with_gaps, gard_html_file, nucleotide_bias_model, index_html_paths, tex_summary_file.path, tex_summary_file_gapped.path, tex_objects, @refactor, POSEIDON_VERSION, @is_recombination)
+        Html.new(frag, html_dir, html_out, aln_aa_html_sub, aln_aa_sub, "#{@dir}/fragments/#{frag}/codeml/", tree_nt, tree_aa, adjusted_domain_frag_pos, project_title, @fasta_file.path, @internal2input_species, @input2internal_species, aln_length_with_gaps, gard_html_file, nucleotide_bias_model, index_html_paths, tex_summary_file.path, tex_summary_file_gapped.path, tex_objects, @refactor, POSEIDON_VERSION, @is_recombination, @timestamp)
 
         bp_pos += 1
       end
@@ -438,7 +438,7 @@ class Main
       tree_aa = phylo_aa.tree_corrected
     end
 
-    Html.new('full_aln', html_dir, html_out, aln_aa_html, aln_aa, codeml_full_dir, tree_nt, tree_aa, adjusted_domain_pos, project_title, @fasta_file.path, @internal2input_species, @input2internal_species, 0, gard_html_file, nucleotide_bias_model, index_html_paths, tex_summary_file.path, tex_summary_file_gapped.path, tex_objects, @refactor, POSEIDON_VERSION, @is_recombination)
+    Html.new('full_aln', html_dir, html_out, aln_aa_html, aln_aa, codeml_full_dir, tree_nt, tree_aa, adjusted_domain_pos, project_title, @fasta_file.path, @internal2input_species, @input2internal_species, 0, gard_html_file, nucleotide_bias_model, index_html_paths, tex_summary_file.path, tex_summary_file_gapped.path, tex_objects, @refactor, POSEIDON_VERSION, @is_recombination, @timestamp)
 
     puts "BUILD CODEMLHTML\n"
     codeml_html_out = File.open("#{@dir}/html/full_aln/codeml.html",'w')
@@ -689,12 +689,14 @@ class Main
     @refactor = false
     aa_x_positions = {}
     aa_aln.each do |entry|
-      if entry.seq.include?('X')
-        next if entry.seq.count('X') == 1 && entry.seq.reverse.gsub('-','')[0] == 'X'
+      seq = entry.seq
+      id = entry.definition
+      if seq.include?('X')
+        next if seq.count('X') == 1 && seq.reverse.gsub('-','')[0] == 'X'
         @refactor = true
-        aa_x_positions[entry.definition] = entry.seq.indices('X')
-        aa_x_positions[entry.definition].delete(entry.seq.length-1) # because we dont want to remove the stop codon also encoded as X
-        aa_x_positions.delete(entry.definition) if aa_x_positions[entry.definition].length == 0
+        aa_x_positions[id] = seq.indices('X')
+        aa_x_positions[id].delete(seq.length-1) # because we dont want to remove the stop codon also encoded as X
+        aa_x_positions.delete(id) if aa_x_positions[id].length == 0
       end
     end
     #aa_x_positions.uniq
@@ -703,7 +705,7 @@ class Main
       puts "remove positions #{aa_x_positions} from the amino acid alignment."
       puts "\nPoSeiDon removed positions #{aa_x_positions.values.join(' ').split(' ').uniq} from the amino acid alignment because of ambiguous codons due to N bases in certain species.\n"
 	    @mail_notes << "\nPoSeiDon removed positions #{aa_x_positions.values.join(' ').split(' ').uniq} from the amino acid alignment because of ambiguous codons due to N bases in certain species.\n"
-    end    
+    end
 
     if @refactor
       aa_aln_tmp = File.open("#{aln_out}.aa_ali.fasta.tmp",'w')
@@ -884,8 +886,41 @@ class String
 end
 
 
+
+######################################################################################################################################
+######################################################################################################################################
+## RUN
+dir = ARGV[0]
+fasta = ARGV[1]
+
+title = ARGV[2].gsub('---',' ')
+title = '' if title == 'NA'
+
+root_species = ARGV[3].gsub('---',' ')
+if root_species == 'NA'
+  root_species = nil
+else
+  root_species = root_species.split(',')
+end
+
+reference_species = ARGV[4].gsub('---',' ')
+reference_species = '' if reference_species == 'NA'
+
+kh = ARGV[5]
+
+mail = ARGV[6].gsub('---',' ')
+mail = '' if mail == 'NA'
+
+output = ARGV[7]
+
+Main.new(dir, fasta, title, root_species, reference_species, kh, mail, output)
+#./main.rb '/mnt/fass2/poseidon-webserver-dev/' '../test_data/bats_mx1.fasta' 'MX1 in bats' '['Rousettus_aegyptiacus', 'Pteropus_alecto', 'Hypsignatus_monstrosus', 'Eidolon_helvum']' '' 'true' 'martin.hoelzer@uni-jena.de' '2019-001'
+######################################################################################################################################
+######################################################################################################################################
+
+
 ##########################
-## TEST CASES
+## TEST CASE
 ##########################
 
 ## normal file, everything nice
@@ -893,183 +928,5 @@ fasta = '../test_data/bats_mx1.fasta'
 project_title = 'MX1 in bats'
 root_species = %w(Rousettus_aegyptiacus Pteropus_alecto Hypsignatus_monstrosus Eidolon_helvum)
 query_sequence_name = ''
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'false', 'martin.hoelzer@uni-jena.de', '001')
-
-## normal file, but try a completely different topology, how does the output change??? does the tree have a high impact?
-# ...
-fasta = '../test_data/bats_mx1.fasta'
-project_title = 'MX1 in bat species, topology test'
-root_species = %w(Rousettus_aegyptiacus Pteropus_alecto Hypsignatus_monstrosus Eidolon_helvum)
-query_sequence_name = ''
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', '001_topology')
-
-## file with many species, but handable
-fasta = '../test_data/tests/poseidon-mail_martin.hoelzer@uni-jena.de/poseidon-name_Martin_Hoelzer/poseidon-id_many/many.fasta'
-project_title = 'MX1 in bat species'
-root_species = nil
-query_sequence_name = 'Myotis_daubentonii'
-#Main.new(fasta, project_title, root_species, query_sequence_name, 'martin.hoelzer@uni-jena.de', '002')
-
-## file with errors to test the fasta_format_checker, ORF, Stops, to long, duplicate id, ...
-fasta = '../test_data/tests/poseidon-mail_martin.hoelzer@uni-jena.de/poseidon-name_Martin_Hoelzer/poseidon-id_errors/errors.fasta'
-project_title = 'MX1 in bat species'
-root_species = nil
-query_sequence_name = 'Myotis_daubentonii'
-#Main.new(fasta, project_title, root_species, query_sequence_name, 'martin.hoelzer@uni-jena.de', '003')
-
-## file with many breakpoints (at least I think so that there are >3 BP :)
-fasta = '../test_data/tests/poseidon-mail_martin.hoelzer@uni-jena.de/poseidon-name_Martin_Hoelzer/poseidon-id_many_bp/bats_mx1_s2.fasta'
-project_title = 'MX1 in bat species'
-root_species = nil
-query_sequence_name = ''
-#Main.new(fasta, project_title, root_species, query_sequence_name, 'martin.hoelzer@uni-jena.de', '004')
-
-## Rodent Mx1 for Barbara
-fasta = '/mnt/dessertlocal/projects/rodent_positive_selection/data/fna/rodent.mx1.no_algerian_mouse.fna'
-project_title = 'Rodent MX1'
-root_species = %w(Guinea_pig_Mx1 Thirteen-lined_ground_squirrel_Mx1) ### ERROR: Outgroup's LCA is tree's root - cannot reroot. Try -l.!!!!
-#root_species = %w(Guinea_pig_Mx1)
-query_sequence_name = 'House_mouse_Mx1'
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'false', 'martin.hoelzer@uni-jena.de', 'barbara')
-
-## Rodent Mx1 for Barbara, refactor the stop codon in stripped field mouse
-fasta = '/mnt/dessertlocal/projects/rodent_positive_selection/data/fna/rodent.mx1.no_algerian_mouse.refactor_stops.fna'
-project_title = 'Rodent MX1'
-root_species = %w(Guinea_pig_Mx1 Thirteen-lined_ground_squirrel_Mx1) ### ERROR: Outgroup's LCA is tree's root - cannot reroot. Try -l.!!!!
-#root_species = %w(Guinea_pig_Mx1)
-query_sequence_name = 'House_mouse_Mx1'
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'false', 'martin.hoelzer@uni-jena.de', 'barbara-tmp')
-
-## more than 12 breakpoints (color check)
-fasta = '/mnt/dessertlocal/projects/rodent_positive_selection/data/fna/rodent.mx1.no_algerian_mouse.fna'
-project_title = 'MX1 in rodent'
-root_species = %w(Guinea_pig_Mx1)
-query_sequence_name = 'House_mouse_Mx1'
-#Main.new(fasta, project_title, root_species, query_sequence_name, 'martin.hoelzer@uni-jena.de', '005')
-
-
-# this is not even a FASTA file
-fasta = '/mnt/fass2/poseidon-webserver-dev/data/poseidon-mail_martinhoelzer@web.de/poseidon-name_Martin_Hoelzer/poseidon-id_normal/poseidon-kh_false/test.txt'
-project_title = 'no fasta'
-root_species = nil
-query_sequence_name = 'oo'
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'false', 'martinhoelzer@web.de','007')
-
-
-# this could be a nice example for the webpage???? example data set???
-fasta = '/home/hoelzer/RubymineProjects/positive_selection/test_data/bats_mx1_s1.fasta'
-project_title = 'bats Mx1'
-root_species = nil
-query_sequence_name = 'oo'
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'false', 'martinhoelzer@web.de','008')
-
-# this could be a nice example for the webpage???? example data set???
-fasta = '/home/hoelzer/RubymineProjects/positive_selection/test_data/bats_mx1_partial.fasta'
-project_title = 'bats Mx1 Partial'
-root_species = nil
-query_sequence_name = 'oo'
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'false', 'martinhoelzer@web.de','009')
-
-# this could be a nice example for the webpage???? example data set???
-fasta = '/home/hoelzer/RubymineProjects/positive_selection/test_data/bats.mx1_partial.foo.fasta'
-project_title = 'bats Mx1 Partial'
-root_species = nil
-query_sequence_name = ''
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'false', 'martinhoelzer@web.de','multiple_dots_file_name')
-
-
-fasta = '/home/hoelzer/projects/mx_bat_georg/validation_mitchell_2015/primates.aln.fasta'
-project_title = 'Mitchell 2015 primate MxB'
-root_species = nil
-query_sequence_name = 'foofoo'
-#Main.new(fasta, project_title, root_species, query_sequence_name)
-
-fasta = '../test_data/Birna_VP2_N.fasta'
-project_title = 'BIRNA'
-root_species = %w(species_1 species_2)
-query_sequence_name = 'species_1'
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'false', 'martin.hoelzer@uni-jena.de', 'NNN')
-
-
-
-
-
-fasta = '../test_data/Birna_VP2_test.fasta'
-project_title = 'BIRNA'
-root_species = %w(species_1 species_2)
-query_sequence_name = 'species_1'
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'false', 'martin.hoelzer@uni-jena.de', '010')
-
-fasta = '../test_data/Birna_VP3.fasta'
-project_title = 'BIRNA3'
-root_species = %w(species_1 species_2)
-query_sequence_name = 'species_1'
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'false', 'martin.hoelzer@uni-jena.de', '011')
-
-fasta = '../test_data/Birna_VP4.fasta'
-project_title = 'BIRNA4'
-root_species = %w(species_1 species_2)
-query_sequence_name = 'species_1'
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'false', 'martin.hoelzer@uni-jena.de', '012')
-
-fasta = '../test_data/Birna_VP5.fasta'
-project_title = 'BIRNA5'
-root_species = %w(species_1 species_2)
-query_sequence_name = 'species_1'
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'false', 'martinhoelzer@web.de', '013')
-
-fasta = '../test_data/Birna_VP5_clean_nostops.fasta'
-project_title = 'BIRNA5'
-root_species = %w(MYOTUIS_FOO)
-query_sequence_name = 'species_1'
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'false', 'martinhoelzer@web.de', '014')
-
-fasta = '../test_data/prueba.fna'
-project_title = 'SANGER'
-root_species = %w(MYOTUIS_FOO)
-query_sequence_name = 'species_1'
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'false', 'martinhoelzer@web.de', '015')
-
-
-
-###########################################################33
-## BATS MX1 REVIEW, run with different start parameters for omega (dN/dS)
-
-## estimate kappa, initial omega == 1
-fasta = '../test_data/bats_mx1.fasta'
-project_title = 'MX1 bats (default)'
-root_species = %w(Rousettus_aegyptiacus Pteropus_alecto Hypsignatus_monstrosus Eidolon_helvum)
-query_sequence_name = 'Myotis_daubentonii'
-#Main.new('/home/hoelzer/projects/mx_bat_georg/REVIEW_011216/diff_start_params/', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', '001')
-
-## estimate kappa, initial omega == 0.5
-project_title = 'MX1 bats (estimate kappe, omega = 0.5)'
-#Main.new('/home/hoelzer/projects/mx_bat_georg/REVIEW_011216/diff_start_params/', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', '002')
-
-## estimate kappa, initial omega == 1.5
-project_title = 'MX1 bats (estimate kappa, omega = 1.5)'
-#Main.new('/home/hoelzer/projects/mx_bat_georg/REVIEW_011216/diff_start_params/', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', '003')
-
-## estimate kappa, initial omega == 2
-project_title = 'MX1 bats (estimate kappa, omega = 2)'
-#Main.new('/home/hoelzer/projects/mx_bat_georg/REVIEW_011216/diff_start_params/', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', '004')
-
-## estimate kappa, initial omega == 0
-project_title = 'MX1 bats (estimate kappa, omega = 0)'
-#Main.new('/home/hoelzer/projects/mx_bat_georg/REVIEW_011216/diff_start_params/', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', '005')
-
-
-## BATS MX1 REVIEW, RUn with breakpoints detected with RDP
-#1) lets consider only those two breakpoints that are similar to GARD (270, 549) --> 246, 555
-fasta = '../test_data/bats_mx1.fasta'
-project_title = 'MX1 bats, RDP 246,555'
-root_species = %w(Rousettus_aegyptiacus Pteropus_alecto Hypsignatus_monstrosus Eidolon_helvum)
-query_sequence_name = 'Myotis_daubentonii'
-#Main.new('/home/hoelzer/projects/mx_bat_georg/REVIEW_011216/RDP_Recombination_Detection/codeml/', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', '001')
-
-#1) lets consider only those two breakpoints that are similar to GARD (270, 549) --> 246, 555
-project_title = 'MX1 bats, RDP 246,555,1263,1557'
-#Main.new('/home/hoelzer/projects/mx_bat_georg/REVIEW_011216/RDP_Recombination_Detection/codeml/', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', '002')
-
-
+#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', '2019-001')
 

@@ -4,7 +4,8 @@ class Tex
 
   require 'bio'
 
-  PDFLATEX_BIN = '/home/hoelzer/RubymineProjects/positive_selection/tools/pdflatex'
+  #PDFLATEX_BIN = '/home/hoelzer/RubymineProjects/positive_selection/tools/pdflatex'
+  PDFLATEX_BIN = 'pdflatex'
   CHI2_BIN = '/home/hoelzer/RubymineProjects/positive_selection/tools/paml4/chi2'
 
   # check parameters for special symbols (that could fuck up LaTex, ...)

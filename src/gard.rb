@@ -1,14 +1,14 @@
-#!/home/hoelzer/local/bin/ruby
+#!/usr/local/bin/ruby
 
 class Gard
 
   attr_reader :breakpoints, :gard_html_file, :mail_notes
 
-  GARD_TEMPLATE_BATCH = '/home/hoelzer/RubymineProjects/positive_selection/tools/hyphy/lib/hyphy/TemplateBatchFiles/GARD.bf'
-  GARD_PROCESSOR_TEMPLATE_BATCH = '/home/hoelzer/RubymineProjects/positive_selection/tools/hyphy/lib/hyphy/TemplateBatchFiles/GARDProcessor.bf'
+  GARD_TEMPLATE_BATCH = 'hyphy/lib/hyphy/TemplateBatchFiles/GARD.bf'
+  GARD_PROCESSOR_TEMPLATE_BATCH = 'hyphy/lib/hyphy/TemplateBatchFiles/GARDProcessor.bf'
 
-  OPENMPI = '/home/hoelzer/RubymineProjects/positive_selection/tools/openmpi/bin/mpirun'
-  HYPHY = '/home/hoelzer/RubymineProjects/positive_selection/tools/hyphy/bin/HYPHYMPI'
+  OPENMPI = 'openmpi/bin/mpirun'
+  HYPHY = 'hyphy/bin/HYPHYMPI'
 
   def initialize(aln, nuc_bias, rate_variation, rate_classes, output, threads, kh_insignificant_bp, parameter_string)
 

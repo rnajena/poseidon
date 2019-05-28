@@ -1,4 +1,4 @@
-#!/home/hoelzer/local/bin/ruby
+#!/usr/local/bin/ruby
 
 # 1) summarize all CodeML files (ctl, mlc)
 # 2) build also a table of the LRT tests

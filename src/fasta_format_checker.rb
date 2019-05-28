@@ -1,4 +1,4 @@
-#!/home/hoelzer/local/bin/ruby
+#!/usr/local/bin/ruby
 
 require 'bio'
 require 'mail'

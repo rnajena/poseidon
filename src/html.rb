@@ -1,4 +1,4 @@
-#!/home/hoelzer/local/bin/ruby
+#!/usr/local/bin/ruby
 
 # 1) codon colored aln with gaps (orientate on translatex output)
 # 2) aa colored aln with gaps
