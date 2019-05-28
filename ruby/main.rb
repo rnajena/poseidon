@@ -887,6 +887,7 @@ end
 
 
 
+if 42 == 0
 ######################################################################################################################################
 ######################################################################################################################################
 ## RUN
@@ -917,6 +918,7 @@ Main.new(dir, fasta, title, root_species, reference_species, kh, mail, output)
 #./main.rb '/mnt/fass2/poseidon-webserver-dev/' '../test_data/bats_mx1.fasta' 'MX1 in bats' '['Rousettus_aegyptiacus', 'Pteropus_alecto', 'Hypsignatus_monstrosus', 'Eidolon_helvum']' '' 'true' 'martin.hoelzer@uni-jena.de' '2019-001'
 ######################################################################################################################################
 ######################################################################################################################################
+end
 
 
 ##########################
@@ -924,9 +926,9 @@ Main.new(dir, fasta, title, root_species, reference_species, kh, mail, output)
 ##########################
 
 ## normal file, everything nice
-fasta = '../test_data/bats_mx1.fasta'
+fasta = '../test_data/bats_mx1_small.fasta'
 project_title = 'MX1 in bats'
 root_species = %w(Rousettus_aegyptiacus Pteropus_alecto Hypsignatus_monstrosus Eidolon_helvum)
 query_sequence_name = ''
-#Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', '2019-001')
+Main.new('/mnt/fass2/poseidon-webserver-dev/', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', '2019-001')
 

@@ -2,11 +2,16 @@
 
 Here we present __PoSeiDon__, a pipeline to detect significant positively selected sites and possible recombination events in analignment of multiple coding sequences. Sites that undergo positive selection can give you insights in the evolutionary history of your sequences, for example showing you important mutation hot spots, accumulated as results of virus-host arms races during evolution.
 
-Here we provide all ruby scripts used to run the PoSeiDon pipeline.
+We provide all ruby scripts needed to run the PoSeiDon pipeline.
 
-PLEASE NOTE: with this scripts the pipeline can not be run out of the
-box, because PoSeiDon relies on a variety of different third-party
-tools (see below).
+PLEASE NOTE: with this scripts the pipeline can not be run out of the box,
+because PoSeiDon relies on a variety of different third-party tools (see below).
+Most tools are also included in this repository. However, the larger software
+packages for HYPHY and OPENMPI can be downloaded here and need to be added and
+extracted manually to the `tools` folder:
+
+* <a href="https://www.rna.uni-jena.de/supplements/poseidon/hyphy.zip">hyphy.zip</a>
+* <a href="https://www.rna.uni-jena.de/supplements/poseidon/openmpi.zip">openmpi.zip</a>
 
 For a future release of PoSeiDon, we will provide a complete Docker
 container that can be easily executed without the need to install each
