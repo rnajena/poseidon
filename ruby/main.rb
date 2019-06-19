@@ -133,7 +133,7 @@ class Main
 
     out_dir = phylo_dir
     phylo_nt = Phylo.new(aln_nt_nogaps, nil, out_dir, :nt, @threads, @root_species, @log, @parameters['full_aln'])
-    phylo_aa = Phylo.new(aln_nt_nogaps, nil, out_dir, :aa, @threads, @root_species, @log, @parameters['full_aln'])
+    phylo_aa = Phylo.new(aln_aa_nogaps, nil, out_dir, :aa, @threads, @root_species, @log, @parameters['full_aln'])
 
     ##############################################################
 
