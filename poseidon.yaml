@@ -1,0 +1,17 @@
+name: poseidon
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - translatorx=1.1
+  - muscle=3.8.31
+  - raxml=8.2.12
+  - newick_utils=1.6
+  - modeltest-ng=0.1.6
+  - hyphy=2.5.2
+  - paml=4.9
+  - rb-bio=2.0.1
+  #- inkscape
+  - texlive-core
+  - openmpi=4.0.3
+  #GARD is missing
