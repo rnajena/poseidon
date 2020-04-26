@@ -932,5 +932,5 @@ project_title = 'MX1 in bats'
 root_species = %w(Rousettus_aegyptiacus Pteropus_alecto Hypsignatus_monstrosus Eidolon_helvum)
 query_sequence_name = ''
 #Main.new('/home/hoelzer/poseidon', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', '001')
-Main.new('/home/hoelzer/poseidon', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', nil)
+Main.new('/home/martin/poseidon', fasta, project_title, root_species, query_sequence_name, 'true', 'martin.hoelzer@uni-jena.de', nil)
 

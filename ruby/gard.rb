@@ -14,7 +14,7 @@ class Gard
   OPENMPI_RUN = '' 
   
   #HYPHYMPI = '../tools/hyphy/bin/HYPHYMPI'
-  HYPHYMPI = 'hyphympi' # ONLY USE THIS FOR THE DOCKER IMAGE, or mioght also work on our systems
+  HYPHYMPI = 'hyphympi' # ONLY USE THIS FOR THE DOCKER IMAGE, or might also work on our systems
 
 
   def initialize(aln, nuc_bias, rate_variation, rate_classes, output, threads, kh_insignificant_bp, parameter_string)
