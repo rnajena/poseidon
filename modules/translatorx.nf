@@ -1,5 +1,5 @@
-process dammit {
-    label 'dammit'  
+process translatorx {
+    label 'translatorx'  
     publishDir "${params.output}/${name}/", mode: 'copy', pattern: "dammit"
 
   input:

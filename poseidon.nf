@@ -50,7 +50,8 @@ if (!params.fasta) {
 /************************** 
 * MODULES
 **************************/
-  
+
+include check_fasta_format from './modules/check_fasta_format'
 include translatorx from './modules/translatorx'
 
 /************************** 
@@ -69,7 +70,7 @@ It is written for local use and cloud use via params.cloudProcess.
 
 workflow {
 
-
+    check_fasta_format(fasta_input_ch)
 
 }
 
@@ -100,6 +101,8 @@ def helpMSG() {
     --cores             max cores for local use [default: $params.cores]
     --memory            memory limitations for polisher tools in GB [default: $params.memory]
     --output            name of the result folder [default: $params.output]
+    --reference         resulting positions will be reported according to this species [default: $params.reference]
+    --root              outgroup species for tree rooting; comma-separated [default: $params.root]
 
     ${c_dim}Nextflow options:
     -with-report rep.html    cpu / ram usage (may cause errors)
