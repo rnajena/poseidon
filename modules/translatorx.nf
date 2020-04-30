@@ -1,23 +1,48 @@
 process translatorx {
     label 'translatorx'  
-    publishDir "${params.output}/${name}/", mode: 'copy', pattern: "dammit"
+//    publishDir "${params.output}/${name}/", mode: 'copy', pattern: ""
 
   input:
-    tuple val(name), path(transcriptome)
-    path(dbs)
+    tuple val(name), path(fasta)
 
   output:
-    tuple val(name), path("dammit")
+    tuple val(name), path("${name}_aln.nt_ali.fasta"), path("${name}_aln.aa_ali.fasta"), path("${name}_aln.aa_based_codon_coloured.html")
 
   script:
-    if (params.full)
     """
-    BUSCO=\$(echo ${params.busco} | awk 'BEGIN{FS="_"};{print \$1}')
-    dammit annotate ${transcriptome} --database-dir \${PWD}/dbs --busco-group \${BUSCO} -n ${name} -o dammit --n_threads ${task.cpus} --full 
+    translatorx -i ${fasta} -p M -o ${name}_aln
     """
-    else
+  }
+
+process check_aln {
+    label 'bioruby'  
+//    publishDir "${params.output}/${name}/", mode: 'copy', pattern: ""
+
+  input:
+    tuple val(name), path(nt_aln), path(aa_aln), path(html), path(log_file)
+
+  output:
+    tuple val(name), path("${name}_aln.nt_ali.checked.fasta"), path("${name}_aln.aa_ali.checked.fasta"), path("${name}_aln.aa_based_codon_coloured.checked.html"), path(log_file)
+
+  script:
     """
-    BUSCO=\$(echo ${params.busco} | awk 'BEGIN{FS="_"};{print \$1}')
-    dammit annotate ${transcriptome} --database-dir \${PWD}/dbs --busco-group \${BUSCO} -n ${name} -o dammit --n_threads ${task.cpus} #--full 
+    check_aln.rb ${nt_aln} ${aa_aln} ${html} ${name}_aln.nt_ali.checked.fasta ${name}_aln.aa_ali.checked.fasta ${name}_aln.aa_based_codon_coloured.checked.html ${log_file}
+    """
+  }
+
+process remove_gaps {
+    label 'bioruby'  
+//    publishDir "${params.output}/${name}/", mode: 'copy', pattern: ""
+
+  input:
+    tuple val(name), path(nt_aln), path(aa_aln), path(html), path(log_file)
+
+  output:
+    tuple val(name), path("${name}_aln.nt_ali.checked.nogaps.fasta"), emit: fna
+    tuple val(name), path("${name}_aln.aa_ali.checked.nogaps.fasta"), emit: faa
+
+  script:
+    """
+    remove_gaps.rb ${nt_aln} ${aa_aln} ${name}_aln.nt_ali.checked.nogaps.fasta ${name}_aln.aa_ali.checked.nogaps.fasta
     """
   }

@@ -151,6 +151,8 @@ file = Bio::FastaFormat.open(fasta)
         mail_notes << "\nPlease note, PoSeiDon was not able to find the following species IDs defined for tree rooting in your input FASTA file: #{root_species_mismatch.join(', ')}. Rerooting of the trees can not be performed on this species.\n"
       end
 
+      log << mail_notes
+
       if error_a.size > 0
         puts error_a.sort.uniq.join('')
         continue = false

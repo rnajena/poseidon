@@ -52,7 +52,10 @@ if (!params.fasta) {
 **************************/
 
 include check_fasta_format from './modules/check_fasta_format'
-include translatorx from './modules/translatorx'
+include {translatorx; check_aln; remove_gaps} from './modules/translatorx'
+include {raxml_nt; raxml_aa; raxml2drawing; nw_display; barefoot} from './modules/tree'
+include model_selection from './modules/model_selection'
+include {codeml_run; codeml_built} from './modules/codeml'
 
 /************************** 
 * DATABASES
@@ -70,7 +73,55 @@ It is written for local use and cloud use via params.cloudProcess.
 
 workflow {
 
+    // check input FASTA
     check_fasta_format(fasta_input_ch)
+    
+    // rndm subsampling if too many sequences, PAML is not inteded for >100 sequences
+
+    // align, check alignment, and remove gaps
+    remove_gaps(
+        check_aln(
+            translatorx(
+                check_fasta_format.out.fasta).join(check_fasta_format.out.log)))
+
+    // build nt and aa phylogeny
+    raxml_nt(remove_gaps.out.fna)
+    raxml_aa(remove_gaps.out.faa)
+
+    // convert RAxML output newicks for drawing
+    newicks_ch = 
+        raxml2drawing(
+            raxml_nt.out.concat(raxml_aa.out)
+        ).combine(
+            remove_gaps.out.fna, by: 0 // simply needed to count the number of taxa for plotting height estimation
+        )
+
+    // if outgroups are provided, try reroot the trees
+    // TODO, not implemented yet
+    if (params.root != 'NA' ) {
+        reroot(newicks_ch)
+    }
+
+    // draw trees
+    nw_display(newicks_ch)
+
+    // remove bootstraps to have a clean tree for CODEML
+    barefoot(newicks_ch)
+
+    // full nt aln w/o gaps and the corresponding nt tree w/o bootstraps
+    aln_tree_ch = remove_gaps.out.fna.join(barefoot.out.groupTuple())
+
+    // model selection
+    model_selection(aln_tree_ch)
+
+    // GARD breakpoint analysis -- TODO: I could skip this for now and just do everything on the full aln
+    //gard(remove_gaps.out.fna.join(model_selection.out))
+    
+    // CODEML
+    codeml_run(
+        codeml_built(aln_tree_ch).transpose().join(aln_tree_ch)
+    )
+
 
 }
 
@@ -103,6 +154,7 @@ def helpMSG() {
     --output            name of the result folder [default: $params.output]
     --reference         resulting positions will be reported according to this species [default: $params.reference]
     --root              outgroup species for tree rooting; comma-separated [default: $params.root]
+    --bootstrap         number of bootstrap calculations [default: $params.bootstrap]
 
     ${c_dim}Nextflow options:
     -with-report rep.html    cpu / ram usage (may cause errors)
