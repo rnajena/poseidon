@@ -1,3 +1,7 @@
+__I am currently working on a Nextflow/Docker implementation of PoSeiDon that will be much easier to install and execute. Stay tuned!__
+
+Author: hoelzer.martin@gmail.com
+
 # PoSeiDon
 
 Here we present __PoSeiDon__, a pipeline to detect significant positively selected sites and possible recombination events in analignment of multiple coding sequences. Sites that undergo positive selection can give you insights in the evolutionary history of your sequences, for example showing you important mutation hot spots, accumulated as results of virus-host arms races during evolution.
