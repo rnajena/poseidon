@@ -98,7 +98,7 @@ process barefoot {
   label 'bioruby'
 
   input:
-    tuple val(name), file(newick), file(fasta)
+    tuple val(name), file(newick)
 
   output:
     tuple val(name), file("*.barefoot.tree")

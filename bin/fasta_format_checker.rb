@@ -5,14 +5,18 @@ require 'bio'
 bn = ARGV[0]
 fasta = ARGV[1]
 new_fasta = File.open(ARGV[2],'w')
-internal2input_species = {}
-input2internal_species = {}
 continue = true
 mail_notes = ''
 log = File.open(ARGV[3], 'w')
-query_sequence_name = ARGV[4]
-if ARGV[5] != 'NA'
-  root_species = ARGV[5].split(',')
+
+internal2input_species = {}
+input2internal_species = {}
+internal2input_species_out = File.open(ARGV[4],'w')
+input2internal_species_out = File.open(ARGV[5],'w')
+
+query_sequence_name = ARGV[6]
+if ARGV[7] != 'NA'
+  root_species = ARGV[7].split(',')
 else
   root_species = []
 end
@@ -103,6 +107,13 @@ file = Bio::FastaFormat.open(fasta)
       end
       file.close
       
+      internal2input_species.each do |internal, input|
+        internal2input_species_out << "#{internal.chomp}\t#{input.chomp}\n"
+      end
+      input2internal_species.each do |input, internal|
+        input2internal_species_out << "#{input.chomp}\t#{internal.chomp}\n"
+      end
+
       # remove sequences with bad characters from the input file
       illegal_bases_seqs.keys.each do |id|
         puts "Remove #{id} from the input because of bad characters in the sequence."
