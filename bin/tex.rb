@@ -161,6 +161,14 @@ class Tex
     @significance_m2a = LRT.new(lrt_m1a_m2a, pvalue_m1a_m2a, likelihood_m1a, likelihood_m2a, m2_percent, m2_average_omega)
     @significance_m8a = LRT.new(lrt_m8a_m8, pvalue_m8a_m8, likelihood_m8a, likelihood_m8, m8_percent, m8_average_omega)
 
+    # write out the LRT values for HTML report
+    lrt_file = File.open("#{codon_freq}.lrt", 'w')
+    lrt_file << ["m2a_lrt\t"+lrt_m1a_m2a.to_s, "m2a_pvalue\t"+pvalue_m1a_m2a.to_s, "m2a_lnL0\t"+likelihood_m1a.to_s, "m2a_lnL1\t"+likelihood_m2a.to_s, "m2a_omega_percent\t"+m2_percent.to_s, "m2a_omega_average\t"+m2_average_omega.to_s].join("\n")
+    lrt_file << "\n"
+
+    lrt_file << ["m8_lrt\t"+lrt_m7_m8.to_s, "m8_lrt_2\t"+lrt_m8a_m8.to_s, "m8_pvalue\t"+pvalue_m7_m8.to_s, "m8_pvalue_2\t"+pvalue_m8a_m8.to_s, "m8_lnL0\t"+likelihood_m7.to_s, "m8_lnL0_2\t"+likelihood_m8a.to_s, "m8_lnL1\t"+likelihood_m8.to_s, "m8_omega_percent\t"+m8_percent.to_s, "m8_omega_average\t"+m8_average_omega.to_s].join("\n")
+    lrt_file.close
+
     title_save = ''
     title.scan(/./).each do |title_char|
       if SPECIAL_SYMBOLS.include?(title_char)
@@ -185,7 +193,7 @@ class Tex
     tex_m1a_m2a << build_tex_table(beb_m2_entries, lrt_m1a_m2a, pvalue_m1a_m2a, number_of_species, length_of_aln, m2_percent, m2_average_omega, frag_start, frag_stop, codon_freq, title_save, nil, frag_is_significant, 'M1a', 'M2a')
     tex_m1a_m2a << "\n\\end{document}\n"
 
-    @output_file = File.open(output, 'w')
+    @output_file = File.open(output.sub('.tex','.M7_vs_M8.tex'), 'w')
     @output_file << tex_m7_m8
     @output_file.close
 
@@ -258,7 +266,7 @@ class Tex
     tex_gapped_m1a_m2a << build_tex_table(beb_m2_entries, lrt_m1a_m2a, pvalue_m1a_m2a, number_of_species, length_of_aln, m2_percent, m2_average_omega, frag_start, frag_stop, codon_freq, title_save, gap_start2gap_length, frag_is_significant, 'M1a', 'M2a')
     tex_gapped_m1a_m2a << "\n\\end{document}\n"
 
-    @output_file_gapped = File.open("#{output.sub('.tex','.gaps.tex')}",'w')
+    @output_file_gapped = File.open("#{output.sub('.tex','.M7_vs_M8.gaps.tex')}",'w')
     @output_file_gapped << tex_gapped_m7_m8
     @output_file_gapped.close
 
