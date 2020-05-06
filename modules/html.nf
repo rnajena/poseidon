@@ -65,3 +65,22 @@ process html_codeml {
     codeml_html.rb ${type} codeml.html ${html_main_index} ${tex_dir}
     """
 }
+
+
+
+/*parameter_html_out, html_index_file, frag_names, timestamp, version, parameter_strings*/
+process html_params {
+    //publishDir "${params.output}/${name}/tex/", mode: 'copy', pattern: "*.tex" 
+    label 'bioruby'
+
+    input:
+        tuple val(name), path(html_main_index)
+
+    output: 
+        tuple val(name), path("params.html")
+        
+    script:
+    """
+    parameter_html.rb params.html ${html_main_index} ${params.poseidon_version} ${workflow.projectDir}
+    """
+}

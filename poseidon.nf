@@ -60,7 +60,7 @@ include {codeml_run; codeml_built; codeml_combine} from './modules/codeml'
 include {tex_built; tex_combine} from './modules/tex'
 include pdflatex as pdflatex_single from './modules/tex'
 include pdflatex as pdflatex_full from './modules/tex'
-include {html_main; html_codeml} from './modules/html'
+include {html_main; html_codeml; html_params} from './modules/html'
 
 /************************** 
 * DATABASES
@@ -180,7 +180,6 @@ workflow {
     HTML */
 
     // MAIN SUMMARY
-
     // get correct trees
     if (params.root != 'NA') {
         tree_nt = reroot.out.nt
@@ -217,7 +216,6 @@ workflow {
     )
 
     // CODEML SUMMARY
-
     //fragment_names_c = Channel.empty()
     html_codeml('full_aln',
                 html_main.out.index
@@ -225,6 +223,9 @@ workflow {
                 .join(tex_built.out.lrt_params.groupTuple(by: 0))//[bats_mx1, [F3X4.lrt, F1X4.lrt, F61.lrt]]
                 //fragment_names_c
     )
+
+    // PARAMETER SUMMARY
+    html_params(html_main.out.index)
 
 }
 
