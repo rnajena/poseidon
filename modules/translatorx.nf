@@ -6,7 +6,8 @@ process translatorx {
     tuple val(name), path(fasta)
 
   output:
-    tuple val(name), path("${name}_aln.nt_ali.fasta"), path("${name}_aln.aa_ali.fasta"), path("${name}_aln.aa_based_codon_coloured.html")
+    tuple val(name), path("${name}_aln.nt_ali.fasta"), path("${name}_aln.aa_ali.fasta"), path("${name}_aln.aa_based_codon_coloured.html"), emit: all
+    tuple val(name), path("${name}_aln.aaseqs.fasta"), emit: aa
 
   script:
     """

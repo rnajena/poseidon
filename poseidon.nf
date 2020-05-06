@@ -60,7 +60,7 @@ include {codeml_run; codeml_built; codeml_combine} from './modules/codeml'
 include {tex_built; tex_combine} from './modules/tex'
 include pdflatex as pdflatex_single from './modules/tex'
 include pdflatex as pdflatex_full from './modules/tex'
-include html_main from './modules/html'
+include {html_main; html_codeml} from './modules/html'
 
 /************************** 
 * DATABASES
@@ -90,13 +90,16 @@ workflow {
     remove_gaps(
         check_aln(
             translatorx(
-                check_fasta_format.out.fasta).join(check_fasta_format.out.log)))
+                check_fasta_format.out.fasta).all
+                .join(check_fasta_format.out.log)
+        )
+    )
 
     /*******************************
     raw alignments and html from translatorx */
-    raw_aln_aa = translatorx.out.map {name, nt_aln, aa_aln, html -> [name, aa_aln] }
-    raw_aln_nt = translatorx.out.map {name, nt_aln, aa_aln, html -> [name, nt_aln] }
-    raw_aln_html = translatorx.out.map {name, nt_aln, aa_aln, html -> [name, html] }
+    raw_aln_aa = translatorx.out.all.map {name, nt_aln, aa_aln, html -> [name, aa_aln] }
+    raw_aln_nt = translatorx.out.all.map {name, nt_aln, aa_aln, html -> [name, nt_aln] }
+    raw_aln_html = translatorx.out.all.map {name, nt_aln, aa_aln, html -> [name, html] }
 
     /*******************************
     checked alignments and html from translatorx */
@@ -145,14 +148,14 @@ workflow {
     /*******************************
     GARD breakpoint analysis */
     //TODO: skip this for now and just do everything on the full aln
-    gard(remove_gaps.out.fna.join(model_selection.out))
+    gard(remove_gaps.out.fna.join(model_selection.out.model))
     
     /*******************************
     CODEML */
     codeml_combine(
             codeml_run(
                 codeml_built(aln_tree_ch).ctl_files.transpose().combine(aln_tree_ch, by: 0)
-            ).mlc_files.groupTuple(by: 1, size: 6).map { it -> tuple ( it[0][1], it[1], it[2])} //[bats_mx1, F1X4, [/home/martin/git/poseidon/work/a8/0b99e44e367ab9c65191ace42a0370/codeml_F1X4_M1a.mlc, /home/martin/git/poseidon/work/c9/a7cd64899060251d3242c6e0860a2e/codeml_F1X4_M0.mlc, /home/martin/git/poseidon/work/b2/06b79f4f07a978db0efd7aa5db9c86/codeml_F1X4_M8a.mlc, /home/martin/git/poseidon/work/18/52f0dabb8c9793de55fabf57df2558/codeml_F1X4_M7.mlc, /home/martin/git/poseidon/work/a8/752ef1b9a3545d1068f0afd8cd4d36/codeml_F1X4_M8.mlc, /home/martin/git/poseidon/work/d4/f5710b4dd4f9517861a2f8db522df5/codeml_F1X4_M2a.mlc]]
+            ).mlc_files.groupTuple(by: 1, size: 6).map { it -> tuple ( it[0][1], it[1], it[2])} //[bats_mx1, bats_mx1_F1X4, [codeml_F1X4_M1a.mlc, codeml_F1X4_M0.mlc, codeml_F1X4_M8a.mlc, codeml_F1X4_M7.mlc, codeml_F1X4_M8.mlc, codeml_F1X4_M2a.mlc]]
     ) //[bats_mx1, F61, /home/martin/git/poseidon/work/7b/43745a2f2434cd51c0ea91945261e6/codeml_F61.all.mlc]
 
     /*******************************
@@ -174,7 +177,9 @@ workflow {
     )//[bats_mx1, full, [/home/martin/git/poseidon/work/36/53218cb7db8f91aa7243a6216249f1/bats_mx1_codeml.pdf, /home/martin/git/poseidon/work/36/53218cb7db8f91aa7243a6216249f1/bats_mx1_gaps_codeml.pdf]]
 
     /*******************************
-    HTML main summary */
+    HTML */
+
+    // MAIN SUMMARY
 
     // get correct trees
     if (params.root != 'NA') {
@@ -196,16 +201,30 @@ workflow {
             .join(internal2input_c)
             .join(input2internal_c)
             .join(gard.out)
-            .join(model_selection.out)
+            .join(model_selection.out.model)
             .join(tex_combine.out.map {it -> tuple (it[0], it[2]) })//[bats_mx1, [bats_mx1_codeml.tex, bats_mx1_gaps_codeml.tex]]
             .join(tex_built.out.tex_dir.groupTuple(by: 0))
             .join(mlc_files_c)//[bats_mx1, [codeml_F1X4_M0.mlc, codeml_F1X4_M8a.mlc, codeml_F1X4_M1a.mlc, codeml_F1X4_M8.mlc, codeml_F1X4_M2a.mlc, codeml_F1X4_M7.mlc], [codeml_F3X4_M0.mlc, codeml_F3X4_M1a.mlc, codeml_F3X4_M7.mlc, codeml_F3X4_M2a.mlc, codeml_F3X4_M8.mlc, codeml_F3X4_M8a.mlc], [codeml_F61_M7.mlc, codeml_F61_M8.mlc, codeml_F61_M1a.mlc, codeml_F61_M2a.mlc, codeml_F61_M0.mlc, codeml_F61_M8a.mlc]]
             .join(tex_built.out.lrt_params.groupTuple(by: 0))//[bats_mx1, [F3X4.lrt, F1X4.lrt, F61.lrt]]
             .join(pdflatex_full.out.map {it -> tuple (it[0], it[2])})
             .join(checked_aln_nt)
+            .join(nw_display.out.groupTuple(by: 0).map { it -> tuple (it[0], it[1][0], it[1][1], it[2][0], it[2][1], it[3]) })
+            .join(model_selection.out.log)
+            .join(translatorx.out.aa)
+            .join(remove_gaps.out.fna)
+            .join(remove_gaps.out.faa)
             //.view()
     )
 
+    // CODEML SUMMARY
+
+    //fragment_names_c = Channel.empty()
+    html_codeml('full_aln',
+                html_main.out.index
+                .join(html_main.out.tex_dir)
+                .join(tex_built.out.lrt_params.groupTuple(by: 0))//[bats_mx1, [F3X4.lrt, F1X4.lrt, F61.lrt]]
+                //fragment_names_c
+    )
 
 }
 
