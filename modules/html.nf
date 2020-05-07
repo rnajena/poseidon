@@ -1,5 +1,5 @@
 process html_main {
-    //publishDir "${params.output}/${name}/tex/", mode: 'copy', pattern: "*.tex" 
+    publishDir "${params.output}/${name}/", mode: 'copy', pattern: "html" 
     label 'bioruby'
 
     input:
@@ -7,13 +7,14 @@ process html_main {
         tuple val(name), path(aa_aln_html), path(aa_aln), path(ctl_dir), path(tree_nt), path(tree_aa), path(input_fasta), path(internal2input_species), path(input2internal_species), path(gard_html_file), val(nucleotide_bias_model), path(tex_files), path(tex_dir), path(mlc_files_1), path(mlc_files_2), path(mlc_files_3), path(lrt_files), path(pdfs), path(nt_aln_checked), path(tree_svg_1), path(tree_svg_2), path(tree_pdf_1), path(tree_pdf_2), path(tree_png), path(model_log), path(translated_fasta), path(aln_nt_nogaps), path(aln_aa_nogaps)
 
     output: 
-        tuple val(name), file("html/full_aln/index.html"), emit: index
+        tuple val(name), file("html/${type}/index.html"), emit: index
         tuple val(name), file("tex"), emit: tex_dir
+        path("html", type: 'dir')
         
     script:
     """
-    mkdir -p html/full_aln
-    touch html/full_aln/index.html
+    mkdir -p html/${type}
+    touch html/${type}/index.html
     ADJUSTED_DOMAIN_POS='NA'
     TITLE=${name}
     ALN_LENGTH_WITH_GAPS='0'
@@ -33,7 +34,7 @@ process html_main {
     mkdir tex
     cp *_tex/*.tex tex/
 
-    html.rb ${type} html html/full_aln/index.html ${aa_aln_html} ${aa_aln} ctl_mlc ${tree_nt} ${tree_aa} \$ADJUSTED_DOMAIN_POS \$TITLE ${input_fasta} ${internal2input_species} ${input2internal_species} \$ALN_LENGTH_WITH_GAPS ${gard_html_file} ${nucleotide_bias_model} ${name}_codeml.tex ${name}_gaps_codeml.tex tex ${params.refactor} ${params.poseidon_version} ${params.recombination} ${workflow.projectDir}
+    html.rb ${type} html html/${type}/index.html ${aa_aln_html} ${aa_aln} ctl_mlc ${tree_nt} ${tree_aa} \$ADJUSTED_DOMAIN_POS \$TITLE ${input_fasta} ${internal2input_species} ${input2internal_species} \$ALN_LENGTH_WITH_GAPS ${gard_html_file} ${nucleotide_bias_model} ${name}_codeml.tex ${name}_gaps_codeml.tex tex ${params.refactor} ${params.poseidon_version} ${params.recombination} ${workflow.projectDir}
     """
 }
 
@@ -49,7 +50,7 @@ type, html_dir, out, translatorx_html, aa_aln, codeml_results, nt_tree, aa_tree,
 
 
 process html_codeml {
-    //publishDir "${params.output}/${name}/tex/", mode: 'copy', pattern: "*.tex" 
+    publishDir "${params.output}/${name}/html/${type}/", mode: 'copy', pattern: "codeml.html" 
     label 'bioruby'
 
     input:
@@ -70,10 +71,11 @@ process html_codeml {
 
 /*parameter_html_out, html_index_file, frag_names, timestamp, version, parameter_strings*/
 process html_params {
-    //publishDir "${params.output}/${name}/tex/", mode: 'copy', pattern: "*.tex" 
+    publishDir "${params.output}/${name}/html/${type}/", mode: 'copy', pattern: "params.html" 
     label 'bioruby'
 
     input:
+        val type 
         tuple val(name), path(html_main_index)
 
     output: 

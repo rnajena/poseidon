@@ -13,7 +13,7 @@ process gard {
     CPU=${task.cpus}
 
     # TODO skip this for now and just report a dummy HTML file
-    #(echo "${aln}"; echo "${aln}"; echo "${model}"; echo "${params.gard_rate_variation}"; echo "${params.gard_rate_classes}"; echo "gard.out") | hyphy gard > gard.txt
+    (echo "${aln}"; echo "${aln}"; echo "${model}"; echo "${params.gard_rate_variation}"; echo "${params.gard_rate_classes}"; echo "gard.out") | hyphy gard > gard.txt
 
     touch gard.html
 

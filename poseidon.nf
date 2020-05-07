@@ -225,7 +225,7 @@ workflow {
     )
 
     // PARAMETER SUMMARY
-    html_params(html_main.out.index)
+    html_params('full_aln', html_main.out.index)
 
 }
 
