@@ -10,7 +10,7 @@ process model_selection {
         
     script:
     """
-    MODEL='010010' # the default HKY85 model, use this if something happens
+    MODEL=${params.model} # the default HKY85 model, use this if something happens
 
     (echo "${aln}"; echo "${tree}"; echo "${params.model_rate_classes}"; echo "${params.model_selection_method}"; echo "${params.model_rejection_level}"; echo "${name}.result") | hyphy mt > model.log
 

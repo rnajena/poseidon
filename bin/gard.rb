@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 def adjust_gard_html(gard_html_file, html_kh_text, breakpoints_h, kh_insignificant_bp)
-    gard_html_file_adjusted = File.open("#{gard_html_file}.tmp",'w')
+    gard_html_file_adjusted = File.open("#{gard_html_file.sub('.html','.adjusted.html')}",'w')
     f = File.open(gard_html_file,'r')
     f.each do |l|
       if l.start_with?('</DIV>')
@@ -9,7 +9,7 @@ def adjust_gard_html(gard_html_file, html_kh_text, breakpoints_h, kh_insignifica
         # add additional content for KH test
         gard_html_file_adjusted << html_kh_text
         # add final breakpoints identified and if they were adjusted
-        if kh_insignificant_bp == 'true'
+        if kh_insignificant_bp
           gard_html_file_adjusted << '<p><u>Final breakpoints</u><br>(regardless of the KH-test (user defined) and adjusted to keep in-frame alignment, if necessary)</p>'
         else
           gard_html_file_adjusted << '<p><u>Final breakpoints</u><br>(with significant (adjp<0.01) KH-test and adjusted to keep in-frame alignment, if necessary)</p>'
@@ -31,7 +31,7 @@ def adjust_gard_html(gard_html_file, html_kh_text, breakpoints_h, kh_insignifica
         end
       end
     end
-    if kh_insignificant_bp == 'true'
+    if kh_insignificant_bp
       gard_html_file_adjusted << "<p><b>ATTENTION</b>: as defined by the user break points are also used for further calculations even if the KH test showed no significant topological incongruence!</p>\n"
     end
 
@@ -40,9 +40,9 @@ def adjust_gard_html(gard_html_file, html_kh_text, breakpoints_h, kh_insignifica
     f.close
     gard_html_file_adjusted.close
 
-    `cp #{f.path} #{f.path}.save` unless File.exists?("#{f.path}.original.save")
-    `mv #{gard_html_file_adjusted.path} #{f.path}`
-    `cp #{f.path} #{f.path}.adjusted.save` unless File.exists?("#{f.path}.adjusted.save")
+    #`cp #{f.path} #{f.path}.save` unless File.exists?("#{f.path}.original.save")
+    #`mv #{gard_html_file_adjusted.path} #{f.path}`
+    #`cp #{f.path} #{f.path}.adjusted.save` unless File.exists?("#{f.path}.adjusted.save")
 end
 
 
@@ -53,7 +53,7 @@ def collect_params(output, html_text, kh_insignificant_bp)
 
     read = false
 
-    file = File.open("#{File.dirname(output)}/gard_processor.log",'r')
+    file = File.open("gard_processor.log",'r')
     file.each do |line|
       if read
 
@@ -80,7 +80,7 @@ def collect_params(output, html_text, kh_insignificant_bp)
             breakpoints[bp_pos] = 0.05 if lhs_adjp < 0.05 && rhs_adjp < 0.05
             breakpoints[bp_pos] = 0.01 if lhs_adjp < 0.01 && rhs_adjp < 0.01
           else
-            if kh_insignificant_bp == 'true'
+            if kh_insignificant_bp
               breakpoints[bp_pos] = 1
             end
           end
@@ -94,15 +94,26 @@ def collect_params(output, html_text, kh_insignificant_bp)
     end
     file.close
 
+    # write out breakpoints to file for further usage
+    bp = File.open('bp.tsv','w')
+    breakpoints.each do |pos, significance|
+      bp << "#{pos}\t#{significance}\n"
+    end
+    bp.close
+
     breakpoints
 end
 
+kh_insignificant_bp = ARGV[0].to_s.downcase == "true"
+html_kh_text = '<p><u>KH-test</u></p><table>'
+output = '.'
 
 ## COLLECT BREAKPOINT POSITIONS IF THERE ARE ANY
-html_kh_text = '<p><u>KH-test</u></p><table>'
-@breakpoints = collect_params(output, html_kh_text, kh_insignificant_bp)
-puts "We found #{@breakpoints.size} significant break points for further analyses:\n\t\t#{@breakpoints}\n"
+breakpoints = collect_params(output, html_kh_text, kh_insignificant_bp)
+puts "We found #{breakpoints.size} significant break points for further analyses:\n\t\t#{breakpoints}\n"
+
+gard_html_file = ARGV[1]
 
 ## ADJUST THE GARD OUTPUT HTML FILE
-adjust_gard_html(@gard_html_file, html_kh_text, @breakpoints, kh_insignificant_bp)
+adjust_gard_html(gard_html_file, html_kh_text, breakpoints, kh_insignificant_bp)
 

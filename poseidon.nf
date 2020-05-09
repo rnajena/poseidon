@@ -170,6 +170,7 @@ workflow {
 
     /*******************************
     If breakpoints ... */
+    gard_process.out.bp.view()
     // TODO
 
     /*******************************
@@ -201,7 +202,7 @@ workflow {
             .join(fasta_input_ch)
             .join(internal2input_c)
             .join(input2internal_c)
-            .join(gard_process.out)
+            .join(gard_process.out.html)
             .join(model_selection.out.model)
             .join(tex_combine.out.map {it -> tuple (it[0], it[2]) })//[bats_mx1, [bats_mx1_codeml.tex, bats_mx1_gaps_codeml.tex]]
             .join(tex_built.out.tex_dir.groupTuple(by: 0))
@@ -254,13 +255,24 @@ def helpMSG() {
     ${c_green} --fasta ${c_reset}       '*.fasta'           -> one FASTA file per transcriptome assembly
     ${c_dim}  ..change above input to csv:${c_reset} ${c_green}--list ${c_reset}
     
-    ${c_yellow}Options:${c_reset}
+    ${c_yellow}General options:${c_reset}
     --cores             max cores for local use [default: $params.cores]
     --memory            memory limitations for polisher tools in GB [default: $params.memory]
     --output            name of the result folder [default: $params.output]
     --reference         resulting positions will be reported according to this species [default: $params.reference]
     --root              outgroup species for tree rooting; comma-separated [default: $params.root]
     --bootstrap         number of bootstrap calculations [default: $params.bootstrap]
+
+    ${c_yellow}Model parameters:${c_reset}
+    --model             nucleotide model used for recombination analysis [default: $params.model]
+    --model_rc          model rate classes [default: $params.model_rate_classes]
+    --model_sm          model selection method [default: $params.model_selection_method] 
+    --model_rl          model rejection level [default: $params.model_rejection_level]
+
+    ${c_yellow}Recombination parameters (GARD):${c_reset}
+    --gard_rv           GARD rate variation [default: $params.gard_rate_variation]
+    --gard_rc           GARD rate classes [default: $params.gard_rate_classes]
+    --kh                use insignificant breakpoints (based on KH test) for fragment calcuations [default: $params.kh]
 
     ${c_dim}Nextflow options:
     -with-report rep.html    cpu / ram usage (may cause errors)

@@ -49,15 +49,18 @@ process gard_process {
         tuple val(name), path(gard_html), path(gard_log), path(gard_processor_log)
 
     output: 
-        tuple val(name), path("gard.html")
+        tuple val(name), path("gard.adjusted.html"), emit: html
+        tuple val(name), path("bp.tsv"), emit: bp
         
     script:
     """
     # check if GARD was able to detect breakpoints
     if grep -q "Warning: PoSeiDon was not able to perform a recombination analysis with GARD" gard_processor.log; then 
         # nothing, maybe write dummy files for output channel
+        touch gard.adjusted.html
+        cat gard_processor.log > gard.adjusted.html 
     else     
-        gard.rb 
+        gard.rb ${params.kh} ${gard_html}
     fi
     """
 }
