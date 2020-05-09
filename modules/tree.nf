@@ -62,6 +62,8 @@ process raxml2drawing {
 /*
 TODO: it seems that only one inkscape command can be started?!?! test maxForks 1
 */
+//bats_mx1_nt.raxml.corrected.pdf  bats_mx1_nt.raxml.corrected.scale.pdf  bats_mx1_nt.raxml.corrected.svg
+//bats_mx1_nt.raxml.corrected.png  bats_mx1_nt.raxml.corrected.scale.svg
 process nw_display {
   label 'newick_utils'
 
@@ -71,7 +73,7 @@ process nw_display {
     tuple val(name), file(newick), file(aln)
 
   output:
-    tuple val(name), file("*.svg")
+    tuple val(name), file("*.svg"), file("*.pdf"), file("*.png")
 
   script:
   """
@@ -88,7 +90,6 @@ process nw_display {
     HEIGHT=\$((25*TAXA))
     inkscape -f ${newick}.svg --export-width=480 --export-height=\$HEIGHT --without-gui --export-png=${newick}.png
   """
-
 }
 
 /*
@@ -120,6 +121,7 @@ process barefoot {
 /*
 TODO: the second part (the drawing) can be done with the already available function
 from phylo.rb
+// IMPORTANT: file should be named with .rooted then: bats_mx1_nt.raxml.corrected.rooted for further processing
 */
 /*process reroot {
   

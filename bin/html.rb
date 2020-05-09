@@ -188,7 +188,7 @@ class Html
     data_html << "<p>PoSeiDon v#{version}</p></div>"
 
     # insert the logo
-    #data_html << "\n<a target=\"_blank\" href=\"http://www.rna.uni-jena.de/en/poseidon\"><img src=\"#{File.basename(@LOGO_PNG)}\" width=\"120px\"/></a>"
+    #data_html << "\n<a target=\"_blank\" href=\"https://github.com/hoelzer/poseidon\"><img src=\"#{File.basename(@LOGO_PNG)}\" width=\"120px\"/></a>"
 
     header1 = header_html_string.split('</table>')[0].gsub('100px; /','145px; /')
     header1 = header1.sub('145px; /','170px; /')
@@ -218,59 +218,77 @@ class Html
 
     # get all input fastas
     `cp #{input_fasta} #{file_out}`; refactor_species_names("#{file_out}/#{File.basename(input_fasta)}", @internal2input_species); html_paths[:input_fasta] = "data/#{File.basename(input_fasta)}";
-    if File.exists?(aa_aln.sub('_ali','seqs'))
-      `cp #{aa_aln.sub('_ali','seqs')} #{file_out}`; refactor_species_names("#{file_out}/#{File.basename(aa_aln.sub('_ali','seqs'))}", @internal2input_species); html_paths[:input_fasta_aa] = "data/#{File.basename(aa_aln.sub('_ali','seqs'))}"
+    if File.exists?(aa_aln.sub('_ali','seqs').sub('.checked',''))
+      `cp #{aa_aln.sub('_ali','seqs').sub('.checked','')} #{file_out}`; refactor_species_names("#{file_out}/#{File.basename(aa_aln.sub('_ali','seqs').sub('.checked',''))}", @internal2input_species); html_paths[:input_fasta_aa] = "data/#{File.basename(aa_aln.sub('_ali','seqs').sub('.checked',''))}"
     end
 
     # get all aln
+    #puts aa_aln --> bats_mx1_aln.aa_ali.checked.fasta
     `cp #{aa_aln.sub('.aa','.nt')} #{file_out}`; refactor_species_names("#{file_out}/#{File.basename(aa_aln.sub('.aa','.nt'))}", @internal2input_species); html_paths[:aln_nt] = "data/#{File.basename(aa_aln.sub('.aa','.nt'))}"
+
     `cp #{aa_aln} #{file_out}`; refactor_species_names("#{file_out}/#{File.basename(aa_aln)}", @internal2input_species); html_paths[:aln_aa] = "data/#{File.basename(aa_aln)}"
-    `cp #{aa_aln.sub('.aa_ali.fasta','.nt_ali.nogaps.fasta')} #{file_out}`; refactor_species_names("#{file_out}/#{File.basename(aa_aln.sub('.aa_ali.fasta','.nt_ali.nogaps.fasta'))}", @internal2input_species); html_paths[:aln_nt_nogap] = "data/#{File.basename(aa_aln.sub('.aa_ali.fasta','.nt_ali.nogaps.fasta'))}"
-    `cp #{aa_aln.sub('.aa_ali.fasta','.nt_ali.nogaps.fasta')} #{file_out}/#{File.basename(aa_aln).sub('.aa_ali.fasta','.nt_ali.nogaps.calc.fasta')}` # copy again for reproducable calculations
-    `cp #{aa_aln.sub('_ali.fasta','_ali.nogaps.fasta')} #{file_out}`; refactor_species_names("#{file_out}/#{File.basename(aa_aln.sub('_ali.fasta','_ali.nogaps.fasta'))}", @internal2input_species); html_paths[:aln_aa_nogap] = "data/#{File.basename(aa_aln.sub('_ali.fasta','_ali.nogaps.fasta'))}"
+
+    # bats_mx1_aln.nt_ali.checked.nogaps.fasta
+    # bats_mx1_aln.aa_ali.checked.nogaps.fasta
+    `cp #{aa_aln.sub('aa_ali.checked.fasta','nt_ali.checked.nogaps.fasta')} #{file_out}`; refactor_species_names("#{file_out}/#{File.basename(aa_aln.sub('aa_ali.checked.fasta','nt_ali.checked.nogaps.fasta'))}", @internal2input_species); html_paths[:aln_nt_nogap] = "data/#{File.basename(aa_aln.sub('aa_ali.checked.fasta','nt_ali.checked.nogaps.fasta'))}"
+
+    `cp #{aa_aln.sub('aa_ali.checked.fasta','nt_ali.checked.nogaps.fasta')} #{file_out}/#{File.basename(aa_aln).sub('aa_ali.checked.fasta','nt_ali.checked.nogaps.calc.fasta')}` # copy again for reproducable calculations
+
+    `cp #{aa_aln.sub('ali.checked.fasta','ali.checked.nogaps.fasta')} #{file_out}`; refactor_species_names("#{file_out}/#{File.basename(aa_aln.sub('ali.checked.fasta','ali.checked.nogaps.fasta'))}", @internal2input_species); html_paths[:aln_aa_nogap] = "data/#{File.basename(aa_aln.sub('ali.checked.fasta','ali.checked.nogaps.fasta'))}"
 
     #TODO  get all trees and build PDF, SVG and PNG files on original species names
-
     if File.basename(nt_tree).include?('.rooted')
-      `cp #{nt_tree.sub('.corrected.rooted','')} #{file_out}/#{File.basename(nt_tree).sub('.corrected.rooted','.newick')}`; html_paths[:tree_nt_newick] = "data/#{File.basename(nt_tree.sub('.corrected.rooted','.newick'))}"
-      `cp #{nt_tree.sub('.corrected.rooted','.rooted.pdf')} #{file_out}`; html_paths[:tree_nt_pdf] = "data/#{File.basename(nt_tree.sub('.corrected.rooted','.pdf'))}"
-      `cp #{nt_tree.sub('.corrected.rooted','.rooted.svg')} #{file_out}`; html_paths[:tree_nt_svg] = "data/#{File.basename(nt_tree.sub('.corrected.rooted','.svg'))}"
-      `cp #{nt_tree.sub('.corrected.rooted','.rooted.png')} #{file_out}`
-      `cp #{nt_tree.sub('.corrected.rooted','.unshod.tree')} #{file_out}`
-      `cp #{nt_tree.sub('.nt','.aa').sub('.corrected.rooted','')} #{file_out}/#{File.basename(nt_tree).sub('.nt','.aa').sub('.corrected.rooted','.newick')}`; html_paths[:tree_aa_newick] = "data/#{File.basename(nt_tree.sub('.nt','.aa').sub('.corrected.rooted','.newick'))}"
-      `cp #{nt_tree.sub('.nt','.aa').sub('.corrected.rooted','.rooted.pdf')} #{file_out}`; html_paths[:tree_aa_pdf] = "data/#{File.basename(nt_tree.sub('.nt','.aa').sub('.corrected.rooted','.pdf'))}"
-      `cp #{nt_tree.sub('.nt','.aa').sub('.corrected.rooted','.rooted.svg')} #{file_out}`; html_paths[:tree_aa_svg] = "data/#{File.basename(nt_tree.sub('.nt','.aa').sub('.corrected.rooted','.svg'))}"
-      `cp #{nt_tree.sub('.nt','.aa').sub('.corrected.rooted','.rooted.png')} #{file_out}`
+      # nt_tree = bats_mx1_nt.raxml.rooted
+      `cp #{nt_tree} #{file_out}/#{File.basename(nt_tree)}.newick`; html_paths[:tree_nt_newick] = "data/#{File.basename(nt_tree)}.newick"
+      `cp #{nt_tree}.corrected.pdf #{file_out}`; html_paths[:tree_nt_pdf] = "data/#{File.basename(nt_tree)}.corrected.pdf"
+      `cp #{nt_tree}.corrected.svg #{file_out}`; html_paths[:tree_nt_svg] = "data/#{File.basename(nt_tree)}.corrected.svg"
+      `cp #{nt_tree}.corrected.png #{file_out}`      
+      #`cp #{nt_tree.sub('.corrected.rooted','.unshod.tree')} #{file_out}`
+
+      # nt -> aa trees 
+      `cp #{nt_tree.sub('_nt','_aa')} #{file_out}/#{File.basename(nt_tree).sub('_nt','_aa')}.newick`; html_paths[:tree_aa_newick] = "data/#{File.basename(nt_tree.sub('.nt','.aa'))}.newick"
+      `cp #{nt_tree.sub('_nt','_aa')}.corrected.pdf #{file_out}`; html_paths[:tree_aa_pdf] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.corrected.pdf"
+      `cp #{nt_tree.sub('_nt','_aa')}.corrected.svg #{file_out}`; html_paths[:tree_aa_svg] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.corrected.svg"
+      `cp #{nt_tree.sub('_nt','_aa')}.corrected.png #{file_out}`
+
       # get also the trees with the scale to link them as downloadable svgs and pdfs
-      `cp #{nt_tree.sub('.corrected.rooted','.rooted.scale.pdf')} #{file_out}`; html_paths[:tree_nt_scaled_pdf] = "data/#{File.basename(nt_tree.sub('.corrected.rooted','.rooted.scale.pdf'))}"
-      `cp #{nt_tree.sub('.corrected.rooted','.rooted.scale.svg')} #{file_out}`; html_paths[:tree_nt_scaled_svg] = "data/#{File.basename(nt_tree.sub('.corrected.rooted','.rooted.scale.svg'))}"
-      `cp #{nt_tree.sub('.nt','.aa').sub('.corrected.rooted','.rooted.scale.pdf')} #{file_out}`; html_paths[:tree_aa_scaled_pdf] = "data/#{File.basename(nt_tree.sub('.nt','.aa').sub('.corrected.rooted','.rooted.scale.pdf'))}"
-      `cp #{nt_tree.sub('.nt','.aa').sub('.corrected.rooted','.rooted.scale.svg')} #{file_out}`; html_paths[:tree_aa_scaled_svg] = "data/#{File.basename(nt_tree.sub('.nt','.aa').sub('.corrected.rooted','.rooted.scale.svg'))}"
+      # nt
+      `cp #{nt_tree}.corrected.scale.pdf #{file_out}`; html_paths[:tree_nt_scaled_pdf] = "data/#{File.basename(nt_tree)}.corrected.scale.pdf"
+      `cp #{nt_tree}.corrected.scale.svg #{file_out}`; html_paths[:tree_nt_scaled_svg] = "data/#{File.basename(nt_tree)}.corrected.scale.svg"
+      # aa
+      `cp #{nt_tree.sub('_nt','_aa')}.corrected.scale.pdf #{file_out}`; html_paths[:tree_aa_scaled_pdf] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.corrected.scale.pdf"
+      `cp #{nt_tree.sub('_nt','_aa')}.corrected.scale.svg #{file_out}`; html_paths[:tree_aa_scaled_svg] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.corrected.scale.svg"
     else
-      `cp #{nt_tree.sub('.corrected','')} #{file_out}/#{File.basename(nt_tree).sub('.corrected','.newick')}`; html_paths[:tree_nt_newick] = "data/#{File.basename(nt_tree.sub('.corrected','.newick'))}"
-      `cp #{nt_tree.sub('.corrected','.pdf')} #{file_out}`; html_paths[:tree_nt_pdf] = "data/#{File.basename(nt_tree.sub('.corrected','.pdf'))}"
-      `cp #{nt_tree.sub('.corrected','.svg')} #{file_out}`; html_paths[:tree_nt_svg] = "data/#{File.basename(nt_tree.sub('.corrected','.svg'))}"
-      `cp #{nt_tree.sub('.corrected','.png')} #{file_out}`
-      `cp #{nt_tree.sub('.corrected.rooted','.unshod.tree')} #{file_out}`
-      `cp #{nt_tree.sub('.nt','.aa').sub('.corrected','')} #{file_out}/#{File.basename(nt_tree).sub('.nt','.aa').sub('.corrected','.newick')}`; html_paths[:tree_aa_newick] = "data/#{File.basename(nt_tree.sub('.nt','.aa').sub('.corrected','.newick'))}"
-      `cp #{nt_tree.sub('.nt','.aa').sub('.corrected','.pdf')} #{file_out}`; html_paths[:tree_aa_pdf] = "data/#{File.basename(nt_tree.sub('.nt','.aa').sub('.corrected','.pdf'))}"
-      `cp #{nt_tree.sub('.nt','.aa').sub('.corrected','.svg')} #{file_out}`; html_paths[:tree_aa_svg] = "data/#{File.basename(nt_tree.sub('.nt','.aa').sub('.corrected','.svg'))}"
-      `cp #{nt_tree.sub('.nt','.aa').sub('.corrected','.png')} #{file_out}`
+      # nt_tree = bats_mx1_nt.raxml
+      `cp #{nt_tree} #{file_out}/#{File.basename(nt_tree)}.newick`; html_paths[:tree_nt_newick] = "data/#{File.basename(nt_tree)}.newick"
+      `cp #{nt_tree}.corrected.pdf #{file_out}`; html_paths[:tree_nt_pdf] = "data/#{File.basename(nt_tree)}.corrected.pdf"
+      `cp #{nt_tree}.corrected.svg #{file_out}`; html_paths[:tree_nt_svg] = "data/#{File.basename(nt_tree)}.corrected.svg"
+      `cp #{nt_tree}.corrected.png #{file_out}`      
+      #`cp #{nt_tree.sub('.corrected.rooted','.unshod.tree')} #{file_out}`
+
+      # nt -> aa trees 
+      `cp #{nt_tree.sub('_nt','_aa')} #{file_out}/#{File.basename(nt_tree).sub('_nt','_aa')}.newick`; html_paths[:tree_aa_newick] = "data/#{File.basename(nt_tree.sub('.nt','.aa'))}.newick"
+      `cp #{nt_tree.sub('_nt','_aa')}.corrected.pdf #{file_out}`; html_paths[:tree_aa_pdf] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.corrected.pdf"
+      `cp #{nt_tree.sub('_nt','_aa')}.corrected.svg #{file_out}`; html_paths[:tree_aa_svg] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.corrected.svg"
+      `cp #{nt_tree.sub('_nt','_aa')}.corrected.png #{file_out}`
+
       # get also the trees with the scale to link them as downloadable svgs and pdfs
-      `cp #{nt_tree.sub('.corrected','.scale.pdf')} #{file_out}`; html_paths[:tree_nt_scaled_pdf] = "data/#{File.basename(nt_tree.sub('.corrected','.scale.pdf'))}"
-      `cp #{nt_tree.sub('.corrected','.scale.svg')} #{file_out}`; html_paths[:tree_nt_scaled_svg] = "data/#{File.basename(nt_tree.sub('.corrected','.scale.svg'))}"
-      `cp #{nt_tree.sub('.nt','.aa').sub('.corrected','.scale.pdf')} #{file_out}`; html_paths[:tree_aa_scaled_pdf] = "data/#{File.basename(nt_tree.sub('.nt','.aa').sub('.corrected','.scale.pdf'))}"
-      `cp #{nt_tree.sub('.nt','.aa').sub('.corrected','.scale.svg')} #{file_out}`; html_paths[:tree_aa_scaled_svg] = "data/#{File.basename(nt_tree.sub('.nt','.aa').sub('.corrected','.scale.svg'))}"
+      # nt
+      `cp #{nt_tree}.corrected.scale.pdf #{file_out}`; html_paths[:tree_nt_scaled_pdf] = "data/#{File.basename(nt_tree)}.corrected.scale.pdf"
+      `cp #{nt_tree}.corrected.scale.svg #{file_out}`; html_paths[:tree_nt_scaled_svg] = "data/#{File.basename(nt_tree)}.corrected.scale.svg"
+      # aa
+      `cp #{nt_tree.sub('_nt','_aa')}.corrected.scale.pdf #{file_out}`; html_paths[:tree_aa_scaled_pdf] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.corrected.scale.pdf"
+      `cp #{nt_tree.sub('_nt','_aa')}.corrected.scale.svg #{file_out}`; html_paths[:tree_aa_scaled_svg] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.corrected.scale.svg"
     end
 
     # get all codeml result files
-    html_paths[:codeml] = []
+    #html_paths[:codeml] = []
     codeml_results.each do |codeml|
       ns_sites = File.dirname(codeml).split('/').reverse[0]
       freq = File.dirname(codeml).split('/').reverse[1]
 
-      `mkdir -p #{file_out}/codeml/#{freq}/#{ns_sites}; cp #{codeml} #{file_out}/codeml/#{freq}/#{ns_sites}/`
-      html_paths[:codeml].push("data/codeml/#{freq}/#{ns_sites}/#{File.basename(codeml)}")
+      `mkdir -p #{file_out}/codeml/#{freq}/#{ns_sites}; cp #{File.dirname(codeml)}/* #{file_out}/codeml/#{freq}/#{ns_sites}/`
+      #html_paths[:codeml].push("data/codeml/#{freq}/#{ns_sites}/#{File.basename(codeml)}")
     end
 
     # get GARD html file and model selection log file
@@ -359,7 +377,7 @@ class Html
                 f = File.open("#{codon_freq}.lrt",'r')
                 f.each do |l|
                   s = l.split("\t")
-                  lrt = s[1].chomp if s[0] == 'm2a_lrt'
+                  lrt = s[1].to_f.round(3).to_s if s[0] == 'm2a_lrt'
                   pvalue = s[1].gsub('$','').sub('<','').to_f if s[0] == 'm2a_pvalue'
                   lnL0 = s[1].chomp if s[0] == 'm2a_lnL0'
                   lnL1 = s[1].chomp if s[0] == 'm2a_lnL1'
@@ -382,8 +400,8 @@ class Html
                 f = File.open("#{codon_freq}.lrt",'r')
                 f.each do |l|
                   s = l.split("\t")
-                  lrt = s[1].chomp if s[0] == 'm8_lrt'
-                  lrt_2 = s[1].chomp if s[0] == 'm8_lrt_2'
+                  lrt = s[1].to_f.round(3).to_s if s[0] == 'm8_lrt'
+                  lrt_2 = s[1].to_f.round(3).to_s if s[0] == 'm8_lrt_2'
                   pvalue = s[1].gsub('$','').sub('<','').to_f if s[0] == 'm8_pvalue'
                   pvalue_2 = s[1].gsub('$','').sub('<','').to_f if s[0] == 'm8_pvalue_2'
                   lnL0 = s[1].chomp if s[0] == 'm8_lnL0'
@@ -520,14 +538,16 @@ class Html
 
     picture_is_placed = false
 
+    # <tr><td></td><td rowspan="13"><a target="_blank" href="data/bats_mx1_nt.raxml"><img src="data/bats_mx1_nt.raxml" /></a></td>
+    #bats_mx1_nt.raxml.corrected.png  bats_mx1_nt.raxml.corrected.scale.svg
     seqs_ordered.each do |id, seq|
       if picture_is_placed
         out << "</tr><tr><td></td>\n"
       else
         if aa_tree.include?('.rooted')
-          out << "<tr><td></td><td rowspan=\"#{aa_tree_order.size}\"><a target=\"_blank\" href=\"data/#{File.basename(aa_tree).sub('.corrected.rooted','.rooted.scale.svg')}\"><img src=\"data/#{File.basename(aa_tree).sub('.corrected.rooted','.rooted.png')}\" /></a></td>"
+          out << "<tr><td></td><td rowspan=\"#{aa_tree_order.size}\"><a target=\"_blank\" href=\"data/#{File.basename(aa_tree)}.corrected.rooted.scale.svg\"><img src=\"data/#{File.basename(aa_tree)}.corrected.rooted.png\" /></a></td>"
         else
-          out << "<tr><td></td><td rowspan=\"#{aa_tree_order.size}\"><a target=\"_blank\" href=\"data/#{File.basename(aa_tree).sub('.corrected','.scale.svg')}\"><img src=\"data/#{File.basename(aa_tree).sub('.corrected','.png')}\" /></a></td>"
+          out << "<tr><td></td><td rowspan=\"#{aa_tree_order.size}\"><a target=\"_blank\" href=\"data/#{File.basename(aa_tree)}.corrected.scale.svg\"><img src=\"data/#{File.basename(aa_tree)}.corrected.png\" /></a></td>"
         end
         picture_is_placed = true
       end
@@ -648,9 +668,9 @@ class Html
         picture_is_placed = false
         #puts species_row.keys
         if tree_path.include?('.rooted')
-          ordered_aln_string << species_row[species.name].sub('</tr><tr><td></td>',"</tr><tr><td></td><td rowspan=\"#{tree_order.size}\"><a target=\"_blank\" href=\"data/#{File.basename(tree_path).sub('.corrected.rooted','.rooted.scale.svg')}\"><img src=\"data/#{File.basename(tree_path).sub('.corrected.rooted','.rooted.png')}\" /></a></td>")
+          ordered_aln_string << species_row[species.name].sub('</tr><tr><td></td>',"</tr><tr><td></td><td rowspan=\"#{tree_order.size}\"><a target=\"_blank\" href=\"data/#{File.basename(tree_path)}.corrected.rooted.scale.svg\"><img src=\"data/#{File.basename(tree_path)}.corrected.rooted.png\" /></a></td>")
         else
-          ordered_aln_string << species_row[species.name].sub('</tr><tr><td></td>',"</tr><tr><td></td><td rowspan=\"#{tree_order.size}\"><a target=\"_blank\" href=\"data/#{File.basename(tree_path).sub('.corrected','.scale.svg')}\"><img src=\"data/#{File.basename(tree_path).sub('.corrected','.png')}\" /></a></td>")
+          ordered_aln_string << species_row[species.name].sub('</tr><tr><td></td>',"</tr><tr><td></td><td rowspan=\"#{tree_order.size}\"><a target=\"_blank\" href=\"data/#{File.basename(tree_path)}.corrected.scale.svg\"><img src=\"data/#{File.basename(tree_path)}.corrected.png\" /></a></td>")
         end
       else
         ordered_aln_string << species_row[species.name]
@@ -659,7 +679,7 @@ class Html
 
     header = header.sub('overflow: hidden; /*','overflow: scroll; /*')
     #add logo
-    header = header.split('<h3>')[0] << "\n<a target=\"_blank\" href=\"http://www.rna.uni-jena.de/en/poseidon\"><img src=\"../src/#{File.basename(@LOGO_PNG)}\" width=\"120px\"/></a>\n" << '<h3>' << header.split('<h3>')[1]
+    header = header.split('<h3>')[0] << "\n<a target=\"_blank\" href=\"https://github.com/hoelzer/poseidon\"><img src=\"../src/#{File.basename(@LOGO_PNG)}\" width=\"120px\"/></a>\n" << '<h3>' << header.split('<h3>')[1]
     #add details-summary-master sources
     header1 = header.split('</style>')[0]
     header2 = header.split('</style>')[1]
@@ -679,7 +699,7 @@ html_dir = ARGV[1]
 out = ARGV[2]
 translatorx_html = ARGV[3]
 aa_aln = ARGV[4]
-codeml_results = ARGV[5] # only include the ctl atm
+codeml_results = ARGV[5] # include ctl and mlc named as codeml.ctl and codeml.mlc
 nt_tree = ARGV[6]
 aa_tree = ARGV[7]
 domain_pos = ARGV[8] # should be a hash, 'NA' if not set 

@@ -23,14 +23,19 @@ process codeml_run {
         tuple val(name), path(ctl), path(aln), path(tree)
 
     output: 
-        tuple val(name), env(CODON_FREQ), path("*.mlc"), emit: mlc_files
+        tuple val(name), env(LABEL), path("*.mlc"), emit: mlc_files
         
     script:
     """
     codeml ${ctl} >> ${ctl}.log
+
     CODON_FREQ=\$(ls ${ctl} | awk 'BEGIN{FS="_"};{print \$2}')
+
     #MODEL=\$(ls ${ctl} | awk 'BEGIN{FS="_"};{print \$3}' | awk 'BEGIN{FS="."};{print \$1}')
-    echo \$CODON_FREQ
+    #mv *.mlc \$(basename \$PWD).codeml_\${CODON_FREQ}_\${MODEL}.mlc
+
+    LABEL=${name}_\${CODON_FREQ}
+    echo \$LABEL
     """
 }
 
@@ -42,13 +47,15 @@ process codeml_combine {
     label 'bioruby'
 
     input:
-        tuple val(name), val(codon_freq), path(mlcs)
+        tuple val(name), val(name_codon_freq), path(mlcs)
 
     output: 
-        tuple val(name), val(codon_freq), path("*all.mlc")
+        tuple val(name), env(CODON_FREQ), path("*all.mlc")
         
     script:
     """
-    codeml_combine.rb ${codon_freq}
+    CODON_FREQ=\$(echo ${name_codon_freq} | sed 's/${name}_//g')
+    codeml_combine.rb \${CODON_FREQ}
     """
 }
+
