@@ -55,7 +55,7 @@ include check_fasta_format from './modules/check_fasta_format'
 include {translatorx; check_aln; remove_gaps} from './modules/translatorx'
 include {raxml_nt; raxml_aa; raxml2drawing; nw_display; barefoot} from './modules/tree'
 include model_selection from './modules/model_selection'
-include gard from './modules/gard'
+include {gard_detect; gard_process} from './modules/gard'
 include {codeml_run; codeml_built; codeml_combine} from './modules/codeml'
 include {tex_built; tex_combine} from './modules/tex'
 include pdflatex as pdflatex_single from './modules/tex'
@@ -148,7 +148,9 @@ workflow {
     /*******************************
     GARD breakpoint analysis */
     //TODO: skip this for now and just do everything on the full aln
-    gard(remove_gaps.out.fna.join(model_selection.out.model))
+    gard_process(
+        gard_detect(remove_gaps.out.fna.join(model_selection.out.model))
+    )
     
     /*******************************
     CODEML */
@@ -199,7 +201,7 @@ workflow {
             .join(fasta_input_ch)
             .join(internal2input_c)
             .join(input2internal_c)
-            .join(gard.out)
+            .join(gard_process.out)
             .join(model_selection.out.model)
             .join(tex_combine.out.map {it -> tuple (it[0], it[2]) })//[bats_mx1, [bats_mx1_codeml.tex, bats_mx1_gaps_codeml.tex]]
             .join(tex_built.out.tex_dir.groupTuple(by: 0))
