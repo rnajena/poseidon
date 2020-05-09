@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'bio'
+
 def adjust_gard_html(gard_html_file, html_kh_text, breakpoints_h, kh_insignificant_bp)
     gard_html_file_adjusted = File.open("#{gard_html_file.sub('.html','.adjusted.html')}",'w')
     f = File.open(gard_html_file,'r')
@@ -46,8 +48,14 @@ def adjust_gard_html(gard_html_file, html_kh_text, breakpoints_h, kh_insignifica
 end
 
 
-def collect_params(output, html_text, kh_insignificant_bp)
+def collect_params(output, html_text, kh_insignificant_bp, nt_aln_nogaps)
     # collect: 1) breakpoints, 2) KH significance
+
+    nt_aln_length_nogaps = 0
+    Bio::FastaFormat.open(nt_aln_nogaps).each do |entry|
+      nt_aln_length_nogaps = entry.seq.length
+      break
+    end
 
     breakpoints = {}
 
@@ -95,9 +103,14 @@ def collect_params(output, html_text, kh_insignificant_bp)
     file.close
 
     # write out breakpoints to file for further usage
+    # also write aa break points
     bp = File.open('bp.tsv','w')
     breakpoints.each do |pos, significance|
-      bp << "#{pos}\t#{significance}\n"
+      bp << "#{pos}\t#{pos.to_i/3}\t#{significance}\n"
+    end
+    if breakpoints.keys.size > 0
+      # and add the full aln length to the breakpoints array to calculate also the last fragment, if we have fragments!
+      bp << "#{nt_aln_length_nogaps + 1}\t#{nt_aln_length_nogaps/3 + 1}\t1\n"
     end
     bp.close
 
@@ -108,8 +121,10 @@ kh_insignificant_bp = ARGV[0].to_s.downcase == "true"
 html_kh_text = '<p><u>KH-test</u></p><table>'
 output = '.'
 
+nt_aln_nogaps = ARGV[2]
+
 ## COLLECT BREAKPOINT POSITIONS IF THERE ARE ANY
-breakpoints = collect_params(output, html_kh_text, kh_insignificant_bp)
+breakpoints = collect_params(output, html_kh_text, kh_insignificant_bp, nt_aln_nogaps)
 puts "We found #{breakpoints.size} significant break points for further analyses:\n\t\t#{breakpoints}\n"
 
 gard_html_file = ARGV[1]

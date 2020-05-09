@@ -5,7 +5,7 @@ process gard_detect {
         tuple val(name), file(aln), val(model)
 
     output: 
-        tuple val(name), path("gard.html"), path("gard.log"), path("gard_processor.log")
+        tuple val(name), path(aln), path("gard.html"), path("gard.log"), path("gard_processor.log")
         
     script:
     """
@@ -44,13 +44,15 @@ process gard_detect {
 
 process gard_process {
     label 'bioruby'
-
+    publishDir "${params.output}/${name}/recombination/", mode: 'copy', pattern: "gard.adjusted.html"
+    
     input:
-        tuple val(name), path(gard_html), path(gard_log), path(gard_processor_log)
+        tuple val(name), path(aln), path(gard_html), path(gard_log), path(gard_processor_log)
 
     output: 
         tuple val(name), path("gard.adjusted.html"), emit: html
         tuple val(name), path("bp.tsv"), emit: bp
+        tuple val(name), env(RECOMBINATION), emit: recombination
         
     script:
     """
@@ -59,8 +61,11 @@ process gard_process {
         # nothing, maybe write dummy files for output channel
         touch gard.adjusted.html
         cat gard_processor.log > gard.adjusted.html 
+        RECOMBINATION=false
     else     
-        gard.rb ${params.kh} ${gard_html}
+        gard.rb ${params.kh} ${gard_html} ${aln}
+        RECOMBINATION=true
     fi
+    echo \$RECOMBINATION
     """
 }

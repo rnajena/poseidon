@@ -61,6 +61,7 @@ include {tex_built; tex_combine} from './modules/tex'
 include pdflatex as pdflatex_single from './modules/tex'
 include pdflatex as pdflatex_full from './modules/tex'
 include {html_main; html_codeml; html_params} from './modules/html'
+include build_fragments from './modules/fragment'
 
 /************************** 
 * DATABASES
@@ -147,7 +148,6 @@ workflow {
 
     /*******************************
     GARD breakpoint analysis */
-    //TODO: skip this for now and just do everything on the full aln
     gard_process(
         gard_detect(remove_gaps.out.fna.join(model_selection.out.model))
     )
@@ -169,9 +169,17 @@ workflow {
     )
 
     /*******************************
-    If breakpoints ... */
-    gard_process.out.bp.view()
-    // TODO
+    If breakpoints ... */ 
+    fragments_ch = build_fragments(remove_gaps.out.fna.join(gard_process.out.bp).join(gard_process.out.recombination)).transpose()
+
+    // for each fragment, build a new unrooted tree for CODEML
+
+    // check according to the initial breakpoint array if they are significant
+
+    // now run CODEML for each fragment separately
+
+    // BUILD LATEX SUMMARY TABLE for each fragment separately
+
 
     /*******************************
     Build combined TeX and PDF */
