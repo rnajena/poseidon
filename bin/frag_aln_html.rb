@@ -93,6 +93,11 @@ def build_aln_html_subfile(main_html, frag, bp_start, bp_end, main_aa_aln, gap_s
 
     aln_length_with_gaps = bp_end - bp_start + gaps_until_end
 
+    #write out the gap-adjusted bp start and end for this fragment
+    f = File.open("#{frag}_gap-adjusted_start_end.csv", 'w')
+    f << "#{adj_bp_start},#{adj_bp_end}"
+    f.close
+
     #[sub_html.path, sub_aa_aln.path, aln_length_with_gaps]
     puts "aln_length_with_gaps:#{aln_length_with_gaps}"
 end

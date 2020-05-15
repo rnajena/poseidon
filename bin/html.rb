@@ -702,7 +702,27 @@ aa_aln = ARGV[4]
 codeml_results = ARGV[5] # include ctl and mlc named as codeml.ctl and codeml.mlc
 nt_tree = ARGV[6]
 aa_tree = ARGV[7]
+
 domain_pos = ARGV[8] # should be a hash, 'NA' if not set 
+#domain_pos = {'Fragment_1' => [[(18..39),:red,true]], 'Fragment_2' => [[(40..311), :orange,true]], 'Fragment_3' => [[(338..501), :blue,true]]}
+colors = %w(#D2691E #0000CD #006400 #4B0082 #800000 #2E8B57 #00CED1 #808000 #FF69B4 #FF1493 #696969)
+
+if domain_pos != 'NA'
+  # we have a fragment file input with the gap-adjusted start and end of the fragment
+  domain_pos_h = {}
+  domain_pos_h[type] = []
+  f = File.open(domain_pos,'r')
+  f.each do |line|
+    start = line.split(',')[0].to_i
+    stop = line.split(',')[1].to_i
+    frag_count = type.sub('fragment_','').to_i - 1
+    frag_color = colors[frag_count]
+    domain_pos_h[type].push([Range.new(start-1,stop-1), frag_color, true])
+  end
+  f.close
+  domain_pos = domain_pos_h
+end
+
 title = ARGV[9]
 input_fasta = ARGV[10]
 
@@ -727,16 +747,18 @@ nucleotide_bias_model = ARGV[15]
 # hash holding the paths to the full and fragment index.html files
 # generate this based on the html files that we have, for now only for full aln
 index_html_paths = {} 
-index_html_paths['full_aln'] = '../full_aln/index.html'
+#index_html_paths['full_aln'] = '../full_aln/index.html'
+index_html_paths[type] = "../#{type}/index.html"
 
 tex_summary_file_path = ARGV[16] 
 tex_summary_file_path_gapped = ARGV[17]
 
-# TODO: Fragments!!
 tex_dir = ARGV[18]
-tex_objects = {'full_aln' => []}
+#tex_objects = {'full_aln' => []}
+tex_objects = {type => []}
 Dir.glob("#{tex_dir}/*.tex").each do |tex_full_aln|
-  tex_objects['full_aln'].push(tex_full_aln)
+#  tex_objects['full_aln'].push(tex_full_aln)
+  tex_objects[type].push(tex_full_aln)
 end
 
 refactored_aln = ARGV[19].to_s.downcase == "true"
