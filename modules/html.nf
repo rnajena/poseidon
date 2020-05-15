@@ -4,7 +4,7 @@ process html_main {
 
     input:
         val type 
-        tuple val(name), path(aa_aln_html), path(aa_aln), path(ctl_dir), path(tree_nt), path(tree_aa), path(input_fasta), path(internal2input_species), path(input2internal_species), path(gard_html_file), val(nucleotide_bias_model), path(tex_files), path(tex_dir), path(mlc_files_1), path(mlc_files_2), path(mlc_files_3), path(lrt_files), path(pdfs), path(nt_aln_checked), path(tree_svg_1), path(tree_svg_2), path(tree_pdf_1), path(tree_pdf_2), path(tree_png), path(model_log), path(translated_fasta), path(aln_nt_nogaps), path(aln_aa_nogaps)
+        tuple val(name), path(aa_aln_html), path(aa_aln), path(ctl_dir), path(tree_nt), path(tree_aa), path(input_fasta), path(internal2input_species), path(input2internal_species), path(gard_html_file), val(nucleotide_bias_model), path(tex_files), path(tex_dir), path(mlc_files_1), path(mlc_files_2), path(mlc_files_3), path(lrt_files), path(pdfs), path(nt_aln_checked), path(tree_svg), path(tree_pdf), path(tree_png), path(model_log), path(translated_fasta), path(aln_nt_nogaps), path(aln_aa_nogaps)
 
     output: 
         tuple val(name), file("html/${type}/index.html"), emit: index
@@ -84,5 +84,25 @@ process html_params {
     script:
     """
     parameter_html.rb params.html ${html_main_index} ${params.poseidon_version} ${workflow.projectDir}
+    """
+}
+
+
+/**/
+process frag_aln_html {
+//    publishDir "${params.output}/${name}/html/${type}/", mode: 'copy', pattern: "params.html" 
+    label 'bioruby'
+
+    input:
+        tuple val(name_frag), val(name), val(frag), path(gap_start2gap_length_csv), path(aa_aln_html_raw), path(bp_tsv), path(nt_aln_raw), path(aa_aln_raw)
+
+    output: 
+        tuple val(name_frag), val(name), val(frag), env(ALN_LENGTH_WITH_GAPS)
+        
+    script:
+    """
+    mkdir -p fragments/${frag}/aln
+    ALN_LENGTH_WITH_GAPS=\$(frag_aln_html.rb ${aa_aln_html_raw} ${frag} ${bp_tsv} ${aa_aln_raw} ${gap_start2gap_length_csv} | awk 'BEGIN{FS="aln_length_with_gaps:"}{print \$2}')
+    echo \$ALN_LENGTH_WITH_GAPS
     """
 }

@@ -48,14 +48,15 @@ process raxml2drawing {
   label 'bioruby'
 
   input:
-    tuple val(name), file(raxml)
+    tuple val(name), file(raxml_nt), file(raxml_aa)
 
   output:
-    tuple val(name), file("*.corrected")
+    tuple val(name), file("${raxml_nt.baseName}.raxml.corrected"), file("${raxml_aa.baseName}.raxml.corrected")
 
   script:
   """
-    raxml2drawing.rb ${raxml} \$(basename ${raxml}).corrected
+    raxml2drawing.rb ${raxml_nt} ${raxml_nt.baseName}.raxml.corrected
+    raxml2drawing.rb ${raxml_aa} ${raxml_aa.baseName}.raxml.corrected
   """
 }
 
@@ -70,25 +71,29 @@ process nw_display {
   maxForks 1
 
   input:
-    tuple val(name), file(newick), file(aln)
+    tuple val(name), file(newick_nt), file(newick_aa), file(aln)
 
   output:
     tuple val(name), file("*.svg"), file("*.pdf"), file("*.png")
 
   script:
   """
-    nw_display -v 50 -i 'font-size:11' -l 'font-size:16;font-family:helvetica;font-style:italic' -d 'stroke:black;fill:none;stroke-width:2;stroke-linecap:round' -Il -w 650 -b 'opacity:0' -S -s ${newick} > ${newick}.svg
-    inkscape -f ${newick}.svg -A ${newick}.pdf 
-    #convert ${newick}.svg ${newick}.pdf
+    for newick in *.corrected; do 
 
-    nw_display -v 50 -i 'font-size:11' -l 'font-size:16;font-family:helvetica;font-style:italic' -d 'stroke:black;fill:none;stroke-width:2;stroke-linecap:round' -Il -w 650 -b 'opacity:0' -s ${newick} > ${newick}.scale.svg
-    inkscape -f ${newick}.scale.svg -A ${newick}.scale.pdf
+    nw_display -v 50 -i 'font-size:11' -l 'font-size:16;font-family:helvetica;font-style:italic' -d 'stroke:black;fill:none;stroke-width:2;stroke-linecap:round' -Il -w 650 -b 'opacity:0' -S -s \${newick} > \${newick}.svg
+    inkscape -f \${newick}.svg -A \${newick}.pdf 
+    #convert \${newick}.svg \${newick}.pdf
+
+    nw_display -v 50 -i 'font-size:11' -l 'font-size:16;font-family:helvetica;font-style:italic' -d 'stroke:black;fill:none;stroke-width:2;stroke-linecap:round' -Il -w 650 -b 'opacity:0' -s \${newick} > \${newick}.scale.svg
+    inkscape -f \${newick}.scale.svg -A \${newick}.scale.pdf
 
     # png thumbnail
     ## calculate the export height based on the number of taxa
     TAXA=\$(grep ">" ${aln} | wc -l | awk '{print \$1}')
     HEIGHT=\$((25*TAXA))
-    inkscape -f ${newick}.svg --export-width=480 --export-height=\$HEIGHT --without-gui --export-png=${newick}.png
+    inkscape -f \${newick}.svg --export-width=480 --export-height=\$HEIGHT --without-gui --export-png=\${newick}.png
+
+    done
   """
 }
 

@@ -82,15 +82,16 @@ def collect_params(output, html_text, kh_insignificant_bp, nt_aln_nogaps)
           # check if breakpoint is modulo 3, if not --> adjust
           bp_pos += 1 while bp_pos.modulo(3) != 0
 
+          breakpoints[bp_pos] = 1
           if lhs_adjp < 0.1 && rhs_adjp < 0.1
             # this breakpoint is significant!
             breakpoints[bp_pos] = 0.1 if lhs_adjp < 0.1 && rhs_adjp < 0.1
             breakpoints[bp_pos] = 0.05 if lhs_adjp < 0.05 && rhs_adjp < 0.05
             breakpoints[bp_pos] = 0.01 if lhs_adjp < 0.01 && rhs_adjp < 0.01
-          else
-            if kh_insignificant_bp
-              breakpoints[bp_pos] = 1
-            end
+          #else
+          #  if kh_insignificant_bp
+          #    breakpoints[bp_pos] = 1
+          #  end
           end
         end
       end
@@ -105,12 +106,23 @@ def collect_params(output, html_text, kh_insignificant_bp, nt_aln_nogaps)
     # write out breakpoints to file for further usage
     # also write aa break points
     bp = File.open('bp.tsv','w')
+    bp << "#stop_nt\tstop_aa\tsignificance\tuse_insignificance\n"
     breakpoints.each do |pos, significance|
-      bp << "#{pos}\t#{pos.to_i/3}\t#{significance}\n"
+      bp << "#{pos}\t#{pos.to_i/3}\t#{significance}\t"
+      if kh_insignificant_bp
+        bp << "True\n"
+      else
+        bp << "False\n"
+      end
     end
     if breakpoints.keys.size > 0
       # and add the full aln length to the breakpoints array to calculate also the last fragment, if we have fragments!
-      bp << "#{nt_aln_length_nogaps + 1}\t#{nt_aln_length_nogaps/3 + 1}\t1\n"
+      bp << "#{nt_aln_length_nogaps + 1}\t#{nt_aln_length_nogaps/3 + 1}\t1\t"
+      if kh_insignificant_bp
+        bp << "True\n"
+      else
+        bp << "False\n"
+      end
     end
     bp.close
 

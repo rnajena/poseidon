@@ -28,7 +28,7 @@ def build_fragments(aln, breakpoints)
       fragment_dir = "fragments/fragment_#{break_counter}/aln/"
       FileUtils.mkdir_p(fragment_dir)
 
-      out = File.open("#{fragment_dir}/#{File.basename(aln)}",'w')
+      out = File.open("#{fragment_dir}/fragment_#{break_counter}_#{File.basename(aln)}",'w')
       fragment_file_paths.push(out.path)
       seqs.each do |id, seq|
         #out << ">#{id.chomp}  fragment=#{break_counter} breakpoint=#{(break_position_last.to_i+1).to_s}-#{breakpoint}\n"
@@ -93,8 +93,10 @@ aln = ARGV[0]
 breakpoints = [] # the nt positions of the bp
 f = File.open(ARGV[1], 'r')
 f.each do |line|
+  unless line.start_with?('#')
     pos = line.split("\t")[0].to_i
     breakpoints.push(pos) if pos > 0 
+  end
 end
 f.close
 

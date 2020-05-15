@@ -53,14 +53,31 @@ if (!params.fasta) {
 
 include check_fasta_format from './modules/check_fasta_format'
 include {translatorx; check_aln; remove_gaps} from './modules/translatorx'
+
 include {raxml_nt; raxml_aa; raxml2drawing; nw_display; barefoot} from './modules/tree'
+include raxml_nt as frag_raxml_nt from './modules/tree'
+include raxml_aa as frag_raxml_aa from './modules/tree'
+include raxml2drawing as frag_raxml2drawing from './modules/tree'
+include nw_display as frag_nw_display from './modules/tree'
+include barefoot as frag_barefoot from './modules/tree'
+
 include model_selection from './modules/model_selection'
+
 include {gard_detect; gard_process} from './modules/gard'
+
 include {codeml_run; codeml_built; codeml_combine} from './modules/codeml'
+include codeml_run as frag_codeml_run from './modules/codeml'
+include codeml_built as frag_codeml_built from './modules/codeml'
+include codeml_combine as frag_codeml_combine from './modules/codeml'
+
 include {tex_built; tex_combine} from './modules/tex'
+include frag_tex_built from './modules/tex'
 include pdflatex as pdflatex_single from './modules/tex'
+include pdflatex as frag_pdflatex_single from './modules/tex'
 include pdflatex as pdflatex_full from './modules/tex'
-include {html_main; html_codeml; html_params} from './modules/html'
+
+include {html_main; html_codeml; html_params; frag_aln_html} from './modules/html'
+
 include build_fragments from './modules/fragment'
 
 /************************** 
@@ -122,7 +139,7 @@ workflow {
     convert RAxML output newicks for drawing */
     newicks_ch = 
         raxml2drawing(
-            raxml_nt.out.concat(raxml_aa.out)
+            raxml_nt.out.combine(raxml_aa.out, by: 0)
         ).combine(
             remove_gaps.out.fna, by: 0 // simply needed to count the number of taxa for plotting height estimation
         )
@@ -164,22 +181,73 @@ workflow {
     LaTeX summary tables for single comparisons */
     pdflatex_single(
             tex_built(
-                codeml_combine.out.combine(remove_gaps.out.faa, by: 0).combine(raw_aln_aa, by: 0).combine(internal2input_c, by: 0)
+                codeml_combine.out
+                    .combine(remove_gaps.out.faa, by: 0)
+                    .combine(raw_aln_aa, by: 0)
+                    .combine(internal2input_c, by: 0)
             ).tex_files
     )
 
     /*******************************
+    -- FRAGMENTS --
     If breakpoints ... */ 
-    fragments_ch = build_fragments(remove_gaps.out.fna.join(gard_process.out.bp).join(gard_process.out.recombination)).transpose()
+    fragments_ch = build_fragments(remove_gaps.out.fna.join(gard_process.out.bp).join(gard_process.out.recombination)).fragments.transpose()
 
     // for each fragment, build a new unrooted tree for CODEML
+    frag_aln_nogaps_nt = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple ("${name}_${fragment_dir.getFileName()}", fragment_nt)}
+    frag_aln_nogaps_aa = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple ("${name}_${fragment_dir.getFileName()}", fragment_aa)}
+
+    frag_raxml_nt(frag_aln_nogaps_nt)
+    frag_raxml_aa(frag_aln_nogaps_aa)
+
+    // meta map between the original full id and the fragment_id (composed of fasta name and fragment number)
+    map_full_frag = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple (name, "${name}_${fragment_dir.getFileName()}")}
+    map_full_frag_small = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple (name, "${fragment_dir.getFileName()}")}
+    map_all = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple (name, "${name}_${fragment_dir.getFileName()}","${fragment_dir.getFileName()}")}
+    // meta map between the fragment_id (composed of fasta name and fragment number) and the correct original full nt aln file w/o gaps
+    frag_corresponding_full_nt_aln_nogaps = map_full_frag.combine(remove_gaps.out.fna, by: 0).map {name, fragment_name, aln -> tuple (fragment_name, aln)}
+    // meta map between the fragment_id (composed of fasta name and fragment number) and the correct original full aa aln file w/o gaps
+    frag_corresponding_full_aa_aln_nogaps = map_full_frag.combine(remove_gaps.out.faa, by: 0).map {name, fragment_name, aln -> tuple (fragment_name, aln)}
+    // meta map between the fragment_id (composed of fasta name and fragment number) and the correct original full raw aa aln file
+    frag_corresponding_full_aa_aln_raw = map_full_frag.combine(raw_aln_aa, by: 0).map {name, fragment_name, aln -> tuple (fragment_name, aln)}
+    // meta map between the fragment_id (composed of fasta name and fragment number) and the correct original full raw nt aln file
+    frag_corresponding_full_nt_aln_raw = map_full_frag.combine(raw_aln_nt, by: 0).map {name, fragment_name, aln -> tuple (fragment_name, aln)}
+    // meta map between the fragment_id (composed of fasta name and fragment number) and the correct internal2input file
+    frag_internal2input_c = map_full_frag.combine(internal2input_c, by: 0).map {name, fragment_name, tsv -> tuple (fragment_name, tsv)}
+
+    frag_newicks_ch = 
+        frag_raxml2drawing(
+            frag_raxml_nt.out.combine(frag_raxml_aa.out, by: 0)
+        ).combine(
+            frag_corresponding_full_nt_aln_nogaps, by: 0 // simply needed to count the number of taxa for plotting height estimation
+        )
+    frag_nw_display(frag_newicks_ch)
 
     // check according to the initial breakpoint array if they are significant
+    // ...
 
     // now run CODEML for each fragment separately
+    // fragment nt aln w/o gaps and the corresponding nt tree w/o bootstraps
+    frag_aln_tree_ch = frag_aln_nogaps_nt.join(frag_barefoot(frag_raxml_nt.out))
 
-    // BUILD LATEX SUMMARY TABLE for each fragment separately
+    frag_codeml_combine(
+            frag_codeml_run(
+                frag_codeml_built(frag_aln_tree_ch).ctl_files.transpose().combine(frag_aln_tree_ch, by: 0)
+            ).mlc_files.groupTuple(by: 1, size: 6).map { it -> tuple ( it[0][1], it[1], it[2])}//[bats_mx1_fragment_1, bats_mx1_fragment_1_F1X4, [codeml_F1X4_M1a.mlc, codeml_F1X4_M0.mlc, codeml_F1X4_M8a.mlc, codeml_F1X4_M7.mlc, codeml_F1X4_M8.mlc, codeml_F1X4_M2a.mlc]]
+    )//[bats_mx1_fragment_1, F61, /home/martin/git/poseidon/work/7b/43745a2f2434cd51c0ea91945261e6/codeml_F61.all.mlc]    
 
+    breakpoints_ch = map_full_frag.combine(build_fragments.out.breakpoints, by: 0).map {name, fragment_name, bp_tsv -> tuple (fragment_name, bp_tsv)}
+
+    // build LaTeX summary table for each fragment separately
+    frag_pdflatex_single(
+            frag_tex_built(
+                frag_codeml_combine.out
+                    .combine(frag_corresponding_full_aa_aln_nogaps, by: 0)
+                    .combine(frag_corresponding_full_aa_aln_raw, by: 0)
+                    .combine(frag_internal2input_c, by: 0)
+                    .combine(breakpoints_ch, by: 0)
+            ).tex_files
+    )
 
     /*******************************
     Build combined TeX and PDF */
@@ -189,6 +257,16 @@ workflow {
 
     /*******************************
     HTML */
+
+    // build also HTML output for the fragments, if any
+    frag_aln_html(
+        map_all
+        .join(tex_built.out.gap_start2gap_length, by: 0)
+        .combine(raw_aln_html, by: 0).map {name, name_fragment, fragment, gap_start2gap_length, html_aln -> tuple (name_fragment, name, fragment, gap_start2gap_length, html_aln)}
+        .combine(breakpoints_ch, by: 0)
+        .combine(frag_corresponding_full_nt_aln_raw, by: 0)
+        .combine(frag_corresponding_full_aa_aln_raw, by: 0)
+    ).view()
 
     // MAIN SUMMARY
     // get correct trees
@@ -218,13 +296,16 @@ workflow {
             .join(tex_built.out.lrt_params.groupTuple(by: 0))//[bats_mx1, [F3X4.lrt, F1X4.lrt, F61.lrt]]
             .join(pdflatex_full.out.map {it -> tuple (it[0], it[2])})
             .join(checked_aln_nt)
-            .join(nw_display.out.groupTuple(by: 0).map { it -> tuple (it[0], it[1][0], it[1][1], it[2][0], it[2][1], it[3]) })
+            .join(nw_display.out.map { it -> tuple (it[0], it[1], it[2], it[3]) })
             .join(model_selection.out.log)
             .join(translatorx.out.aa)
             .join(remove_gaps.out.fna)
             .join(remove_gaps.out.faa)
             //.view()
     )
+
+
+
 
     // CODEML SUMMARY
     //fragment_names_c = Channel.empty()
