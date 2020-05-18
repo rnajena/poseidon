@@ -76,8 +76,9 @@ include pdflatex as pdflatex_single from './modules/tex'
 include pdflatex as frag_pdflatex_single from './modules/tex'
 include pdflatex as pdflatex_full from './modules/tex'
 
-include {html; html_codeml; html_params; frag_aln_html} from './modules/html'
+include {html; html_codeml; html_params; frag_aln_html; html_recomb} from './modules/html'
 include html as html_frag from './modules/html' 
+include html_codeml as frag_html_codeml from './modules/html' 
 
 include build_fragments from './modules/fragment'
 
@@ -192,7 +193,11 @@ workflow {
     // this is needed to plot the color bars if there are fragments
     // channel will be filled in fragment part if there are fragments and then used in full html module
     // otherwise, this dummy channel will tell the full html module to not plot any color bars, 'NA'
+    // if there is a fragment file providing information about fragment positions, this will be used for the full_aln
+    // in the html.rb script
     gap_adjusted_start_end_main = checked_aln_html.map{name, html -> tuple (name, 'NA')}
+    frag_aa_bp_with_gaps_for_full_aln = checked_aln_html.map{name, html -> tuple (name, '1')}
+    fragment_names_c = checked_aln_html.map{name, html -> tuple (name, 'NA')}
 
     /*******************************
     -- FRAGMENTS --
@@ -208,8 +213,10 @@ workflow {
 
     // meta map between the original full id and the fragment_id (composed of fasta name and fragment number)
     map_full_frag = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple (name, "${name}_${fragment_dir.getFileName()}")}
+    map_frag_full = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple ("${name}_${fragment_dir.getFileName()}", name)}
     //map_full_frag_small = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple (name, "${fragment_dir.getFileName()}")}
     map_all = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple (name, "${name}_${fragment_dir.getFileName()}","${fragment_dir.getFileName()}")}
+    fragment_names_c = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple (name,"${fragment_dir.getFileName()}")}.groupTuple()
     // meta map between the fragment_id (composed of fasta name and fragment number) and the correct original full nt aln file w/o gaps
     frag_corresponding_full_nt_aln_nogaps = map_full_frag.combine(remove_gaps.out.fna, by: 0).map {name, fragment_name, aln -> tuple (fragment_name, aln)}
     // meta map between the fragment_id (composed of fasta name and fragment number) and the correct original full aa aln file w/o gaps
@@ -284,10 +291,11 @@ workflow {
         frag_tree_aa = frag_raxml_aa.out
     }
 
-    frag_aln_length_with_gaps = frag_aln_html.out.aln_length_with_gaps
-        .concat(frag_aln_html.out.dummy)
+    frag_aa_bp_with_gaps = frag_aln_html.out.aa_bp_with_gaps
+        //.concat(frag_aln_html.out.dummy)
         .unique()
-        .view()
+        //.view()
+    frag_aa_bp_with_gaps_for_full_aln = map_frag_full.combine(frag_aa_bp_with_gaps, by: 0).map{name_frag, name, csv -> tuple (name, csv)}.unique()
 
     gap_adjusted_start_end = frag_aln_html.out.gap_adjusted_start_end
     frag_mlc_files_c = frag_codeml_run.out.mlc_files.groupTuple(by: 1, size: 6).map { it -> tuple ( it[0][1], it[2] )}.groupTuple(by: 0).map { it -> tuple (it[0], it[1][0], it[1][1], it[1][2]) }
@@ -304,11 +312,13 @@ workflow {
             .join(map_full_frag.combine(model_selection.out.model, by: 0).map{name, name_frag, model -> tuple (name_frag, model)})
             .join(tex_combine.out.map {it -> tuple (it[0], it[2])}//[bats_mx1, [bats_mx1_codeml.tex, bats_mx1_gaps_codeml.tex]]
                 .combine(map_full_frag, by: 0).map{name, codeml_tex, name_frag -> tuple(name_frag, codeml_tex)})
-            .join(tex_built.out.tex_dir.groupTuple(by: 0)
-                .combine(map_full_frag, by: 0).map{name, tex, name_frag -> tuple(name_frag, tex)})
-            .join(frag_mlc_files_c)//[bats_mx1, [codeml_F1X4_M0.mlc, codeml_F1X4_M8a.mlc, codeml_F1X4_M1a.mlc, codeml_F1X4_M8.mlc, codeml_F1X4_M2a.mlc, codeml_F1X4_M7.mlc], [codeml_F3X4_M0.mlc, codeml_F3X4_M1a.mlc, codeml_F3X4_M7.mlc, codeml_F3X4_M2a.mlc, codeml_F3X4_M8.mlc, codeml_F3X4_M8a.mlc], [codeml_F61_M7.mlc, codeml_F61_M8.mlc, codeml_F61_M1a.mlc, codeml_F61_M2a.mlc, codeml_F61_M0.mlc, codeml_F61_M8a.mlc]]
-            .join(tex_built.out.lrt_params.groupTuple(by: 0)//[bats_mx1, [F3X4.lrt, F1X4.lrt, F61.lrt]]
-                .combine(map_full_frag, by: 0).map{name, lrt, name_frag -> tuple(name_frag, lrt)})
+            .join(frag_tex_built.out.tex_dir.groupTuple(by: 0))
+//            .join(tex_built.out.tex_dir.groupTuple(by: 0)
+//                .combine(map_full_frag, by: 0).map{name, tex, name_frag -> tuple(name_frag, tex)})
+            .join(frag_mlc_files_c)//[bats_mx1_fragment_1, [codeml_F1X4_M0.mlc, codeml_F1X4_M8a.mlc, codeml_F1X4_M1a.mlc, codeml_F1X4_M8.mlc, codeml_F1X4_M2a.mlc, codeml_F1X4_M7.mlc], [codeml_F3X4_M0.mlc, codeml_F3X4_M1a.mlc, codeml_F3X4_M7.mlc, codeml_F3X4_M2a.mlc, codeml_F3X4_M8.mlc, codeml_F3X4_M8a.mlc], [codeml_F61_M7.mlc, codeml_F61_M8.mlc, codeml_F61_M1a.mlc, codeml_F61_M2a.mlc, codeml_F61_M0.mlc, codeml_F61_M8a.mlc]]
+            .join(frag_tex_built.out.lrt_params.groupTuple(by: 0))//[bats_mx1_fragment_1, [F3X4.lrt, F1X4.lrt, F61.lrt]]
+//            .join(tex_built.out.lrt_params.groupTuple(by: 0)//[bats_mx1_fragment_1, [F3X4.lrt, F1X4.lrt, F61.lrt]]
+//                .combine(map_full_frag, by: 0).map{name, lrt, name_frag -> tuple(name_frag, lrt)})
             .join(pdflatex_full.out.map {it -> tuple (it[0], it[2])}
                 .combine(map_full_frag, by: 0).map{name, pdf, name_frag -> tuple(name_frag, pdf)})
             .join(frag_aln_html.out.all.map{name_frag, name, frag, html, aa_aln, nt_aln -> tuple (name_frag, nt_aln)})
@@ -320,14 +330,20 @@ workflow {
                 .combine(map_full_frag, by: 0).map{name, fna, name_frag -> tuple(name_frag, fna)})
             .join(remove_gaps.out.faa
                 .combine(map_full_frag, by: 0).map{name, faa, name_frag -> tuple(name_frag, faa)})
-            .join(frag_aln_length_with_gaps, by: 0)
+            .join(frag_aa_bp_with_gaps, by: 0)
             .join(gap_adjusted_start_end, by: 0)//a csv with the gap-adjusted start and end pos for a certain fragment
             //.view()
     )
 
-    // collect all the information from the gap_adjusted_start_end channel for the main HTML
-    gap_adjusted_start_end
-
+    // Frag CODEML SUMMARY
+    frag_html_codeml('fragment',
+                html_frag.out.index
+                .join(html_frag.out.tex_dir)
+                .join(frag_tex_built.out.lrt_params.groupTuple(by: 0))//[bats_mx1_fragment_1, [F3X4.lrt, F1X4.lrt, F61.lrt]]
+                .join(map_full_frag.combine(fragment_names_c, by: 0).map{name, frag_name, frag -> tuple (frag_name, frag)}, by: 0)
+                //.view()
+    )
+    ///////////////////////////////////////////////////////////////////////////////////// Fragments ending
 
     // MAIN SUMMARY
     // get correct trees
@@ -362,25 +378,31 @@ workflow {
             .join(translatorx.out.aa)
             .join(remove_gaps.out.fna)
             .join(remove_gaps.out.faa)
-            .join(checked_aln_html.map{name, html -> tuple (name, '0')})//aln_length_w_gaps default for full aln
+            .join(frag_aa_bp_with_gaps_for_full_aln)//aln_length_w_gaps default for full aln
             .join(gap_adjusted_start_end_main)
             //.view()
     )
 
-
-
-
     // CODEML SUMMARY
-    //fragment_names_c = Channel.empty()
     html_codeml('full_aln',
                 html.out.index
                 .join(html.out.tex_dir)
                 .join(tex_built.out.lrt_params.groupTuple(by: 0))//[bats_mx1, [F3X4.lrt, F1X4.lrt, F61.lrt]]
-                //fragment_names_c
+                .join(fragment_names_c, by: 0)
     )
 
     // PARAMETER SUMMARY
     html_params('full_aln', html.out.index)
+
+    // if fragments!!!
+    // Recombination summary HTML
+    html_recomb(
+        html.out.index
+        .join(gard_process.out.html)
+        .join(tree_nt)
+        .join(map_frag_full.combine(frag_tree_nt, by: 0).map{frag_name, name, trees -> tuple (name, trees)}.groupTuple(by:0))
+        //.view()
+    )    
 
 }
 

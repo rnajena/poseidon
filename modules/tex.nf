@@ -30,6 +30,7 @@ process frag_tex_built {
         tuple val(name), val(codon_freq), path("*.tex"), emit: tex_files
         tuple val(name), path("*_tex", type: 'dir'), emit: tex_dir
         tuple val(name), path("${codon_freq}.lrt"), emit: lrt_params
+        tuple val(name), path('gap_start2gap_length.csv'), emit: gap_start2gap_length
         
     script:
     """

@@ -43,7 +43,7 @@ class Html
 
     ## add position row (count codons/aa)
     positions_html_string = '<tr><td></td><td></td>'
-    aln_length_with_gaps_adjustor = 1 if type == 'full_aln'
+    aln_length_with_gaps_adjustor = 1 if type == 'full_aln' || type == 'fragment_1'
     codons.times do |i|
       positions_html_string << "<td>#{i+aln_length_with_gaps_adjustor}</td>"
     end
@@ -707,7 +707,7 @@ domain_pos = ARGV[8] # should be a hash, 'NA' if not set
 #domain_pos = {'Fragment_1' => [[(18..39),:red,true]], 'Fragment_2' => [[(40..311), :orange,true]], 'Fragment_3' => [[(338..501), :blue,true]]}
 colors = %w(#D2691E #0000CD #006400 #4B0082 #800000 #2E8B57 #00CED1 #808000 #FF69B4 #FF1493 #696969)
 
-if domain_pos != 'NA'
+if type != 'full_aln' && domain_pos != 'NA'
   # we have a fragment file input with the gap-adjusted start and end of the fragment
   domain_pos_h = {}
   domain_pos_h[type] = []
@@ -739,7 +739,58 @@ input2internal_species_tsv.each do |line|
 end
 input2internal_species_tsv.close
 
-aln_length_with_gaps_adjustor = ARGV[13].to_i
+# in case of a fragment this is not a single value but a CSV:
+##fragment,bp_aa_with_gaps,bp_aa_no_gaps,nr_aa_gaps
+#fragment_1,106,90,16
+#fragment_2,201,183,18
+#fragment_3,673,650,23
+if type == 'full_aln' || type == 'fragment_1'
+  aln_length_with_gaps_adjustor = 1
+else
+  # set the adjustor to the end position of the previous fragment
+  f = File.open(ARGV[13], 'r')
+  f.each do |line|
+    unless line.start_with?('#')
+      s = line.split(',')
+      frag_id = s[0]
+      aa_bp_with_gaps = s[1].to_i
+      break if frag_id == type
+      aln_length_with_gaps_adjustor = aa_bp_with_gaps + 1
+    end
+  end
+  f.close
+end
+# in case of full alignemt fill a domain hash with information if there are fragments
+#domain_pos = {'Fragment_1' => [[(18..39),:red,true]], 'Fragment_2' => [[(40..311), :orange,true]], 'Fragment_3' => [[(338..501), :blue,true]]}
+##fragment,bp_aa_with_gaps,bp_aa_no_gaps,nr_aa_gaps
+#fragment_1,106,90,16
+#fragment_2,201,183,18
+#fragment_3,673,650,23
+stop = 0
+if type == 'full_aln'
+  f = File.open(ARGV[13], 'r')
+  domain_pos_h = {}
+  f.each do |line|
+    next if line.start_with?('#')
+    s = line.split(',')
+    frag_id = s[0]
+    frag_count = frag_id.sub('fragment_','').to_i - 1
+    if frag_id == 'fragment_1'
+      start = 1
+      stop = s[1].to_i
+      frag_color = colors[frag_count]
+    else
+      start = stop + 1
+      stop = s[1].to_i
+      frag_color = colors[frag_count]
+    end
+    domain_pos_h[frag_id] = []
+    domain_pos_h[frag_id].push([Range.new(start-1,stop-1), frag_color, true])
+  end
+  f.close
+  domain_pos = domain_pos_h
+end
+puts domain_pos
 
 gard_html_file = ARGV[14]
 nucleotide_bias_model = ARGV[15]

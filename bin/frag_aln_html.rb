@@ -150,4 +150,28 @@ gap_start2gap_length_csv.each do |line|
     gap_start2gap_length[gap_start] = gap_length
 end
 
+frag_count = 0
+f = File.open('aa_bp_with_gaps.csv' ,'w')
+f << "#fragment,bp_aa_with_gaps,bp_aa_no_gaps,nr_aa_gaps\n"
+bp_tsv = File.open(ARGV[2],'r')
+bp_tsv.each do |line|
+    unless line.start_with?('#')
+        s = line.split("\t")
+        frag_count += 1
+        frag_gap_aa_length = 0
+        aa_bp_no_gap = s[1].to_i
+        gap_start2gap_length.each do |gap_start_aa_pos, gap_aa_length|
+            puts "#{frag_gap_aa_length} += #{gap_aa_length} if #{aa_bp_no_gap} <= #{gap_start_aa_pos}"
+            frag_gap_aa_length += gap_aa_length if aa_bp_no_gap > gap_start_aa_pos
+        end
+        f << "fragment_#{frag_count},#{frag_gap_aa_length+aa_bp_no_gap},#{aa_bp_no_gap},#{frag_gap_aa_length}\n"
+    end
+end
+bp_tsv.close
+f.close
+##fragment,bp_aa_with_gaps
+#fragment_1,106
+#fragment_2,201
+#fragment_3,673
+
 build_aln_html_subfile(main_html, frag, bp_start, bp_end, main_aa_aln, gap_start2gap_length)

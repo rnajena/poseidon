@@ -4,7 +4,7 @@ process html {
 
     input:
         val type 
-        tuple val(name), path(aa_aln_html), path(aa_aln), path(ctl_dir), path(tree_nt), path(tree_aa), path(input_fasta), path(internal2input_species), path(input2internal_species), path(gard_html_file), val(nucleotide_bias_model), path(tex_files), path(tex_dir), path(mlc_files_1), path(mlc_files_2), path(mlc_files_3), path(lrt_files), path(pdfs), path(nt_aln_checked), path(tree_svg), path(tree_pdf), path(tree_png), path(model_log), path(translated_fasta), path(aln_nt_nogaps), path(aln_aa_nogaps), val(aln_length_with_gaps), file(gap_adjusted_start_end)
+        tuple val(name), path(aa_aln_html), path(aa_aln), path(ctl_dir), path(tree_nt), path(tree_aa), path(input_fasta), path(internal2input_species), path(input2internal_species), path(gard_html_file), val(nucleotide_bias_model), path(tex_files), path(tex_dir), path(mlc_files_1), path(mlc_files_2), path(mlc_files_3), path(lrt_files), path(pdfs), path(nt_aln_checked), path(tree_svg), path(tree_pdf), path(tree_png), path(model_log), path(translated_fasta), path(aln_nt_nogaps), path(aln_aa_nogaps), file(aln_length_with_gaps), file(gap_adjusted_start_end)
 
     output: 
         tuple val(name), file("html/*/index.html"), emit: index
@@ -27,7 +27,6 @@ process html {
 
     mkdir -p html/\${TYPE}
     touch html/\${TYPE}/index.html
-    ADJUSTED_DOMAIN_POS='NA'                # TODO!
     TITLE=\${NAME}
 
     # copy mlc files in their correct ctl folder
@@ -67,15 +66,14 @@ process html_codeml {
 
     input:
         val type 
-        tuple val(name), file(html_main_index), path(tex_dir), path(lrt_files)
-        //val fragment_names
+        tuple val(name), file(html_main_index), path(tex_dir), path(lrt_files), val(fragment_names)
 
     output: 
         tuple val(name), path("codeml.html")
         
     script:
     """
-    codeml_html.rb ${type} codeml.html ${html_main_index} ${tex_dir}
+    codeml_html.rb ${type} codeml.html ${html_main_index} ${tex_dir} '${fragment_names}'
     """
 }
 
@@ -111,8 +109,9 @@ process frag_aln_html {
     output: 
         tuple val(name_frag), val(name), val(frag), path("fragments/${frag}/aln/${name}_aln.aa_based_codon_coloured.html"), path("fragments/${frag}/aln/${name}_aln.aa_ali.fasta"), path("fragments/${frag}/aln/${name}_aln.nt_ali.fasta"), emit: all 
         tuple val(name_frag), path("${frag}_gap-adjusted_start_end.csv"), emit: gap_adjusted_start_end
-        tuple env(NEXT_NAME_FRAG), env(ALN_LENGTH_WITH_GAPS), emit: aln_length_with_gaps
-        tuple env(DUMMY_NAME_FRAG), val('1'), emit: dummy // for the first fragment
+        tuple val(name_frag), path('aa_bp_with_gaps.csv'), emit: aa_bp_with_gaps
+        //tuple env(NEXT_NAME_FRAG), env(ALN_LENGTH_WITH_GAPS), emit: aln_length_with_gaps
+        //tuple env(DUMMY_NAME_FRAG), val('1'), emit: dummy // for the first fragment
     script:
     """
     mkdir -p fragments/${frag}/aln
@@ -126,5 +125,24 @@ process frag_aln_html {
     DUMMY_NAME_FRAG="${name}_fragment_1"
 
     echo \$ALN_LENGTH_WITH_GAPS
+    """
+}
+
+
+process html_recomb {
+    publishDir "${params.output}/${name}/html/${type}/", mode: 'copy', pattern: "codeml.html" 
+    label 'bioruby'
+
+    input:
+        tuple val(name), path(html_index), path(gard_html), path(full_nt_tree), path(frag_nt_trees)
+
+//    output: 
+//        tuple val(name), path("codeml.html")
+        
+    script:
+    """
+    mkdir -p html/full_aln/
+    touch html/full_aln/recomb.html
+    recombination_html.rb ${html_index} ${gard_html} ${full_nt_tree} '${frag_nt_trees}'
     """
 }

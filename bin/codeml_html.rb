@@ -182,5 +182,8 @@ Dir.glob("#{tex_dir}/*.tex").each do |tex_full_aln|
 end
 
 frag_names = ARGV[4]
+if frag_names && frag_names.start_with?('[')
+  frag_names = frag_names.sub('[','').sub(']','').split(',')
+end
 
 CodemlHtml.new(type, codeml_html_out, html_index_file, tex_objects, frag_names)
