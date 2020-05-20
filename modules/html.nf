@@ -1,19 +1,25 @@
 process html {
-    publishDir "${params.output}/${name}/", mode: 'copy', pattern: "html" 
+    //if (type == 'full_aln')
+        publishDir "${params.output}/${name}/", mode: 'copy', pattern: "html" 
+    //else
+        publishDir "${params.output}/${name.split('_fragment_')[0]}/html/", mode: 'copy', pattern: "fragment_*" 
+
     label 'bioruby'
+
+    maxForks 1
 
     input:
         val type 
-        tuple val(name), path(aa_aln_html), path(aa_aln), path(ctl_dir), path(tree_nt), path(tree_aa), path(input_fasta), path(internal2input_species), path(input2internal_species), path(gard_html_file), val(nucleotide_bias_model), path(tex_files), path(tex_dir), path(mlc_files_1), path(mlc_files_2), path(mlc_files_3), path(lrt_files), path(pdfs), path(nt_aln_checked), path(tree_svg), path(tree_pdf), path(tree_png), path(model_log), path(translated_fasta), path(aln_nt_nogaps), path(aln_aa_nogaps), file(aln_length_with_gaps), file(gap_adjusted_start_end)
+        tuple val(name), path(aa_aln_html), path(aa_aln), path(ctl_dir), path(tree_nt), path(tree_aa), path(input_fasta), path(internal2input_species), path(input2internal_species), path(gard_html_file), val(nucleotide_bias_model), path(tex_files), path(tex_dir), path(mlc_files_1), path(mlc_files_2), path(mlc_files_3), path(lrt_files), path(pdfs), path(nt_aln_checked), path(tree_svg), path(tree_pdf), path(tree_png), path(model_log), path(translated_fasta), path(aln_nt_nogaps), path(aln_aa_nogaps), file(aln_length_with_gaps), file(gap_adjusted_start_end), val(recombination)
 
     output: 
         tuple val(name), file("html/*/index.html"), emit: index
         tuple val(name), file("tex"), emit: tex_dir
         path("html", type: 'dir')
+        path("fragment_*", type: 'dir') optional true
         
     script:
     """
-
     if [[ ${type} == 'fragment' ]]; then
         # extract the fragment ID from the name_frag combination label
         NAME=\$(echo ${name} | awk 'BEGIN{FS="_fragment_"};{print "fragment_"\$2}')
@@ -44,15 +50,19 @@ process html {
     mkdir tex
     cp *_tex/*.tex tex/
 
-    html.rb \${TYPE} html html/\${TYPE}/index.html ${aa_aln_html} ${aa_aln} ctl_mlc ${tree_nt} ${tree_aa} ${gap_adjusted_start_end} \$TITLE ${input_fasta} ${internal2input_species} ${input2internal_species} ${aln_length_with_gaps} ${gard_html_file} ${nucleotide_bias_model} \${FASTA_NAME}_codeml.tex \${FASTA_NAME}_gaps_codeml.tex tex ${params.refactor} ${params.poseidon_version} ${params.recombination} ${workflow.projectDir}
+    html.rb \${TYPE} html html/\${TYPE}/index.html ${aa_aln_html} ${aa_aln} ctl_mlc ${tree_nt} ${tree_aa} ${gap_adjusted_start_end} \$TITLE ${input_fasta} ${internal2input_species} ${input2internal_species} ${aln_length_with_gaps} ${gard_html_file} ${nucleotide_bias_model} \${FASTA_NAME}_codeml.tex \${FASTA_NAME}_gaps_codeml.tex tex ${params.refactor} ${params.poseidon_version} ${recombination} ${workflow.projectDir}
+
+    if [[ ${type} == 'fragment' ]]; then
+        cp -r html/\$NAME .
+    fi
+
+    sleep 5s
     """
 }
 
 
 // TODO: add the mlc files to the CTL dir!
 // TODO: check params.refactor
-// TODO: check params.recombination
-// TODO: FRAGMENTS!!
 
 /*
 type, html_dir, out, translatorx_html, aa_aln, codeml_results, nt_tree, aa_tree, domain_pos, title, input_fasta, internal2input_species, input2internal_species, aln_length_with_gaps_adjustor, gard_html_file, nucleotide_bias_model, index_html_paths, tex_summary_file_path, tex_summary_file_path_gapped, tex_objects, refactored_aln, version, is_recomb
@@ -130,19 +140,20 @@ process frag_aln_html {
 
 
 process html_recomb {
-    publishDir "${params.output}/${name}/html/${type}/", mode: 'copy', pattern: "codeml.html" 
+    publishDir "${params.output}/${name}/html/full_aln/", mode: 'copy', pattern: "recomb.html" 
     label 'bioruby'
 
     input:
         tuple val(name), path(html_index), path(gard_html), path(full_nt_tree), path(frag_nt_trees)
 
-//    output: 
-//        tuple val(name), path("codeml.html")
+    output: 
+        path "recomb.html"
         
     script:
     """
     mkdir -p html/full_aln/
     touch html/full_aln/recomb.html
     recombination_html.rb ${html_index} ${gard_html} ${full_nt_tree} '${frag_nt_trees}'
+    cp html/full_aln/recomb.html recomb.html
     """
 }

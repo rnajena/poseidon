@@ -3,7 +3,7 @@ Muscle,v3.8.31,Edgar (2004); ,15034147
 RAxML,v8.2.12,Stamatakis (2014); ,24451623
 Newick Utilities,v1.6,Junier and Zdobnov (2010); ,20472542
 MODELTEST,.,Posada and Crandall (1998); ,9918953
-HyPhy,v2.5.2,Pond et al. (2005); ,15509596
+HyPhy,v2.2.7,Pond et al. (2005); ,15509596
 GARD,.,Pond et al. (2006); ,17110367
 PaML/CodeML,v4.9,Yang (2007); ,17483113
 Ruby,v2.0.1,.,.

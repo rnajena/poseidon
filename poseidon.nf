@@ -170,7 +170,7 @@ workflow {
     gard_process(
         gard_detect(remove_gaps.out.fna.join(model_selection.out.model))
     )
-    
+
     /*******************************
     CODEML */
     codeml_combine(
@@ -264,10 +264,23 @@ workflow {
     )
 
     /*******************************
-    Build combined TeX and PDF */
+    Build combined TeX and PDF, also add fragments */
+    fragment_tex_dirs = map_frag_full.combine(
+        frag_tex_built.out.tex_dir, by: 0
+    ).map{name_frag, name, tex_dir -> tuple (name, tex_dir)}
+    .groupTuple(by: 0)
+
     pdflatex_full(
-            tex_combine(tex_built.out.tex_files.groupTuple(by: 0).map { it -> tuple ( it[0], it[2][0], it[2][1], it[2][2] ) })
-    )//[bats_mx1, full, [/home/martin/git/poseidon/work/36/53218cb7db8f91aa7243a6216249f1/bats_mx1_codeml.pdf, /home/martin/git/poseidon/work/36/53218cb7db8f91aa7243a6216249f1/bats_mx1_gaps_codeml.pdf]]
+            tex_combine(
+                tex_built.out.tex_dir.groupTuple(by: 0)//.map { name, tex_dirs -> tuple ( name, tex_dirs[0], tex_dirs[1], tex_dirs[2] ) }
+                .combine(fragment_tex_dirs, by: 0)
+                .join(build_fragments.out.breakpoints, by: 0)
+            )
+    )//[bats_mx1, full, [bats_mx1_codeml.pdf, bats_mx1_gaps_codeml.pdf]]
+
+
+//[bats_mx1, [/home/martin/git/poseidon/work/5d/4a071c1bd11590bf0f3a638a2dafa0/codeml_F3X4.all.M1a_vs_M2a.gaps.tex, /home/martin/git/poseidon/work/5d/4a071c1bd11590bf0f3a638a2dafa0/codeml_F3X4.all.M1a_vs_M2a.tex, /home/martin/git/poseidon/work/5d/4a071c1bd11590bf0f3a638a2dafa0/codeml_F3X4.all.M7_vs_M8.gaps.tex, /home/martin/git/poseidon/work/5d/4a071c1bd11590bf0f3a638a2dafa0/codeml_F3X4.all.M7_vs_M8.tex, /home/martin/git/poseidon/work/5d/4a071c1bd11590bf0f3a638a2dafa0/codeml_F3X4.all.M8a_vs_M8.gaps.tex, /home/martin/git/poseidon/work/5d/4a071c1bd11590bf0f3a638a2dafa0/codeml_F3X4.all.M8a_vs_M8.tex], [/home/martin/git/poseidon/work/64/63252d72729ec243027c7c0d0b36f6/codeml_F1X4.all.M1a_vs_M2a.gaps.tex, /home/martin/git/poseidon/work/64/63252d72729ec243027c7c0d0b36f6/codeml_F1X4.all.M1a_vs_M2a.tex, /home/martin/git/poseidon/work/64/63252d72729ec243027c7c0d0b36f6/codeml_F1X4.all.M7_vs_M8.gaps.tex, /home/martin/git/poseidon/work/64/63252d72729ec243027c7c0d0b36f6/codeml_F1X4.all.M7_vs_M8.tex, /home/martin/git/poseidon/work/64/63252d72729ec243027c7c0d0b36f6/codeml_F1X4.all.M8a_vs_M8.gaps.tex, /home/martin/git/poseidon/work/64/63252d72729ec243027c7c0d0b36f6/codeml_F1X4.all.M8a_vs_M8.tex], [/home/martin/git/poseidon/work/0c/43eb193cbc3c3d3905718991716369/codeml_F61.all.M1a_vs_M2a.gaps.tex, /home/martin/git/poseidon/work/0c/43eb193cbc3c3d3905718991716369/codeml_F61.all.M1a_vs_M2a.tex, /home/martin/git/poseidon/work/0c/43eb193cbc3c3d3905718991716369/codeml_F61.all.M7_vs_M8.gaps.tex, /home/martin/git/poseidon/work/0c/43eb193cbc3c3d3905718991716369/codeml_F61.all.M7_vs_M8.tex, /home/martin/git/poseidon/work/0c/43eb193cbc3c3d3905718991716369/codeml_F61.all.M8a_vs_M8.gaps.tex, /home/martin/git/poseidon/work/0c/43eb193cbc3c3d3905718991716369/codeml_F61.all.M8a_vs_M8.tex], [/home/martin/git/poseidon/work/42/3cfa85fc8331bc2daf26c22f030fb2/fragment_1_codeml_F3X4.all.M1a_vs_M2a.gaps.tex, /home/martin/git/poseidon/work/42/3cfa85fc8331bc2daf26c22f030fb2/fragment_1_codeml_F3X4.all.M1a_vs_M2a.tex, /home/martin/git/poseidon/work/42/3cfa85fc8331bc2daf26c22f030fb2/fragment_1_codeml_F3X4.all.M7_vs_M8.gaps.tex, /home/martin/git/poseidon/work/42/3cfa85fc8331bc2daf26c22f030fb2/fragment_1_codeml_F3X4.all.M7_vs_M8.tex, /home/martin/git/poseidon/work/42/3cfa85fc8331bc2daf26c22f030fb2/fragment_1_codeml_F3X4.all.M8a_vs_M8.gaps.tex, /home/martin/git/poseidon/work/42/3cfa85fc8331bc2daf26c22f030fb2/fragment_1_codeml_F3X4.all.M8a_vs_M8.tex], [/home/martin/git/poseidon/work/df/2e9e922debab0798b501d2c1827688/fragment_1_codeml_F61.all.M1a_vs_M2a.gaps.tex, /home/martin/git/poseidon/work/df/2e9e922debab0798b501d2c1827688/fragment_1_codeml_F61.all.M1a_vs_M2a.tex, /home/martin/git/poseidon/work/df/2e9e922debab0798b501d2c1827688/fragment_1_codeml_F61.all.M7_vs_M8.gaps.tex, /home/martin/git/poseidon/work/df/2e9e922debab0798b501d2c1827688/fragment_1_codeml_F61.all.M7_vs_M8.tex, /home/martin/git/poseidon/work/df/2e9e922debab0798b501d2c1827688/fragment_1_codeml_F61.all.M8a_vs_M8.gaps.tex, /home/martin/git/poseidon/work/df/2e9e922debab0798b501d2c1827688/fragment_1_codeml_F61.all.M8a_vs_M8.tex], [/home/martin/git/poseidon/work/f2/3410487ad80cf4d868eed2088aa4c3/fragment_1_codeml_F1X4.all.M1a_vs_M2a.gaps.tex, /home/martin/git/poseidon/work/f2/3410487ad80cf4d868eed2088aa4c3/fragment_1_codeml_F1X4.all.M1a_vs_M2a.tex, /home/martin/git/poseidon/work/f2/3410487ad80cf4d868eed2088aa4c3/fragment_1_codeml_F1X4.all.M7_vs_M8.gaps.tex, /home/martin/git/poseidon/work/f2/3410487ad80cf4d868eed2088aa4c3/fragment_1_codeml_F1X4.all.M7_vs_M8.tex, /home/martin/git/poseidon/work/f2/3410487ad80cf4d868eed2088aa4c3/fragment_1_codeml_F1X4.all.M8a_vs_M8.gaps.tex, /home/martin/git/poseidon/work/f2/3410487ad80cf4d868eed2088aa4c3/fragment_1_codeml_F1X4.all.M8a_vs_M8.tex]]
+
 
     /*******************************
     HTML */
@@ -302,6 +315,7 @@ workflow {
     html_frag('fragment',
         frag_aln_html.out.all
             .map{name_frag, name, frag, html, aa_aln, nt_aln -> tuple (name_frag, html, aa_aln)}
+            //.join(map_full_frag.combine(fasta_input_ch, by: 0).map{name, name_frag, fasta -> tuple (name)})//need this for correct out folder
             .join(frag_codeml_built.out.ctl_dir)
             .join(frag_tree_nt)
             .join(frag_tree_aa)
@@ -332,6 +346,8 @@ workflow {
                 .combine(map_full_frag, by: 0).map{name, faa, name_frag -> tuple(name_frag, faa)})
             .join(frag_aa_bp_with_gaps, by: 0)
             .join(gap_adjusted_start_end, by: 0)//a csv with the gap-adjusted start and end pos for a certain fragment
+            .join(gard_process.out.recombination
+                .combine(map_full_frag, by: 0).map{name, recombination, name_frag -> tuple(name_frag, recombination)})//[bats_mx1_fragment_1, true]
             //.view()
     )
 
@@ -359,6 +375,7 @@ workflow {
     html('full_aln', 
         checked_aln_html
             .join(checked_aln_aa)
+            //.join(checked_aln_aa.map{name, faa -> name})//need this for correct out folder, bc/ fragments above need this
             .join(codeml_built.out.ctl_dir)
             .join(tree_nt)
             .join(tree_aa)
@@ -380,6 +397,7 @@ workflow {
             .join(remove_gaps.out.faa)
             .join(frag_aa_bp_with_gaps_for_full_aln)//aln_length_w_gaps default for full aln
             .join(gap_adjusted_start_end_main)
+            .join(gard_process.out.recombination)//[bats_mx1, true]
             //.view()
     )
 
@@ -403,6 +421,9 @@ workflow {
         .join(map_frag_full.combine(frag_tree_nt, by: 0).map{frag_name, name, trees -> tuple (name, trees)}.groupTuple(by:0))
         //.view()
     )    
+
+    // Summarize all output files
+
 
 }
 

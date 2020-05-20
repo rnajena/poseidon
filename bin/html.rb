@@ -12,7 +12,7 @@ require 'fileutils'
 
 class Html
 
-  def initialize(type, html_dir, out, translatorx_html, aa_aln, codeml_results, nt_tree, aa_tree, domain_pos, title, input_fasta, internal2input_species, input2internal_species, aln_length_with_gaps_adjustor, gard_html_file, nucleotide_bias_model, index_html_paths, tex_summary_file_path, tex_summary_file_path_gapped, tex_objects, refactored_aln, version, is_recomb, logo_png, pipeline, details_summary_master)
+  def initialize(type, html_dir, out, translatorx_html, aa_aln, codeml_results, nt_tree, aa_tree, domain_pos, title, input_fasta, internal2input_species, input2internal_species, aln_length_with_gaps_adjustor, gard_html_file, nucleotide_bias_model, index_html_paths, tex_summary_file_path, tex_summary_file_path_gapped, tex_objects, refactored_aln, version, is_recomb, logo_png, pipeline, details_summary_master, domain_pos_sidebar_for_fragments)
 
     @LOGO_PNG = logo_png
     @PIPELINE = pipeline
@@ -71,7 +71,9 @@ class Html
     ctl_refactor(out, aa_aln)
 
     # add additional content to the left frame
-    header_html_string = refactor_framecontent(header_html_string, html_paths, nucleotide_bias_model, type, index_html_paths, version, is_recomb)
+    domains = domain_pos
+    domains = domain_pos_sidebar_for_fragments if type != 'full_aln'
+    header_html_string = refactor_framecontent(header_html_string, html_paths, nucleotide_bias_model, type, index_html_paths, version, is_recomb, domains)
 
     # combine html strings
     @out << header_html_string << domain_html_string << positions_html_string << init_html_string << codeml_html_string << aa_aln_html_string
@@ -135,7 +137,7 @@ class Html
     domain_html_string << "</tr>\n\n"
   end
 
-  def refactor_framecontent(header_html_string, html_paths, nucleotide_bias_model, type, index_html_paths, version, is_recomb)
+  def refactor_framecontent(header_html_string, html_paths, nucleotide_bias_model, type, index_html_paths, version, is_recomb, domain_pos)
     data_html = "</br>\n<details><summary><b>Input</b></summary><ul><li><a href=\"#{html_paths[:input_fasta]}\">Fasta (nt)</a></li><li><a href=\"#{html_paths[:input_fasta_aa]}\">Fasta (aa)</a></li></ul></details>"
 
     data_html << "\n<details><summary><b>Alignment</b></summary><ul><li><b>nt</b>:<br><a href=\"#{html_paths[:aln_nt]}\">full</a>, <a href=\"#{html_paths[:aln_nt_nogap]}\">no gaps</a></li><li><b>aa</b>:<br><a href=\"#{html_paths[:aln_aa]}\">full</a>, <a href=\"#{html_paths[:aln_aa_nogap]}\">no gaps</a></li></ul></details>"
@@ -163,11 +165,17 @@ class Html
       data_html << "<li><a href=\"#{html_paths[:gard]}\">GARD</a></li>"
     end
     # loop over fragments and link them here
-    if index_html_paths.keys.size > 1 # then we have fragments and not only the full aln html
+    puts domain_pos
+    #{"fragment_1"=>[[0..105, "#D2691E", true]], "fragment_2"=>[[106..200, "#0000CD", true]], "fragment_3"=>[[201..672, "#006400", true]]}
+    #if index_html_paths.keys.size > 1 # then we have fragments and not only the full aln html
+    if domain_pos != 'NA'
       data_html << '<ul>'
-      index_html_paths.each do |frag_type, html_path|
+      #index_html_paths.each do |frag_type, html_path|
+      data_html << "<li><a href=\"../full_aln/index.html\">full_aln</a></li>" if type != 'full_aln'
+      domain_pos.each do |frag_type, domain_a|
         unless frag_type == type
-          data_html << "<li><a href=\"#{html_path}\">#{frag_type}</a></li>"
+#          data_html << "<li><a href=\"#{html_path}\">#{frag_type}</a></li>"
+          data_html << "<li><a href=\"../#{frag_type}/index.html\">#{frag_type}</a></li>"
         end
       end
       data_html << '</ul>'
@@ -368,9 +376,9 @@ class Html
         tex_objects[type].each do |tex_object|
           next unless tex_object.include?('.gaps.')
           # here we have now the gapped und ungapped tex files!
-          # tex_object="tex/codeml_F3X4.all.M1a_vs_M2a.tex"
+          # tex_object="tex/codeml_F3X4.all.M1a_vs_M2a.tex" OR "tex/fragment_1_codeml_F3X4.all.M1a_vs_M2a.tex"" 
             #new_freq = File.dirname(tex_object.output_file.path).reverse.split('/')[0].reverse
-            new_freq = File.basename(tex_object, '.tex').sub('codeml_','').split('.')[0]
+            new_freq = File.basename(tex_object, '.tex').sub('codeml_','').sub("#{type}_",'').split('.')[0]
 
             if new_freq == codon_freq
               if ns_sites == 'M2a'
@@ -760,37 +768,42 @@ else
   end
   f.close
 end
-# in case of full alignemt fill a domain hash with information if there are fragments
+# in case of full alignemt and fragments fill a domain hash with information if there are fragments
+# in case of fragments, only use this information for the side bar
 #domain_pos = {'Fragment_1' => [[(18..39),:red,true]], 'Fragment_2' => [[(40..311), :orange,true]], 'Fragment_3' => [[(338..501), :blue,true]]}
 ##fragment,bp_aa_with_gaps,bp_aa_no_gaps,nr_aa_gaps
 #fragment_1,106,90,16
 #fragment_2,201,183,18
 #fragment_3,673,650,23
 stop = 0
-if type == 'full_aln'
-  f = File.open(ARGV[13], 'r')
-  domain_pos_h = {}
-  f.each do |line|
-    next if line.start_with?('#')
-    s = line.split(',')
-    frag_id = s[0]
-    frag_count = frag_id.sub('fragment_','').to_i - 1
-    if frag_id == 'fragment_1'
-      start = 1
-      stop = s[1].to_i
-      frag_color = colors[frag_count]
-    else
-      start = stop + 1
-      stop = s[1].to_i
-      frag_color = colors[frag_count]
-    end
-    domain_pos_h[frag_id] = []
-    domain_pos_h[frag_id].push([Range.new(start-1,stop-1), frag_color, true])
+domain_pos_sidebar_for_fragments = 'NA'
+  
+f = File.open(ARGV[13], 'r')
+domain_pos_h = {}
+f.each do |line|
+  next if line.start_with?('#')
+  s = line.split(',')
+  frag_id = s[0]
+  frag_count = frag_id.sub('fragment_','').to_i - 1
+  if frag_id == 'fragment_1'
+    start = 1
+    stop = s[1].to_i
+    frag_color = colors[frag_count]
+  else
+    start = stop + 1
+    stop = s[1].to_i
+    frag_color = colors[frag_count]
   end
-  f.close
-  domain_pos = domain_pos_h
+  domain_pos_h[frag_id] = []
+  domain_pos_h[frag_id].push([Range.new(start-1,stop-1), frag_color, true])
 end
-puts domain_pos
+f.close
+if type == 'full_aln'
+  domain_pos = domain_pos_h
+else
+  domain_pos_sidebar_for_fragments = domain_pos_h
+end
+#puts domain_pos
 
 gard_html_file = ARGV[14]
 nucleotide_bias_model = ARGV[15]
@@ -823,7 +836,7 @@ logo = "#{workflow_projectdir}/images/poseidon_logo.png"
 pipeline = "#{workflow_projectdir}/images/pipeline_landscape"
 details = "#{workflow_projectdir}/src/details-shim-master"
 
-Html.new(type, html_dir, out, translatorx_html, aa_aln, codeml_results, nt_tree, aa_tree, domain_pos, title, input_fasta, internal2input_species, input2internal_species, aln_length_with_gaps_adjustor, gard_html_file, nucleotide_bias_model, index_html_paths, tex_summary_file_path, tex_summary_file_path_gapped, tex_objects, refactored_aln, version, is_recomb, logo, pipeline, details)
+Html.new(type, html_dir, out, translatorx_html, aa_aln, codeml_results, nt_tree, aa_tree, domain_pos, title, input_fasta, internal2input_species, input2internal_species, aln_length_with_gaps_adjustor, gard_html_file, nucleotide_bias_model, index_html_paths, tex_summary_file_path, tex_summary_file_path_gapped, tex_objects, refactored_aln, version, is_recomb, logo, pipeline, details, domain_pos_sidebar_for_fragments)
 
 ######################
 ## TEST: MX1 bat species, Jonas cloned ones and additional bats, only one allel per species (see manuscript table)

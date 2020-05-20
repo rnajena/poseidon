@@ -65,13 +65,15 @@ process tex_combine {
     label 'bioruby'
 
     input:
-        tuple val(name), path(tex_files_1), path(tex_files_2), path(tex_files_3)
+//        tuple val(name), path(tex_dir_1), path(tex_dir_2), path(tex_dir_3)
+        tuple val(name), path(full_aln_tex_dirs), path(frag_tex_dirs), file(bp_tsv)
 
     output: 
         tuple val(name), val('full'), path("${name}*.tex")
         
     script:
     """
-    tex_combine.rb ${name}_codeml.tex ${name}_gaps_codeml.tex
+    cp *_tex/* .
+    tex_combine.rb ${name}_codeml.tex ${name}_gaps_codeml.tex ${bp_tsv}
     """
 }

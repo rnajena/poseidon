@@ -30,7 +30,7 @@ the analyses of short fragments resulting from putative recombination events sho
 
     html_out_file << "<br><h2>Recombination test with GARD</h2>\n\n"
     html_out_file << "<table cellpadding=\"20\" border=\"1\"><tr>\n"
-    html_out_file << '<td>' << gard_plot_html << "<a href=\"data/gard.html\">Detailed recombination output</a>" << '</td>'
+    html_out_file << '<td>' << gard_plot_html << "<a href=\"data/gard.adjusted.html\">Detailed recombination output</a>" << '</td>'
     html_out_file << '<td>' << gard_kh_html << '</td>'
     html_out_file << "</tr></table>\n\n"
 
@@ -38,8 +38,9 @@ the analyses of short fragments resulting from putative recombination events sho
 
     tree_counter = 0
     html_out_file << "<table cellpadding=\"20\" border=\"1\"><tr>\n"
-    html_out_file << "<td><b>Full alignment</b><br><br><a target=\"_blank\" href=\"data/#{File.basename(full_tree_nt).sub('.corrected.','.')}.scale.svg\">
-<img src=\"data/#{File.basename(full_tree_nt).sub('.corrected.','.')}.png\"></a><br>
+#    html_out_file << "<td><b>Full alignment</b><br><br><a target=\"_blank\" href=\"data/#{File.basename(full_tree_nt).sub('.corrected.','.')}.scale.svg\">
+    html_out_file << "<td><b>Full alignment</b><br><br><a target=\"_blank\" href=\"data/#{File.basename(full_tree_nt)}.corrected.scale.svg\">
+<img src=\"data/#{File.basename(full_tree_nt)}.corrected.png\"></a><br>
 <a href=\"index.html\">Go to alignment</a></td>"
     tree_counter += 1
 
@@ -47,8 +48,9 @@ the analyses of short fragments resulting from putative recombination events sho
       puts tree
       header = "Fragment #{fragment.split('_')[1]}"
       tree_counter += 1
-      html_out_file << '<td>' << "<b>#{header}</b><br><br><a target=\"_blank\" href=\"../#{fragment}/data/#{File.basename(tree).sub('.corrected.','.')}.scale.svg\">
-<img src=\"../#{fragment}/data/#{File.basename(tree).sub('.corrected','')}.png\"></a><br>
+#      html_out_file << '<td>' << "<b>#{header}</b><br><br><a target=\"_blank\" href=\"../#{fragment}/data/#{File.basename(tree).sub('.corrected.','.')}.scale.svg\">
+      html_out_file << '<td>' << "<b>#{header}</b><br><br><a target=\"_blank\" href=\"../#{fragment}/data/#{File.basename(tree)}.corrected.scale.svg\">
+<img src=\"../#{fragment}/data/#{File.basename(tree)}.corrected.png\"></a><br>
 <a href=\"../#{fragment}/index.html\">Go to alignment</a></td>"
       if tree_counter == 2
         tree_counter = 0
@@ -130,9 +132,12 @@ full_tree_nt = ARGV[2]
 
 #[/home/martin/git/poseidon/work/b5/67a3f6987dce7bd1ad3efac06d8f14/bats_mx1_fragment_2_nt.raxml, /home/martin/git/poseidon/work/00/3c80a37ae31d549ad32e6eb4f6ac29/bats_mx1_fragment_3_nt.raxml, /home/martin/git/poseidon/work/c4/9fb484c6f2af416a59ea91043dbf3f/bats_mx1_fragment_1_nt.raxml]
 fragment_trees_nt = {}
-ARGV[3].split(' ').each do |frag_tree|
-  frag_id = 'fragment_'+frag_tree.sub('_nt.raxml','').split('fragment_')[1]
-  fragment_trees_nt[frag_id] = frag_tree
+num_frags = ARGV[3].split(' ').size
+num_frags.times.each do |i|
+  ARGV[3].split(' ').each do |frag_tree|
+    frag_id = 'fragment_'+frag_tree.sub('_nt.raxml','').split('fragment_')[1]
+    fragment_trees_nt[frag_id] = frag_tree if "fragment_#{i+1}" == frag_id
+  end
 end
 
 RecombinationHtml.new('html/full_aln/recomb.html', gard_html_file, full_tree_nt, fragment_trees_nt, html_index_out)
