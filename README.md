@@ -46,11 +46,11 @@ __Important:__ PoSeiDon needs nucleotide sequences with a correct open reading f
 
 ### Profiles
 
-Nextflow can be easily executed on different environments like your local machine, a high-performance cluster or the cloud. Different `-profile` are used to tell Nextflow which system should be used. For local execution `-profile local,docker` should be used. More profiles will be added.   
+Nextflow can be easily executed on different environments like your local machine, a high-performance cluster or the cloud. Different `-profile` are used to tell Nextflow which system should be used. For local execution `-profile local,docker` should be used (and is also the default). More profiles will be added.   
 
 ### Examples 
 
-Now let's assume you used Nextflow to pull the PoSeiDon code. 
+Now let's assume you used Nextflow to pull the PoSeiDon code and you execute the piepline on a local machine using the default profile `-profile local,docker`. 
 
 ```bash
 # show help 
@@ -59,18 +59,18 @@ nextflow run hoelzer/poseidon --help
 # run small example on a local machine with 
 # (first time this will need some more time because the Docker containers are downloaded)
 nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta \
---cores 4 -profile local,docker
+--cores 4
 
 # resume a broken run
 nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta \
---cores 4 -profile local,docker -resume
+--cores 4 -resume
 ```
 
 To reproduce the [positive selection results](http://www.rna.uni-jena.de/supplements/mx1_bats/full_aln/) reported in [Fuchs _et al_. (2017), Journal of Virology](https://doi.org/10.1128/JVI.00361-17) run:
 ```bash
 nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1.fasta \
 --cores 4 --kh --outgroup "Pteropus_alecto,Eidolon_helvum,Rousettus_aegyptiacus,Hypsignatus_monstrosus" \
---reference "Myotis_daubentonii" -profile local,docker
+--reference "Myotis_daubentonii"
 ```
 
 ## Workflow of the PoSeiDon pipeline and example output
