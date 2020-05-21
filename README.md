@@ -13,7 +13,7 @@ Here we present [PoSeiDon](https://www.biorxiv.org/content/10.1101/2020.05.18.10
 
 PoSeiDon relies on a variety of different third-party tools (see below). But don't worry, we encapsulated each tool in its own [Docker](https://www.docker.com/resources/what-container) container and connected them in the Workflow Management System [Nextflow](https://www.nextflow.io/). 
 </div><div class="col-sm-6 clearfix">
-<img src="https://github.com/hoelzer/poseidon/blob/master/images/poseidon_logo.png" alt="PoSeiDon logo" />
+<img width="80px" src="https://github.com/hoelzer/poseidon/blob/master/images/poseidon_logo.png" alt="PoSeiDon logo" />
 </div></div>
 
 ## Installation
