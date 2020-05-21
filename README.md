@@ -1,7 +1,3 @@
-__I am currently working on a Nextflow/Docker implementation of PoSeiDon that will be much easier to install and execute. Stay tuned!__
-
-Author: hoelzer.martin@gmail.com
-
 # PoSeiDon
 
 <img align="right" width="160px" src="https://github.com/hoelzer/poseidon/blob/master/images/poseidon_logo.png" alt="PoSeiDon logo" /> 
