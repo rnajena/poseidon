@@ -56,7 +56,8 @@ Now let's assume you used Nextflow to pull the PoSeiDon code.
 # show help 
 nextflow run hoelzer/poseidon --help
 
-# run small example on a local machine with (first time this will need some more time because the Docker containers are downloaded)
+# run small example on a local machine with 
+# (first time this will need some more time because the Docker containers are downloaded)
 nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta \
 --cores 4 -profile local,docker
 
