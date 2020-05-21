@@ -8,9 +8,13 @@
 
 __Please note that the code of PoSeiDon was just transfered to Nextflow so there might be still some bugs. Please feel free to report issues!__
 
-Here we present __PoSeiDon__, a pipeline to detect significant positively selected sites and possible recombination events in an alignment of multiple protein-coding sequences. Sites that undergo positive selection provide insights in the evolutionary history of your sequences, for example showing important mutation hot spots, accumulated as results of virus-host _arms races_ during evolution.
+<div class="row"><div class="col-sm-6 clearfix">
+Here we present [PoSeiDon](https://www.biorxiv.org/content/10.1101/2020.05.18.102731v1), a pipeline to detect significant positively selected sites and possible recombination events in an alignment of multiple protein-coding sequences. Sites that undergo positive selection provide insights in the evolutionary history of your sequences, for example showing important mutation hot spots, accumulated as results of virus-host _arms races_ during evolution.
 
 PoSeiDon relies on a variety of different third-party tools (see below). But don't worry, we encapsulated each tool in its own [Docker](https://www.docker.com/resources/what-container) container and connected them in the Workflow Management System [Nextflow](https://www.nextflow.io/). 
+</div><div class="col-sm-6 clearfix">
+<img src="https://github.com/hoelzer/poseidon/blob/master/images/poseidon_logo.png" alt="PoSeiDon logo" />
+</div></div>
 
 ## Installation
 
@@ -28,7 +32,7 @@ or let Nextflow do the pull
 nextflow run hoelzer/poseidon --help
 ```
 
-We recommend using a specific release of PoSeiDon via 
+We recommend using a specific release of PoSeiDon (as soon as their are releases) via 
 
 ```bash
 nextflow run hoelzer/poseidon -r v0.1 --help
@@ -40,7 +44,7 @@ Depending on you installation procedure, update the pipeline via `git pull` or `
 
 ## Run
 
-__Important:__ PoSeiDon needs nucleotide sequences with a correct open reading frame as input. In addition, the results heavily depend on your selection of sequences, thus, you might consider running the pipeline multiple times with different samplings of your input sequences. Also the pipeline can't work with too many sequences because in its core PoSeiDon uses CODEML from the [PAML](http://abacus.gene.ucl.ac.uk/software/paml.html) suite that is not inteded for >100 sequences. __Please find a detailed description of the input parameters and settings below__
+__Important:__ PoSeiDon needs nucleotide sequences with a correct open reading frame as input. In addition, the results heavily depend on your selection of sequences, thus, you might consider running the pipeline multiple times with different samplings of your input sequences. Also the pipeline can't work with too many sequences because in its core PoSeiDon uses CODEML from the [PAML](http://abacus.gene.ucl.ac.uk/software/paml.html) suite that is not inteded for >100 sequences. __Please find a detailed description of the input parameters and settings below.__
 
 ### Profiles
 
@@ -55,15 +59,19 @@ Now let's assume you used Nextflow to pull the PoSeiDon code.
 nextflow run hoelzer/poseidon --help
 
 # run small example on a local machine with (first time this will need some more time because the Docker containers are downloaded)
-nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta --cores 4 -profile local,docker
+nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta \
+--cores 4 -profile local,docker
 
 # resume a broken run
-nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta --cores 4 -profile local,docker -resume
+nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta \
+--cores 4 -profile local,docker -resume
 ```
 
 To reproduce the [positive selection results](http://www.rna.uni-jena.de/supplements/mx1_bats/full_aln/) reported in [Fuchs _et al_. (2017), Journal of Virology](https://doi.org/10.1128/JVI.00361-17) run:
 ```bash
-nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1.fasta --cores 4 --kh --outgroup "Pteropus_alecto,Eidolon_helvum,Rousettus_aegyptiacus,Hypsignatus_monstrosus" --reference "Myotis_daubentonii" -profile local,docker
+nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1.fasta \
+--cores 4 --kh --outgroup "Pteropus_alecto,Eidolon_helvum,Rousettus_aegyptiacus,Hypsignatus_monstrosus" \
+--reference "Myotis_daubentonii" -profile local,docker
 ```
 
 ## Workflow of the PoSeiDon pipeline and example output
@@ -149,7 +157,7 @@ to root all trees in relation to this two species.
 
 * `--kh`
 
-Optional. Default: false. With this parameter you can decide if insignificant breakpoints should be taken into account. All breakpoints are tested for significant topological incongruence using a Kashino Hasegawa (KH) test [Kishino, H. and Hasegawa, M. (1989)]. KH-insignificant breakpoints most frequently arise from variation in branch lengths between segments. Nevertheless, taking KH-insignificant breakpoints into account could be interesting, because we already observed putative positively selected sites in fragments without any significant topological incongruence. KH-insignificant fragments are marked in the final output, as they might not occur from real recombination events.
+Optional. Default: false. With this parameter you can decide if insignificant breakpoints should be taken into account. All breakpoints are tested for significant topological incongruence using a Kashino Hasegawa (KH) test [Kishino, H. and Hasegawa, M. (1989)](https://link.springer.com/article/10.1007/BF02100115). KH-insignificant breakpoints most frequently arise from variation in branch lengths between segments. Nevertheless, taking KH-insignificant breakpoints into account could be interesting, because we already observed putative positively selected sites in fragments without any significant topological incongruence. KH-insignificant fragments are marked in the final output, as they might not occur from real recombination events.
 
 Per default only significant breakpoints are used for further calculations.
 
