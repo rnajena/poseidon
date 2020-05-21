@@ -31,6 +31,10 @@ println "\033[2mCPUs to use: $params.cores"
 println "Output dir name: $params.output\u001B[0m"
 println " "}
 
+println "\033[2mTree root species: $params.outgroup"
+println "Reference species: $params.reference\u001B[0m"
+println " "
+
 if (params.profile) {
     exit 1, "--profile is WRONG use -profile" }
 if (!params.fasta) {
@@ -54,7 +58,7 @@ if (!params.fasta) {
 include check_fasta_format from './modules/check_fasta_format'
 include {translatorx; check_aln; remove_gaps} from './modules/translatorx'
 
-include {raxml_nt; raxml_aa; raxml2drawing; nw_display; barefoot} from './modules/tree'
+include {raxml_nt; raxml_aa; raxml2drawing; nw_display; barefoot; reroot} from './modules/tree'
 include raxml_nt as frag_raxml_nt from './modules/tree'
 include raxml_aa as frag_raxml_aa from './modules/tree'
 include raxml2drawing as frag_raxml2drawing from './modules/tree'
@@ -134,8 +138,8 @@ workflow {
 
     /*******************************
     build nt and aa phylogeny */
-    raxml_nt(remove_gaps.out.fna)
-    raxml_aa(remove_gaps.out.faa)
+    tree_nt = raxml_nt(remove_gaps.out.fna)
+    tree_aa = raxml_aa(remove_gaps.out.faa)
 
     /*******************************
     convert RAxML output newicks for drawing */
@@ -148,9 +152,14 @@ workflow {
 
     /*******************************
     if outgroups are provided, try reroot the trees */
-    // TODO, not implemented yet
-    if (params.root != 'NA' ) {
-        reroot(newicks_ch)
+    if (params.outgroup != 'NA' ) {
+        reroot(newicks_ch.map{name, nt_tree, aa_tree, nt_nogaps_fasta -> tuple (name, nt_tree, aa_tree)})
+        tree_nt = reroot.out.nt
+        tree_aa = reroot.out.aa
+        // update the newicks_ch with the re-rooted trees
+        newicks_ch.view()
+        tree_nt.view()
+        tree_aa.view()
     }
 
     /*******************************
@@ -279,9 +288,6 @@ workflow {
     )//[bats_mx1, full, [bats_mx1_codeml.pdf, bats_mx1_gaps_codeml.pdf]]
 
 
-//[bats_mx1, [/home/martin/git/poseidon/work/5d/4a071c1bd11590bf0f3a638a2dafa0/codeml_F3X4.all.M1a_vs_M2a.gaps.tex, /home/martin/git/poseidon/work/5d/4a071c1bd11590bf0f3a638a2dafa0/codeml_F3X4.all.M1a_vs_M2a.tex, /home/martin/git/poseidon/work/5d/4a071c1bd11590bf0f3a638a2dafa0/codeml_F3X4.all.M7_vs_M8.gaps.tex, /home/martin/git/poseidon/work/5d/4a071c1bd11590bf0f3a638a2dafa0/codeml_F3X4.all.M7_vs_M8.tex, /home/martin/git/poseidon/work/5d/4a071c1bd11590bf0f3a638a2dafa0/codeml_F3X4.all.M8a_vs_M8.gaps.tex, /home/martin/git/poseidon/work/5d/4a071c1bd11590bf0f3a638a2dafa0/codeml_F3X4.all.M8a_vs_M8.tex], [/home/martin/git/poseidon/work/64/63252d72729ec243027c7c0d0b36f6/codeml_F1X4.all.M1a_vs_M2a.gaps.tex, /home/martin/git/poseidon/work/64/63252d72729ec243027c7c0d0b36f6/codeml_F1X4.all.M1a_vs_M2a.tex, /home/martin/git/poseidon/work/64/63252d72729ec243027c7c0d0b36f6/codeml_F1X4.all.M7_vs_M8.gaps.tex, /home/martin/git/poseidon/work/64/63252d72729ec243027c7c0d0b36f6/codeml_F1X4.all.M7_vs_M8.tex, /home/martin/git/poseidon/work/64/63252d72729ec243027c7c0d0b36f6/codeml_F1X4.all.M8a_vs_M8.gaps.tex, /home/martin/git/poseidon/work/64/63252d72729ec243027c7c0d0b36f6/codeml_F1X4.all.M8a_vs_M8.tex], [/home/martin/git/poseidon/work/0c/43eb193cbc3c3d3905718991716369/codeml_F61.all.M1a_vs_M2a.gaps.tex, /home/martin/git/poseidon/work/0c/43eb193cbc3c3d3905718991716369/codeml_F61.all.M1a_vs_M2a.tex, /home/martin/git/poseidon/work/0c/43eb193cbc3c3d3905718991716369/codeml_F61.all.M7_vs_M8.gaps.tex, /home/martin/git/poseidon/work/0c/43eb193cbc3c3d3905718991716369/codeml_F61.all.M7_vs_M8.tex, /home/martin/git/poseidon/work/0c/43eb193cbc3c3d3905718991716369/codeml_F61.all.M8a_vs_M8.gaps.tex, /home/martin/git/poseidon/work/0c/43eb193cbc3c3d3905718991716369/codeml_F61.all.M8a_vs_M8.tex], [/home/martin/git/poseidon/work/42/3cfa85fc8331bc2daf26c22f030fb2/fragment_1_codeml_F3X4.all.M1a_vs_M2a.gaps.tex, /home/martin/git/poseidon/work/42/3cfa85fc8331bc2daf26c22f030fb2/fragment_1_codeml_F3X4.all.M1a_vs_M2a.tex, /home/martin/git/poseidon/work/42/3cfa85fc8331bc2daf26c22f030fb2/fragment_1_codeml_F3X4.all.M7_vs_M8.gaps.tex, /home/martin/git/poseidon/work/42/3cfa85fc8331bc2daf26c22f030fb2/fragment_1_codeml_F3X4.all.M7_vs_M8.tex, /home/martin/git/poseidon/work/42/3cfa85fc8331bc2daf26c22f030fb2/fragment_1_codeml_F3X4.all.M8a_vs_M8.gaps.tex, /home/martin/git/poseidon/work/42/3cfa85fc8331bc2daf26c22f030fb2/fragment_1_codeml_F3X4.all.M8a_vs_M8.tex], [/home/martin/git/poseidon/work/df/2e9e922debab0798b501d2c1827688/fragment_1_codeml_F61.all.M1a_vs_M2a.gaps.tex, /home/martin/git/poseidon/work/df/2e9e922debab0798b501d2c1827688/fragment_1_codeml_F61.all.M1a_vs_M2a.tex, /home/martin/git/poseidon/work/df/2e9e922debab0798b501d2c1827688/fragment_1_codeml_F61.all.M7_vs_M8.gaps.tex, /home/martin/git/poseidon/work/df/2e9e922debab0798b501d2c1827688/fragment_1_codeml_F61.all.M7_vs_M8.tex, /home/martin/git/poseidon/work/df/2e9e922debab0798b501d2c1827688/fragment_1_codeml_F61.all.M8a_vs_M8.gaps.tex, /home/martin/git/poseidon/work/df/2e9e922debab0798b501d2c1827688/fragment_1_codeml_F61.all.M8a_vs_M8.tex], [/home/martin/git/poseidon/work/f2/3410487ad80cf4d868eed2088aa4c3/fragment_1_codeml_F1X4.all.M1a_vs_M2a.gaps.tex, /home/martin/git/poseidon/work/f2/3410487ad80cf4d868eed2088aa4c3/fragment_1_codeml_F1X4.all.M1a_vs_M2a.tex, /home/martin/git/poseidon/work/f2/3410487ad80cf4d868eed2088aa4c3/fragment_1_codeml_F1X4.all.M7_vs_M8.gaps.tex, /home/martin/git/poseidon/work/f2/3410487ad80cf4d868eed2088aa4c3/fragment_1_codeml_F1X4.all.M7_vs_M8.tex, /home/martin/git/poseidon/work/f2/3410487ad80cf4d868eed2088aa4c3/fragment_1_codeml_F1X4.all.M8a_vs_M8.gaps.tex, /home/martin/git/poseidon/work/f2/3410487ad80cf4d868eed2088aa4c3/fragment_1_codeml_F1X4.all.M8a_vs_M8.tex]]
-
-
     /*******************************
     HTML */
 
@@ -296,9 +302,11 @@ workflow {
     )//.all.view()
 
     // get correct fragment trees
-    if (params.root != 'NA') {
-        //tree_nt = frag_reroot.out.nt
-        //tree_aa = frag_reroot.out.aa
+    if (params.outgroup != 'NA') {
+        //frag_tree_nt = frag_reroot.out.nt
+        //frag_tree_aa = frag_reroot.out.aa
+        frag_tree_nt = frag_raxml_nt.out
+        frag_tree_aa = frag_raxml_aa.out
     } else {
         frag_tree_nt = frag_raxml_nt.out
         frag_tree_aa = frag_raxml_aa.out
@@ -362,14 +370,6 @@ workflow {
     ///////////////////////////////////////////////////////////////////////////////////// Fragments ending
 
     // MAIN SUMMARY
-    // get correct trees
-    if (params.root != 'NA') {
-        tree_nt = reroot.out.nt
-        tree_aa = reroot.out.aa
-    } else {
-        tree_nt = raxml_nt.out
-        tree_aa = raxml_aa.out
-    }
 
     mlc_files_c = codeml_run.out.mlc_files.groupTuple(by: 1, size: 6).map { it -> tuple ( it[0][1], it[2] )}.groupTuple(by: 0).map { it -> tuple (it[0], it[1][0], it[1][1], it[1][2]) }
     html('full_aln', 
@@ -454,8 +454,8 @@ def helpMSG() {
     --cores             max cores for local use [default: $params.cores]
     --memory            memory limitations for polisher tools in GB [default: $params.memory]
     --output            name of the result folder [default: $params.output]
-    --reference         resulting positions will be reported according to this species [default: $params.reference]
-    --root              outgroup species for tree rooting; comma-separated [default: $params.root]
+    --reference         resulting amino acid changes and sites will be reported according to this species (FASTA id) [default: $params.reference]
+    --root              outgroup species (FASTA id) for tree rooting; comma-separated [default: $params.outgroup]
     --bootstrap         number of bootstrap calculations [default: $params.bootstrap]
 
     ${c_yellow}Model parameters:${c_reset}

@@ -9,14 +9,14 @@ process raxml_nt {
     tuple val(name), file("${name}_nt.raxml")
 
   script:
-    if (params.root == 'NA')
+    if (params.outgroup == 'NA')
     """
       raxmlHPC-PTHREADS-SSE3 -T ${task.cpus} -f a -x 1234 -p 1234 -s ${aln} -n nt -m GTRGAMMA -N ${params.bootstrap} 
       mv RAxML_bipartitionsBranchLabels.nt ${name}_nt.raxml
     """
     else
     """
-      raxmlHPC-PTHREADS-SSE3 -T ${task.cpus} -f a -x 1234 -p 1234 -s ${aln} -n nt -m GTRGAMMA -N ${params.bootstrap} -o ${params.root}
+      raxmlHPC-PTHREADS-SSE3 -T ${task.cpus} -f a -x 1234 -p 1234 -s ${aln} -n nt -m GTRGAMMA -N ${params.bootstrap} -o ${params.outgroup.toUpperCase()}
       mv RAxML_bipartitionsBranchLabels.nt ${name}_nt.raxml
     """    
 }
@@ -32,14 +32,14 @@ process raxml_aa {
     tuple val(name), file("${name}_aa.raxml")
 
   script:
-    if (params.root == 'NA')
+    if (params.outgroup == 'NA')
     """
       raxmlHPC-PTHREADS-SSE3 -T ${task.cpus} -f a -x 1234 -p 1234 -s ${aln} -n aa -m PROTGAMMAWAG -N ${params.bootstrap} 
       mv RAxML_bipartitionsBranchLabels.aa ${name}_aa.raxml
     """
     else
     """
-      raxmlHPC-PTHREADS-SSE3 -T ${task.cpus} -f a -x 1234 -p 1234 -s ${aln} -n aa -m PROTGAMMAWAG -N ${params.bootstrap} -o ${params.root}
+      raxmlHPC-PTHREADS-SSE3 -T ${task.cpus} -f a -x 1234 -p 1234 -s ${aln} -n aa -m PROTGAMMAWAG -N ${params.bootstrap} -o ${params.outgroup.toUpperCase()}
       mv RAxML_bipartitionsBranchLabels.aa ${name}_aa.raxml
     """    
 }
@@ -128,53 +128,40 @@ TODO: the second part (the drawing) can be done with the already available funct
 from phylo.rb
 // IMPORTANT: file should be named with .rooted then: bats_mx1_nt.raxml.corrected.rooted for further processing
 */
-/*process reroot {
-  
-    if root_species
-      ## if root species are defined, we can reroot the tree
-      cmd = "#{NW_REROOT_BIN} #{tree}.corrected #{root_species.join(' ')} > #{tree}.corrected.rooted"
-      `#{cmd}`
+process reroot {
+  label 'newick_utils'
 
-      # check if tree was rerooted or LCA error occured
-      tree_tmp = File.open("#{tree}.corrected.rooted",'r')
-      tree_tmp_string = ''
-      tree_tmp.each do |l|
-        tree_tmp_string << l
-      end
-      tree_tmp.close
+  input:
+    tuple val(name), path(nt_newick), path(aa_newick)
 
-      if tree_tmp_string.length < 1
+  output:
+    tuple val(name), file("${nt_newick}.rooted"), emit: nt optional true
+    tuple val(name), file("${aa_newick}.rooted"), emit: aa optional true
+    tuple val(name), env(ROOTED), emit: worked
+
+  // TODO: a comma separated list can be in params.outgroup! split and join(' ')!
+  script:  
+    """
+    ROOTED=false
+
+    # if root species are defined, we can reroot the tree
+    nw_reroot ${nt_newick} ${params.outgroup.toUpperCase()} > ${nt_newick}.rooted
+    nw_reroot ${aa_newick} ${params.outgroup.toUpperCase()} > ${aa_newick}.rooted
+
+    # check if tree was rerooted or LCA error occured
+    LINES=\$(wc -l ${nt_newick}.rooted | awk '{print \$1}')
+
+    if [[ \$LINES < 1 ]]; then 
         # try reroot with -l option
-        cmd = "#{NW_REROOT_BIN} -l #{tree}.corrected #{root_species.join(' ')} > #{tree}.corrected.rooted"
-        `#{cmd}`
-        params_string << cmd << "\n\n"
-        # check again if reroot with -l helped
-        tree_tmp = File.open("#{tree}.corrected.rooted",'r')
-        tree_tmp_string = ''
-        tree_tmp.each do |l|
-          tree_tmp_string << l
-        end
-        tree_tmp.close
-      else
-        params_string << cmd << "\n\n"
-      end
+        nw_reroot -l ${nt_newick} ${params.outgroup.toUpperCase()} > ${nt_newick}.rooted
+        nw_reroot -l ${aa_newick} ${params.outgroup.toUpperCase()} > ${aa_newick}.rooted
+        LINES=\$(wc -l ${nt_newick}.rooted | awk '{print \$1}')
+    fi
 
-      if tree_tmp_string.length > 1
-        `#{NW_DISPLAY_BIN} -v 50 -i 'font-size:11' -l 'font-size:16;font-family:helvetica;font-style:italic' -d 'stroke:black;fill:none;stroke-width:2;stroke-linecap:round' -Il -w 650 -b 'opacity:0' -S -s #{tree}.corrected.rooted > #{tree}.rooted.svg`
-        #`#{INKSCAPE_BIN} --verb=FitCanvasToDrawing --verb=FileSave --verb=FileClose #{tree}.rooted.svg`
-        `#{INKSCAPE_BIN} -f #{tree}.rooted.svg -A #{tree}.rooted.pdf`
-        `#{NW_DISPLAY_BIN} -v 50 -i 'font-size:11' -l 'font-size:16;font-family:helvetica;font-style:italic' -d 'stroke:black;fill:none;stroke-width:2;stroke-linecap:round' -Il -w 650 -b 'opacity:0' -s #{tree}.corrected.rooted > #{tree}.rooted.scale.svg`
-        #`#{INKSCAPE_BIN} --verb=FitCanvasToDrawing --verb=FileSave --verb=FileClose #{tree}.rooted.scale.svg`
-        `#{INKSCAPE_BIN} -f #{tree}.rooted.scale.svg -A #{tree}.rooted.scale.pdf`
-        `#{INKSCAPE_BIN} -f #{tree}.rooted.svg --export-width=480 --export-height=#{export_height} --without-gui --export-png=#{tree}.rooted.png`
-      end
-      if tree_tmp_string.length > 1
-        @tree_rooted = "#{tree}.corrected.rooted"
-      else
-        @tree_rooted = "#{tree}.corrected"
-      end
-    end
-
- } */
+    if [[ \$LINES > 1 ]]; then 
+      ROOTED=true
+    fi
+    """
+ }
 
 

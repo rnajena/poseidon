@@ -13,6 +13,6 @@ process check_fasta_format {
   
   script:
     """
-    fasta_format_checker.rb ${name} ${fasta} ${name}.checked.fasta ${name}.log ${name}_internal2input_species.tsv ${name}_input2internal_species.tsv ${params.reference} ${params.root}
+    fasta_format_checker.rb ${name} ${fasta} ${name}.checked.fasta ${name}.log ${name}_internal2input_species.tsv ${name}_input2internal_species.tsv ${params.reference} ${params.outgroup}
     """
   }
