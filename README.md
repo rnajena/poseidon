@@ -4,7 +4,7 @@
 
 ![](https://img.shields.io/badge/nextflow-20.01.0-brightgreen)
 ![](https://img.shields.io/badge/uses-docker-blue.svg)
-![](https://img.shields.io/badge/licence-GPL--3.0-lightgrey.svg)
+![](https://img.shields.io/badge/licence-MIT-lightgrey.svg)
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/martinhoelzer.svg?style=social)](https://twitter.com/martinhoelzer) 
 
