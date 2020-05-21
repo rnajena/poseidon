@@ -1,5 +1,7 @@
 # PoSeiDon
 
+<img style="float: right;" width="120px" src="https://github.com/hoelzer/poseidon/blob/master/images/poseidon_logo.png" alt="PoSeiDon logo" />
+
 ![](https://img.shields.io/badge/nextflow-20.01.0-brightgreen)
 ![](https://img.shields.io/badge/uses-docker-blue.svg)
 ![](https://img.shields.io/badge/licence-GPL--3.0-lightgrey.svg)
@@ -8,13 +10,9 @@
 
 __Please note that the code of PoSeiDon was just transfered to Nextflow so there might be still some bugs. Please feel free to report issues!__
 
-<div class="row"><div class="col-sm-6 clearfix">
 Here we present [PoSeiDon](https://www.biorxiv.org/content/10.1101/2020.05.18.102731v1), a pipeline to detect significant positively selected sites and possible recombination events in an alignment of multiple protein-coding sequences. Sites that undergo positive selection provide insights in the evolutionary history of your sequences, for example showing important mutation hot spots, accumulated as results of virus-host _arms races_ during evolution.
 
 PoSeiDon relies on a variety of different third-party tools (see below). But don't worry, we encapsulated each tool in its own [Docker](https://www.docker.com/resources/what-container) container and connected them in the Workflow Management System [Nextflow](https://www.nextflow.io/). 
-</div><div class="col-sm-6 clearfix">
-<img width="80px" src="https://github.com/hoelzer/poseidon/blob/master/images/poseidon_logo.png" alt="PoSeiDon logo" />
-</div></div>
 
 ## Installation
 
