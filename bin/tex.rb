@@ -12,7 +12,8 @@ class Tex
 
   attr_reader :output_file, :output_file_gapped, :gap_start2gap_length, :significance_m8, :significance_m2a, :significance_m8a
 
-  def initialize(input, output, codon_freq, fragment_pos, title, reference_species, reference_aln, internal2input_species, aln_aa, frag_is_significant, chi2_bin)
+  def initialize(input, output, codon_freq, fragment_pos, title, reference_species, reference_aln, internal2input_species, aln_aa, frag_is_significant, chi2_bin, fragment_id)
+    # fragment_id can be either '' (for the full aln) or 'fragment_x_', used as a prefix for the TeX files
 
     @chi2_bin = chi2_bin
 
@@ -193,15 +194,15 @@ class Tex
     tex_m1a_m2a << build_tex_table(beb_m2_entries, lrt_m1a_m2a, pvalue_m1a_m2a, number_of_species, length_of_aln, m2_percent, m2_average_omega, frag_start, frag_stop, codon_freq, title_save, nil, frag_is_significant, 'M1a', 'M2a')
     tex_m1a_m2a << "\n\\end{document}\n"
 
-    @output_file = File.open(output.sub('.tex','.M7_vs_M8.tex'), 'w')
+    @output_file = File.open(fragment_id+output.sub('.tex','.M7_vs_M8.tex'), 'w')
     @output_file << tex_m7_m8
     @output_file.close
 
-    output_file_m8a_m8 = File.open(output.sub('.tex','.M8a_vs_M8.tex'), 'w')
+    output_file_m8a_m8 = File.open(fragment_id+output.sub('.tex','.M8a_vs_M8.tex'), 'w')
     output_file_m8a_m8 << tex_m8a_m8
     output_file_m8a_m8.close
 
-    output_file_m1a_m2a = File.open(output.sub('.tex','.M1a_vs_M2a.tex'), 'w')
+    output_file_m1a_m2a = File.open(fragment_id+output.sub('.tex','.M1a_vs_M2a.tex'), 'w')
     output_file_m1a_m2a << tex_m1a_m2a
     output_file_m1a_m2a.close
 
@@ -254,6 +255,14 @@ class Tex
 
     @gap_start2gap_length = gap_start2gap_length
 
+    # write out the gap_start2gap_length file bc/ we need it later for fragment adjustments
+    gap_start2gap_length_out = File.open('gap_start2gap_length.csv','w')
+    gap_start2gap_length_out << "#gap_start,gap_length\n"
+    gap_start2gap_length.each do |gap_start, gap_length|
+      gap_start2gap_length_out << "#{gap_start},#{gap_length}\n"
+    end
+    gap_start2gap_length_out.close
+
     tex_gapped_m7_m8 = "\\documentclass[10pt,a4paper,oneside]{article}\n\\usepackage{multirow}\n\\usepackage{booktabs}\n\\usepackage{longtable}\n\\setlength\\LTcapwidth{1.4\\textwidth}\n\\setlength\\LTleft{0pt}\n\\setlength\\LTright{0pt}\n\n\\usepackage[top=1in, bottom=1.25in, left=1.0in, right=1.25in]{geometry}\n\n\\begin{document}\n\n"
     tex_gapped_m7_m8 << build_tex_table(beb_m8_entries, lrt_m7_m8, pvalue_m7_m8, number_of_species, length_of_aln, m8_percent, m8_average_omega, frag_start, frag_stop, codon_freq, title_save, gap_start2gap_length, frag_is_significant, 'M7', 'M8')
     tex_gapped_m7_m8 << "\n\\end{document}\n"
@@ -266,15 +275,15 @@ class Tex
     tex_gapped_m1a_m2a << build_tex_table(beb_m2_entries, lrt_m1a_m2a, pvalue_m1a_m2a, number_of_species, length_of_aln, m2_percent, m2_average_omega, frag_start, frag_stop, codon_freq, title_save, gap_start2gap_length, frag_is_significant, 'M1a', 'M2a')
     tex_gapped_m1a_m2a << "\n\\end{document}\n"
 
-    @output_file_gapped = File.open("#{output.sub('.tex','.M7_vs_M8.gaps.tex')}",'w')
+    @output_file_gapped = File.open(fragment_id+"#{output.sub('.tex','.M7_vs_M8.gaps.tex')}",'w')
     @output_file_gapped << tex_gapped_m7_m8
     @output_file_gapped.close
 
-    output_file_gapped_m8a_m8 = File.open("#{output.sub('.tex','.M8a_vs_M8.gaps.tex')}",'w')
+    output_file_gapped_m8a_m8 = File.open(fragment_id+"#{output.sub('.tex','.M8a_vs_M8.gaps.tex')}",'w')
     output_file_gapped_m8a_m8 << tex_gapped_m8a_m8
     output_file_gapped_m8a_m8.close
 
-    output_file_gapped_m1a_m2a = File.open("#{output.sub('.tex','.M1a_vs_M2a.gaps.tex')}",'w')
+    output_file_gapped_m1a_m2a = File.open(fragment_id+"#{output.sub('.tex','.M1a_vs_M2a.gaps.tex')}",'w')
     output_file_gapped_m1a_m2a << tex_gapped_m1a_m2a
     output_file_gapped_m1a_m2a.close
 
@@ -457,14 +466,76 @@ end
 mlc_file = ARGV[0]
 freq = ARGV[1]
 project_title = ARGV[2]
+fragment_id = ''
 query_sequence_name = ARGV[3]
 aln_aa_nogaps = ARGV[4]
 internal2input_species_tsv = File.open(ARGV[5], 'r')
 aln_aa = ARGV[6]
 chi2_bin = ARGV[7]
 
-fragment_pos = ARGV[8]
-frag_is_significant = ARGV[9]
+fragment_pos = nil
+frag_is_significant = nil
+breakpoint_pos_file = ARGV[8]
+##stop_nt	stop_aa	significance	use_insignificance
+#270	    90	    1	            True
+#549	    183	    1	            True
+#1948	    650	    0	            True
+
+bp_start = 0
+bp_end = 0
+fragment_line_counter = 1
+bp_end_read = false
+if breakpoint_pos_file
+  # count number of fragments
+  num_frags = 0
+  bp_file = File.open(breakpoint_pos_file, 'r')
+  bp_file.each do |line|
+    unless line.start_with?('#')
+      num_frags += 1
+    end
+  end
+  bp_file.close
+
+  # get the fragment ID from the project_title
+  frag_id = "fragment_#{project_title.split('fragment_')[1]}" # fragment_1
+  fragment_id = "#{frag_id}_" # fragment_1_
+
+  bp_file = File.open(breakpoint_pos_file, 'r')
+  frag_is_significant = false
+
+  bp_file.each do |line|
+    unless line.start_with?('#')
+
+      fragment_line_counter += 1
+
+      s = line.split("\t")
+      bp_nt = s[0].to_i
+      bp_aa = s[1].to_i
+      significance = s[2].to_f
+
+      if frag_id == 'fragment_1'
+        frag_is_significant = true if significance < 0.05
+        bp_start = 1
+        bp_end = bp_aa
+        break       
+      end
+
+      if bp_end_read
+        bp_end = bp_aa
+        bp_end -= 1 if frag_id == "fragment_#{num_frags}"
+        break
+      end
+
+      next unless frag_id == "fragment_#{fragment_line_counter}"
+
+      frag_is_significant = true if significance < 0.05
+      bp_start = bp_aa + 1
+      bp_end_read = true
+    end
+  end
+  bp_file.close
+  fragment_pos = "#{bp_start}-#{bp_end}"
+end
 
 internal2input_species = {}
 internal2input_species_tsv.each do |entry|
@@ -472,8 +543,6 @@ internal2input_species_tsv.each do |entry|
   internal2input_species[s[0]] = s[1].chomp
 end
 
-if fragment_pos
-  Tex.new(mlc_file, mlc_file.sub('.mlc','.tex'), freq, fragment_pos, project_title, query_sequence_name, aln_aa_nogaps, internal2input_species, aln_aa, frag_is_significant, chi2_bin)
-else
-  Tex.new(mlc_file, mlc_file.sub('.mlc','.tex'), freq, nil, project_title, query_sequence_name, aln_aa_nogaps, internal2input_species, aln_aa, nil, chi2_bin)
-end
+puts fragment_pos
+
+Tex.new(mlc_file, mlc_file.sub('.mlc','.tex'), freq, fragment_pos, project_title, query_sequence_name, aln_aa_nogaps, internal2input_species, aln_aa, frag_is_significant, chi2_bin, fragment_id)
