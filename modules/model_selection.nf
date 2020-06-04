@@ -20,3 +20,14 @@ process model_selection {
     echo \$MODEL
     """
 }
+
+/*
+#works
+conda install -c bioconda hyphy=2.3.11
+cp bats_mx1_* /opt/conda/envs/test/lib/hyphy/TemplateBatchFiles/
+(echo "bats_mx1_aln.nt_ali.checked.nogaps.fasta"; echo "bats_mx1_nt.raxml.barefoot.tree"; echo "4"; echo "1"; echo "0.05"; echo "bats_mx1.result") | HYPHYMP /opt/conda/envs/test/lib/hyphy/TemplateBatchFiles/ModelTest.bf
+
+#works
+conda install -c bioconda hyphy=2.5.14
+(echo "bats_mx1_aln.nt_ali.checked.nogaps.fasta"; echo "bats_mx1_nt.raxml.barefoot.tree"; echo "4"; echo "1"; echo "0.05"; echo "bats_mx1.result") | hyphy mt
+*/
