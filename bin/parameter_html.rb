@@ -6,7 +6,7 @@ class ParameterHtml
 
   def initialize(parameter_html_out, html_index_file, frag_names, version, parameter_strings, workflow_projectdir)
 
-    @param_txt = "#{workflow_projectdir}/tools/tools.txt"
+    @param_txt = "#{workflow_projectdir}/tools.txt"
 
     param_files = {}
     parameter_strings.each do |type, parameter_text|
