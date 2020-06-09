@@ -86,15 +86,6 @@ include html_codeml as frag_html_codeml from './modules/html'
 
 include build_fragments from './modules/fragment'
 
-/************************** 
-* DATABASES
-**************************/
-
-/* Comment section:
-The Database Section is designed to "auto-get" pre prepared databases.
-It is written for local use and cloud use via params.cloudProcess.
-*/
-
 
 /************************** 
 * MAIN WORKFLOW 
@@ -486,7 +477,7 @@ def helpMSG() {
                              local,conda
                              lsf,docker,singularity (adjust workdir and cachedir according to your HPC config)
                              slurm,conda (adjust workdir and cachedir according to your HPC config)
-                             gcloudMartin,docker (GCP google-lifescience with docker)
+                             gcloud,docker (GCP google-lifescience with docker)
                              ${c_reset}
     """.stripIndent()
 }
