@@ -34,6 +34,13 @@ println " "}
 println "\033[2mTree root species: $params.outgroup"
 println "Reference species: $params.reference\u001B[0m"
 println " "
+if (params.kh) {
+    println "\033[2mUse KH-insignificant breakpoints: yes\u001B[0m"
+    println " "
+} else {
+    println "\033[2mUse KH-insignificant breakpoints: no\u001B[0m"
+    println " "
+}
 
 if (params.profile) {
     exit 1, "--profile is WRONG use -profile" }
@@ -58,7 +65,7 @@ if (!params.fasta) {
 include check_fasta_format from './modules/check_fasta_format'
 include {translatorx; check_aln; remove_gaps} from './modules/translatorx'
 
-include {raxml_nt; raxml_aa; raxml2drawing; nw_display; barefoot; reroot} from './modules/tree'
+include {raxml_nt; raxml_aa; raxml2drawing; nw_display; barefoot; reroot; reroot as frag_reroot} from './modules/tree'
 include raxml_nt as frag_raxml_nt from './modules/tree'
 include raxml_aa as frag_raxml_aa from './modules/tree'
 include raxml2drawing as frag_raxml2drawing from './modules/tree'
@@ -80,20 +87,9 @@ include pdflatex as pdflatex_single from './modules/tex'
 include pdflatex as frag_pdflatex_single from './modules/tex'
 include pdflatex as pdflatex_full from './modules/tex'
 
-include {html; html_codeml; html_params; frag_aln_html; html_recomb} from './modules/html'
-include html as html_frag from './modules/html' 
-include html_codeml as frag_html_codeml from './modules/html' 
+include {html; html as html_frag; html_codeml; html_codeml as frag_html_codeml; html_params; frag_aln_html; html_recomb} from './modules/html'
 
 include build_fragments from './modules/fragment'
-
-/************************** 
-* DATABASES
-**************************/
-
-/* Comment section:
-The Database Section is designed to "auto-get" pre prepared databases.
-It is written for local use and cloud use via params.cloudProcess.
-*/
 
 
 /************************** 
@@ -157,9 +153,7 @@ workflow {
         tree_nt = reroot.out.nt
         tree_aa = reroot.out.aa
         // update the newicks_ch with the re-rooted trees
-        newicks_ch.view()
-        tree_nt.view()
-        tree_aa.view()
+        newicks_ch = tree_nt.join(tree_aa, by: 0).combine(remove_gaps.out.fna, by: 0)
     }
 
     /*******************************
@@ -220,6 +214,9 @@ workflow {
     frag_raxml_nt(frag_aln_nogaps_nt)
     frag_raxml_aa(frag_aln_nogaps_aa)
 
+    frag_tree_nt = frag_raxml_nt.out
+    frag_tree_aa = frag_raxml_aa.out
+
     // meta map between the original full id and the fragment_id (composed of fasta name and fragment number)
     map_full_frag = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple (name, "${name}_${fragment_dir.getFileName()}")}
     map_frag_full = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple ("${name}_${fragment_dir.getFileName()}", name)}
@@ -238,12 +235,23 @@ workflow {
     frag_internal2input_c = map_full_frag.combine(internal2input_c, by: 0).map {name, fragment_name, tsv -> tuple (fragment_name, tsv)}
     frag_input2interal_c = map_full_frag.combine(input2internal_c, by: 0).map {name, fragment_name, tsv -> tuple (fragment_name, tsv)}
 
+
     frag_newicks_ch = 
         frag_raxml2drawing(
             frag_raxml_nt.out.combine(frag_raxml_aa.out, by: 0)
         ).combine(
             frag_corresponding_full_nt_aln_nogaps, by: 0 // simply needed to count the number of taxa for plotting height estimation
         )
+
+    // if outgroups are provided, try reroot the fragment trees as well
+    if (params.outgroup != 'NA' ) {
+        frag_reroot(frag_newicks_ch.map{name, nt_tree, aa_tree, nt_nogaps_fasta -> tuple (name, nt_tree, aa_tree)})
+        frag_tree_nt = frag_reroot.out.nt
+        frag_tree_aa = frag_reroot.out.aa
+        // update the newicks_ch with the re-rooted trees
+        frag_newicks_ch = frag_tree_nt.join(frag_tree_aa, by: 0).combine(frag_corresponding_full_nt_aln_nogaps, by: 0)
+    }
+
     frag_nw_display(frag_newicks_ch)
 
     // check according to the initial breakpoint array if they are significant
@@ -300,17 +308,6 @@ workflow {
         .combine(frag_corresponding_full_nt_aln_raw, by: 0)
         .combine(frag_corresponding_full_aa_aln_raw, by: 0)
     )//.all.view()
-
-    // get correct fragment trees
-    if (params.outgroup != 'NA') {
-        //frag_tree_nt = frag_reroot.out.nt
-        //frag_tree_aa = frag_reroot.out.aa
-        frag_tree_nt = frag_raxml_nt.out
-        frag_tree_aa = frag_raxml_aa.out
-    } else {
-        frag_tree_nt = frag_raxml_nt.out
-        frag_tree_aa = frag_raxml_aa.out
-    }
 
     frag_aa_bp_with_gaps = frag_aln_html.out.aa_bp_with_gaps
         //.concat(frag_aln_html.out.dummy)
@@ -486,7 +483,7 @@ def helpMSG() {
                              local,conda
                              lsf,docker,singularity (adjust workdir and cachedir according to your HPC config)
                              slurm,conda (adjust workdir and cachedir according to your HPC config)
-                             gcloudMartin,docker (GCP google-lifescience with docker)
+                             gcloud,docker (GCP google-lifescience with docker)
                              ${c_reset}
     """.stripIndent()
 }

@@ -467,7 +467,15 @@ mlc_file = ARGV[0]
 freq = ARGV[1]
 project_title = ARGV[2]
 fragment_id = ''
+
+# because I also do this in the fasta_format_checker.rb script
 query_sequence_name = ARGV[3]
+if query_sequence_name != 'NA' && query_sequence_name.length > 0
+  query_sequence_name = query_sequence_name.split(' ')[0]
+  query_sequence_name = query_sequence_name.gsub('.','_').gsub('-','_').gsub(':','_').gsub(',','_').gsub(';','_')
+  query_sequence_name = query_sequence_name.upcase  
+end
+
 aln_aa_nogaps = ARGV[4]
 internal2input_species_tsv = File.open(ARGV[5], 'r')
 aln_aa = ARGV[6]

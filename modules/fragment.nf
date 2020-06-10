@@ -14,6 +14,12 @@ process build_fragments {
     """
     if [ ${recombination} == "true" ]; then
         fragments_built.rb ${aln} ${bp}
+    else
+        # dummy
+        mkdir -p fragments/fragment_x/aln
+        touch fragments/fragment_x/aln/x.nt_ali.checked.nogaps.fasta
+        touch fragments/fragment_x/aln/x.aa_ali.checked.nogaps.fasta
+        touch bp.tsv
     fi
     """
 }

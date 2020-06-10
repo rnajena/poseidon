@@ -63,8 +63,11 @@ process gard_process {
         cat gard_processor.log > gard.adjusted.html 
         RECOMBINATION=false
     else     
-        gard.rb ${params.kh} ${gard_html} ${aln}
         RECOMBINATION=true
+        gard.rb ${params.kh} ${gard_html} ${aln}
+        if [[ \$(grep -v '#' bp.tsv | wc -l) == 0 ]]; then
+            RECOMBINATION=false
+        fi
     fi
     echo \$RECOMBINATION
     """

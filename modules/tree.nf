@@ -2,6 +2,8 @@ process raxml_nt {
     label 'raxml'  
 //    publishDir "${params.output}/${name}/", mode: 'copy', pattern: ""
 
+  errorStrategy { task.exitStatus = 255 ? 'ignore' : 'terminate' }
+
   input: 
     tuple val(name), file(aln)
 
@@ -24,6 +26,8 @@ process raxml_nt {
 process raxml_aa {
     label 'raxml'  
 //    publishDir "${params.output}/${name}/", mode: 'copy', pattern: ""
+
+  errorStrategy { task.exitStatus = 255 ? 'ignore' : 'terminate' }
 
   input: 
     tuple val(name), file(aln)
@@ -78,7 +82,7 @@ process nw_display {
 
   script:
   """
-    for newick in *.corrected; do 
+    for newick in *.corrected*; do 
 
     nw_display -v 50 -i 'font-size:11' -l 'font-size:16;font-family:helvetica;font-style:italic' -d 'stroke:black;fill:none;stroke-width:2;stroke-linecap:round' -Il -w 650 -b 'opacity:0' -S -s \${newick} > \${newick}.svg
     inkscape -f \${newick}.svg -A \${newick}.pdf 
