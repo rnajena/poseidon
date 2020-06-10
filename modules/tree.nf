@@ -2,6 +2,8 @@ process raxml_nt {
     label 'raxml'  
 //    publishDir "${params.output}/${name}/", mode: 'copy', pattern: ""
 
+  errorStrategy { task.exitStatus = 255 ? 'ignore' : 'terminate' }
+
   input: 
     tuple val(name), file(aln)
 
@@ -24,6 +26,8 @@ process raxml_nt {
 process raxml_aa {
     label 'raxml'  
 //    publishDir "${params.output}/${name}/", mode: 'copy', pattern: ""
+
+  errorStrategy { task.exitStatus = 255 ? 'ignore' : 'terminate' }
 
   input: 
     tuple val(name), file(aln)

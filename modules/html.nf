@@ -116,6 +116,8 @@ process frag_aln_html {
 //    publishDir "${params.output}/${name}/html/${type}/", mode: 'copy', pattern: "params.html" 
     label 'bioruby'
 
+    errorStrategy { task.exitStatus = 1 ? 'ignore' : 'terminate' }
+
     input:
         tuple val(name_frag), val(name), val(frag), path(gap_start2gap_length_csv), path(aa_aln_html_raw), path(bp_tsv), path(nt_aln_raw), path(aa_aln_raw)
 

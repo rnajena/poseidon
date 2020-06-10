@@ -82,7 +82,7 @@ def collect_params(output, html_text, kh_insignificant_bp, nt_aln_nogaps)
           # check if breakpoint is modulo 3, if not --> adjust
           bp_pos += 1 while bp_pos.modulo(3) != 0
 
-          breakpoints[bp_pos] = 1
+          breakpoints[bp_pos] = 1 if kh_insignificant_bp
           if lhs_adjp < 0.1 && rhs_adjp < 0.1
             # this breakpoint is significant!
             breakpoints[bp_pos] = 0.1 if lhs_adjp < 0.1 && rhs_adjp < 0.1
@@ -137,10 +137,9 @@ nt_aln_nogaps = ARGV[2]
 
 ## COLLECT BREAKPOINT POSITIONS IF THERE ARE ANY
 breakpoints = collect_params(output, html_kh_text, kh_insignificant_bp, nt_aln_nogaps)
-puts "We found #{breakpoints.size} significant break points for further analyses:\n\t\t#{breakpoints}\n"
+puts "We found #{breakpoints.size} significant (or insignificant if --kh is set) breakpoints for further analyses:\n\t\t#{breakpoints}\n"
 
 gard_html_file = ARGV[1]
 
 ## ADJUST THE GARD OUTPUT HTML FILE
 adjust_gard_html(gard_html_file, html_kh_text, breakpoints, kh_insignificant_bp)
-
