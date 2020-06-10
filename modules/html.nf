@@ -13,9 +13,9 @@ process html {
         tuple val(name), path(aa_aln_html), path(aa_aln), path(ctl_dir), path(tree_nt), path(tree_aa), path(input_fasta), path(internal2input_species), path(input2internal_species), path(gard_html_file), val(nucleotide_bias_model), path(tex_files), path(tex_dir), path(mlc_files_1), path(mlc_files_2), path(mlc_files_3), path(lrt_files), path(pdfs), path(nt_aln_checked), path(tree_svg), path(tree_pdf), path(tree_png), path(model_log), path(translated_fasta), path(aln_nt_nogaps), path(aln_aa_nogaps), file(aln_length_with_gaps), file(gap_adjusted_start_end), val(recombination)
 
     output: 
-        tuple val(name), file("html/*/index.html"), emit: index
+        tuple val(name), file("index.html"), emit: index
         tuple val(name), file("tex"), emit: tex_dir
-        path("html", type: 'dir')
+        path("html", type: 'dir') optional true
         path("fragment_*", type: 'dir') optional true
         
     script:
@@ -52,8 +52,11 @@ process html {
 
     html.rb \${TYPE} html html/\${TYPE}/index.html ${aa_aln_html} ${aa_aln} ctl_mlc ${tree_nt} ${tree_aa} ${gap_adjusted_start_end} \$TITLE ${input_fasta} ${internal2input_species} ${input2internal_species} ${aln_length_with_gaps} ${gard_html_file} ${nucleotide_bias_model} \${FASTA_NAME}_codeml.tex \${FASTA_NAME}_gaps_codeml.tex tex ${params.refactor} ${params.poseidon_version} ${recombination} ${workflow.projectDir}
 
+    cp html/*/index.html .
+
     if [[ ${type} == 'fragment' ]]; then
         cp -r html/\$NAME .
+        rm -rf html
     fi
 
     sleep 5s

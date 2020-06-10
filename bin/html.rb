@@ -248,24 +248,24 @@ class Html
     if File.basename(nt_tree).include?('.rooted')
       # nt_tree = bats_mx1_nt.raxml.rooted
       `cp #{nt_tree} #{file_out}/#{File.basename(nt_tree)}.newick`; html_paths[:tree_nt_newick] = "data/#{File.basename(nt_tree)}.newick"
-      `cp #{nt_tree}.corrected.pdf #{file_out}`; html_paths[:tree_nt_pdf] = "data/#{File.basename(nt_tree)}.corrected.pdf"
-      `cp #{nt_tree}.corrected.svg #{file_out}`; html_paths[:tree_nt_svg] = "data/#{File.basename(nt_tree)}.corrected.svg"
-      `cp #{nt_tree}.corrected.png #{file_out}`      
+      `cp #{nt_tree}.pdf #{file_out}`; html_paths[:tree_nt_pdf] = "data/#{File.basename(nt_tree)}.pdf"
+      `cp #{nt_tree}.svg #{file_out}`; html_paths[:tree_nt_svg] = "data/#{File.basename(nt_tree)}.svg"
+      `cp #{nt_tree}.png #{file_out}`      
       #`cp #{nt_tree.sub('.corrected.rooted','.unshod.tree')} #{file_out}`
 
       # nt -> aa trees 
       `cp #{nt_tree.sub('_nt','_aa')} #{file_out}/#{File.basename(nt_tree).sub('_nt','_aa')}.newick`; html_paths[:tree_aa_newick] = "data/#{File.basename(nt_tree.sub('.nt','.aa'))}.newick"
-      `cp #{nt_tree.sub('_nt','_aa')}.corrected.pdf #{file_out}`; html_paths[:tree_aa_pdf] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.corrected.pdf"
-      `cp #{nt_tree.sub('_nt','_aa')}.corrected.svg #{file_out}`; html_paths[:tree_aa_svg] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.corrected.svg"
-      `cp #{nt_tree.sub('_nt','_aa')}.corrected.png #{file_out}`
+      `cp #{nt_tree.sub('_nt','_aa')}.pdf #{file_out}`; html_paths[:tree_aa_pdf] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.pdf"
+      `cp #{nt_tree.sub('_nt','_aa')}.svg #{file_out}`; html_paths[:tree_aa_svg] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.svg"
+      `cp #{nt_tree.sub('_nt','_aa')}.png #{file_out}`
 
       # get also the trees with the scale to link them as downloadable svgs and pdfs
       # nt
-      `cp #{nt_tree}.corrected.scale.pdf #{file_out}`; html_paths[:tree_nt_scaled_pdf] = "data/#{File.basename(nt_tree)}.corrected.scale.pdf"
-      `cp #{nt_tree}.corrected.scale.svg #{file_out}`; html_paths[:tree_nt_scaled_svg] = "data/#{File.basename(nt_tree)}.corrected.scale.svg"
+      `cp #{nt_tree}.scale.pdf #{file_out}`; html_paths[:tree_nt_scaled_pdf] = "data/#{File.basename(nt_tree)}.scale.pdf"
+      `cp #{nt_tree}.scale.svg #{file_out}`; html_paths[:tree_nt_scaled_svg] = "data/#{File.basename(nt_tree)}.scale.svg"
       # aa
-      `cp #{nt_tree.sub('_nt','_aa')}.corrected.scale.pdf #{file_out}`; html_paths[:tree_aa_scaled_pdf] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.corrected.scale.pdf"
-      `cp #{nt_tree.sub('_nt','_aa')}.corrected.scale.svg #{file_out}`; html_paths[:tree_aa_scaled_svg] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.corrected.scale.svg"
+      `cp #{nt_tree.sub('_nt','_aa')}.scale.pdf #{file_out}`; html_paths[:tree_aa_scaled_pdf] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.scale.pdf"
+      `cp #{nt_tree.sub('_nt','_aa')}.scale.svg #{file_out}`; html_paths[:tree_aa_scaled_svg] = "data/#{File.basename(nt_tree.sub('_nt','_aa'))}.scale.svg"
     else
       # nt_tree = bats_mx1_nt.raxml
       `cp #{nt_tree} #{file_out}/#{File.basename(nt_tree)}.newick`; html_paths[:tree_nt_newick] = "data/#{File.basename(nt_tree)}.newick"
@@ -553,7 +553,7 @@ class Html
         out << "</tr><tr><td></td>\n"
       else
         if aa_tree.include?('.rooted')
-          out << "<tr><td></td><td rowspan=\"#{aa_tree_order.size}\"><a target=\"_blank\" href=\"data/#{File.basename(aa_tree)}.corrected.rooted.scale.svg\"><img src=\"data/#{File.basename(aa_tree)}.corrected.rooted.png\" /></a></td>"
+          out << "<tr><td></td><td rowspan=\"#{aa_tree_order.size}\"><a target=\"_blank\" href=\"data/#{File.basename(aa_tree)}.scale.svg\"><img src=\"data/#{File.basename(aa_tree)}.png\" /></a></td>"
         else
           out << "<tr><td></td><td rowspan=\"#{aa_tree_order.size}\"><a target=\"_blank\" href=\"data/#{File.basename(aa_tree)}.corrected.scale.svg\"><img src=\"data/#{File.basename(aa_tree)}.corrected.png\" /></a></td>"
         end
@@ -676,7 +676,7 @@ class Html
         picture_is_placed = false
         #puts species_row.keys
         if tree_path.include?('.rooted')
-          ordered_aln_string << species_row[species.name].sub('</tr><tr><td></td>',"</tr><tr><td></td><td rowspan=\"#{tree_order.size}\"><a target=\"_blank\" href=\"data/#{File.basename(tree_path)}.corrected.rooted.scale.svg\"><img src=\"data/#{File.basename(tree_path)}.corrected.rooted.png\" /></a></td>")
+          ordered_aln_string << species_row[species.name].sub('</tr><tr><td></td>',"</tr><tr><td></td><td rowspan=\"#{tree_order.size}\"><a target=\"_blank\" href=\"data/#{File.basename(tree_path)}.scale.svg\"><img src=\"data/#{File.basename(tree_path)}.png\" /></a></td>")
         else
           ordered_aln_string << species_row[species.name].sub('</tr><tr><td></td>',"</tr><tr><td></td><td rowspan=\"#{tree_order.size}\"><a target=\"_blank\" href=\"data/#{File.basename(tree_path)}.corrected.scale.svg\"><img src=\"data/#{File.basename(tree_path)}.corrected.png\" /></a></td>")
         end

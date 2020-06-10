@@ -39,9 +39,15 @@ the analyses of short fragments resulting from putative recombination events sho
     tree_counter = 0
     html_out_file << "<table cellpadding=\"20\" border=\"1\"><tr>\n"
 #    html_out_file << "<td><b>Full alignment</b><br><br><a target=\"_blank\" href=\"data/#{File.basename(full_tree_nt).sub('.corrected.','.')}.scale.svg\">
+if full_tree_nt.include?('.rooted')
+  html_out_file << "<td><b>Full alignment</b><br><br><a target=\"_blank\" href=\"data/#{File.basename(full_tree_nt)}.scale.svg\">
+  <img src=\"data/#{File.basename(full_tree_nt)}.png\"></a><br>
+  <a href=\"index.html\">Go to alignment</a></td>"  
+else
     html_out_file << "<td><b>Full alignment</b><br><br><a target=\"_blank\" href=\"data/#{File.basename(full_tree_nt)}.corrected.scale.svg\">
 <img src=\"data/#{File.basename(full_tree_nt)}.corrected.png\"></a><br>
 <a href=\"index.html\">Go to alignment</a></td>"
+end
     tree_counter += 1
 
     fragment_trees_nt.each do |fragment, tree|
@@ -49,9 +55,15 @@ the analyses of short fragments resulting from putative recombination events sho
       header = "Fragment #{fragment.split('_')[1]}"
       tree_counter += 1
 #      html_out_file << '<td>' << "<b>#{header}</b><br><br><a target=\"_blank\" href=\"../#{fragment}/data/#{File.basename(tree).sub('.corrected.','.')}.scale.svg\">
-      html_out_file << '<td>' << "<b>#{header}</b><br><br><a target=\"_blank\" href=\"../#{fragment}/data/#{File.basename(tree)}.corrected.scale.svg\">
+if tree.include?('.rooted')
+  html_out_file << '<td>' << "<b>#{header}</b><br><br><a target=\"_blank\" href=\"../#{fragment}/data/#{File.basename(tree)}.scale.svg\">
+<img src=\"../#{fragment}/data/#{File.basename(tree)}.png\"></a><br>
+<a href=\"../#{fragment}/index.html\">Go to alignment</a></td>"
+else
+  html_out_file << '<td>' << "<b>#{header}</b><br><br><a target=\"_blank\" href=\"../#{fragment}/data/#{File.basename(tree)}.corrected.scale.svg\">
 <img src=\"../#{fragment}/data/#{File.basename(tree)}.corrected.png\"></a><br>
 <a href=\"../#{fragment}/index.html\">Go to alignment</a></td>"
+end
       if tree_counter == 2
         tree_counter = 0
         html_out_file << '</tr><tr>'
@@ -135,8 +147,13 @@ fragment_trees_nt = {}
 num_frags = ARGV[3].split(' ').size
 num_frags.times.each do |i|
   ARGV[3].split(' ').each do |frag_tree|
-    frag_id = 'fragment_'+frag_tree.sub('_nt.raxml','').split('fragment_')[1]
-    fragment_trees_nt[frag_id] = frag_tree if "fragment_#{i+1}" == frag_id
+    if frag_tree.include?('.rooted')
+      frag_id = 'fragment_'+frag_tree.sub('_nt.raxml.corrected.rooted','').split('fragment_')[1]
+      fragment_trees_nt[frag_id] = frag_tree if "fragment_#{i+1}" == frag_id
+    else
+      frag_id = 'fragment_'+frag_tree.sub('_nt.raxml','').split('fragment_')[1]
+      fragment_trees_nt[frag_id] = frag_tree if "fragment_#{i+1}" == frag_id
+    end
   end
 end
 
