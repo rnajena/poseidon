@@ -6,7 +6,7 @@ process html {
 
     label 'bioruby'
 
-    maxForks 1
+    //maxForks 1
 
     input:
         val type 
@@ -100,13 +100,14 @@ process html_params {
     input:
         val type 
         tuple val(name), path(html_main_index)
+        path tools
 
     output: 
         tuple val(name), path("params.html")
         
     script:
     """
-    parameter_html.rb params.html ${html_main_index} ${params.poseidon_version} ${workflow.projectDir}
+    parameter_html.rb params.html ${html_main_index} ${params.poseidon_version} tools.txt
     """
 }
 

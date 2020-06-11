@@ -4,9 +4,9 @@
 
 class ParameterHtml
 
-  def initialize(parameter_html_out, html_index_file, frag_names, version, parameter_strings, workflow_projectdir)
+  def initialize(parameter_html_out, html_index_file, frag_names, version, parameter_strings, tools)
 
-    @param_txt = "#{workflow_projectdir}/tools.txt"
+    @param_txt = "#{tools}"
 
     param_files = {}
     parameter_strings.each do |type, parameter_text|
@@ -112,7 +112,7 @@ parameter_html_out = File.open(ARGV[0], 'w')
 html_index_file = ARGV[1]
 version = ARGV[2]
 parameter_strings = []
-workflow_projectdir = ARGV[3]
+tools = ARGV[3]
 frag_names = ARGV[4]
 
-ParameterHtml.new(parameter_html_out, html_index_file, frag_names, version, parameter_strings, workflow_projectdir)
+ParameterHtml.new(parameter_html_out, html_index_file, frag_names, version, parameter_strings, tools)
