@@ -58,6 +58,9 @@ if (!params.fasta) {
             .map { file -> tuple(file.simpleName, file) }
             .view() }
 
+// tools versions
+tools_ch = Channel.fromPath("${workflow.projectDir}/tools.txt", checkIfExists: true)
+
 /************************** 
 * MODULES
 **************************/
@@ -407,7 +410,7 @@ workflow {
     )
 
     // PARAMETER SUMMARY
-    html_params('full_aln', html.out.index)
+    html_params('full_aln', html.out.index, tools_ch)
 
     // if fragments!!!
     // Recombination summary HTML
@@ -419,9 +422,13 @@ workflow {
         //.view()
     )    
 
-    // Summarize all output files
+}
 
-
+workflow.onComplete { 
+    println " "
+    println "\033[0;34mResults: $params.output\033[0m"
+    println " "
+    println "Please cite: "
 }
 
 
