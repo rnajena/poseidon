@@ -34,9 +34,16 @@ process frag_tex_built {
         
     script:
     """
-    tex.rb ${mlc} ${codon_freq} ${name} ${params.reference} ${aln_aa_nogaps} ${internal2input} ${aln_aa_raw} ${workflow.projectDir}/bin/chi2 ${breakpoint_tsv}
-    mkdir \$(basename \$PWD)_tex
-    cp *.tex \$(basename \$PWD)_tex
+    if [ -s ${mlc} ]; then
+        tex.rb ${mlc} ${codon_freq} ${name} ${params.reference} ${aln_aa_nogaps} ${internal2input} ${aln_aa_raw} ${workflow.projectDir}/bin/chi2 ${breakpoint_tsv}
+        mkdir \$(basename \$PWD)_tex
+        cp *.tex \$(basename \$PWD)_tex
+    else
+        touch dummy.tex
+        mkdir \$(basename \$PWD)_dummy_tex
+        touch ${codon_freq}.lrt
+        touch gap_start2gap_length.csv
+    fi
     """
 }
 
@@ -53,10 +60,14 @@ process pdflatex {
         
     script:
     """
-    for TEX in *.tex; do 
-        pdflatex \$TEX 
-        pdflatex \$TEX # second compilation to adjust the table header width
-    done
+    if [ ! -f dummy.tex ]; then
+        for TEX in *.tex; do 
+            pdflatex \$TEX 
+            pdflatex \$TEX # second compilation to adjust the table header width
+        done
+    else
+        touch dummy.pdf
+    fi
     """
 }
 

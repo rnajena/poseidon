@@ -27,14 +27,19 @@ process codeml_run {
         
     script:
     """
-    codeml ${ctl} >> ${ctl}.log
-
     CODON_FREQ=\$(ls ${ctl} | awk 'BEGIN{FS="_"};{print \$2}')
 
     #MODEL=\$(ls ${ctl} | awk 'BEGIN{FS="_"};{print \$3}' | awk 'BEGIN{FS="."};{print \$1}')
     #mv *.mlc \$(basename \$PWD).codeml_\${CODON_FREQ}_\${MODEL}.mlc
 
     LABEL=${name}_\${CODON_FREQ}
+
+    if [ -s ${aln} ]; then
+        codeml ${ctl} >> ${ctl}.log
+    else
+        touch \$(basename \$PWD).dummy.mlc
+    fi
+
     echo \$LABEL
     """
 }

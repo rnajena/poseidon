@@ -1,12 +1,10 @@
 process html {
-    //if (type == 'full_aln')
-        publishDir "${params.output}/${name}/", mode: 'copy', pattern: "html" 
-    //else
-        publishDir "${params.output}/${name.split('_fragment_')[0]}/html/", mode: 'copy', pattern: "fragment_*" 
+    publishDir "${params.output}/${name}/", mode: 'copy', pattern: "html" 
+    publishDir "${params.output}/${name.split('_fragment_')[0]}/html/", mode: 'copy', pattern: "fragment_*" 
 
     label 'bioruby'
 
-    //maxForks 1
+    maxForks 1
 
     input:
         val type 
@@ -20,45 +18,51 @@ process html {
         
     script:
     """
-    if [[ ${type} == 'fragment' ]]; then
-        # extract the fragment ID from the name_frag combination label
-        NAME=\$(echo ${name} | awk 'BEGIN{FS="_fragment_"};{print "fragment_"\$2}')
-        FASTA_NAME=\$(echo ${name} | awk 'BEGIN{FS="_fragment_"};{print \$1}')
-        TYPE=\$NAME
+    if [ -s ${tree_nt} ]; then
+
+        if [[ ${type} == 'fragment' ]]; then
+            # extract the fragment ID from the name_frag combination label
+            NAME=\$(echo ${name} | awk 'BEGIN{FS="_fragment_"};{print "fragment_"\$2}')
+            FASTA_NAME=\$(echo ${name} | awk 'BEGIN{FS="_fragment_"};{print \$1}')
+            TYPE=\$NAME
+        else
+            NAME=${name}
+            FASTA_NAME=${name}
+            TYPE='full_aln'
+        fi
+
+        mkdir -p html/\${TYPE}
+        touch html/\${TYPE}/index.html
+        TITLE=\${NAME}
+
+        # copy mlc files in their correct ctl folder
+        # codeml_F61_M8a.mlc
+        # No such file or directory @ rb_sysopen - ctl/F3X4/M0/codeml.mlc
+        mkdir ctl_mlc
+        for MLC in *.mlc; do
+            FREQ=\$(basename \$MLC .mlc | awk 'BEGIN{FS="_"};{print \$2}')
+            MODEL=\$(basename \$MLC .mlc | awk 'BEGIN{FS="_"};{print \$3}')
+            mkdir -p ctl_mlc/\$FREQ/\$MODEL
+            cp \$MLC ctl_mlc/\$FREQ/\$MODEL/codeml.mlc
+            cp ctl/\$FREQ/\$MODEL/*.ctl ctl_mlc/\$FREQ/\$MODEL/codeml.ctl
+        done
+
+        mkdir tex
+        cp *_tex/*.tex tex/
+
+        html.rb \${TYPE} html html/\${TYPE}/index.html ${aa_aln_html} ${aa_aln} ctl_mlc ${tree_nt} ${tree_aa} ${gap_adjusted_start_end} \$TITLE ${input_fasta} ${internal2input_species} ${input2internal_species} ${aln_length_with_gaps} ${gard_html_file} ${nucleotide_bias_model} \${FASTA_NAME}_codeml.tex \${FASTA_NAME}_gaps_codeml.tex tex ${params.refactor} ${params.poseidon_version} ${recombination} ${workflow.projectDir}
+
+        cp html/*/index.html .
+
+        if [[ ${type} == 'fragment' ]]; then
+            cp -r html/\$NAME .
+            rm -rf html
+        fi
     else
-        NAME=${name}
-        FASTA_NAME=${name}
-        TYPE='full_aln'
+        # no fragments found
+        touch index.html
+        mkdir tex
     fi
-
-    mkdir -p html/\${TYPE}
-    touch html/\${TYPE}/index.html
-    TITLE=\${NAME}
-
-    # copy mlc files in their correct ctl folder
-    # codeml_F61_M8a.mlc
-    # No such file or directory @ rb_sysopen - ctl/F3X4/M0/codeml.mlc
-    mkdir ctl_mlc
-    for MLC in *.mlc; do
-        FREQ=\$(basename \$MLC .mlc | awk 'BEGIN{FS="_"};{print \$2}')
-        MODEL=\$(basename \$MLC .mlc | awk 'BEGIN{FS="_"};{print \$3}')
-        mkdir -p ctl_mlc/\$FREQ/\$MODEL
-        cp \$MLC ctl_mlc/\$FREQ/\$MODEL/codeml.mlc
-        cp ctl/\$FREQ/\$MODEL/*.ctl ctl_mlc/\$FREQ/\$MODEL/codeml.ctl
-    done
-
-    mkdir tex
-    cp *_tex/*.tex tex/
-
-    html.rb \${TYPE} html html/\${TYPE}/index.html ${aa_aln_html} ${aa_aln} ctl_mlc ${tree_nt} ${tree_aa} ${gap_adjusted_start_end} \$TITLE ${input_fasta} ${internal2input_species} ${input2internal_species} ${aln_length_with_gaps} ${gard_html_file} ${nucleotide_bias_model} \${FASTA_NAME}_codeml.tex \${FASTA_NAME}_gaps_codeml.tex tex ${params.refactor} ${params.poseidon_version} ${recombination} ${workflow.projectDir}
-
-    cp html/*/index.html .
-
-    if [[ ${type} == 'fragment' ]]; then
-        cp -r html/\$NAME .
-        rm -rf html
-    fi
-
     sleep 5s
     """
 }
@@ -82,11 +86,13 @@ process html_codeml {
         tuple val(name), file(html_main_index), path(tex_dir), path(lrt_files), val(fragment_names)
 
     output: 
-        tuple val(name), path("codeml.html")
+        tuple val(name), path("codeml.html") optional true
         
     script:
     """
-    codeml_html.rb ${type} codeml.html ${html_main_index} ${tex_dir} '${fragment_names}'
+    if [ -s index.html ]; then
+        codeml_html.rb ${type} codeml.html ${html_main_index} ${tex_dir} '${fragment_names}'
+    fi
     """
 }
 
@@ -103,11 +109,13 @@ process html_params {
         path tools
 
     output: 
-        tuple val(name), path("params.html")
+        tuple val(name), path("params.html") optional true
         
     script:
     """
-    parameter_html.rb params.html ${html_main_index} ${params.poseidon_version} tools.txt
+    if [ -s index.html ]; then
+        parameter_html.rb params.html ${html_main_index} ${params.poseidon_version} tools.txt
+    fi
     """
 }
 
@@ -117,7 +125,7 @@ process frag_aln_html {
 //    publishDir "${params.output}/${name}/html/${type}/", mode: 'copy', pattern: "params.html" 
     label 'bioruby'
 
-    errorStrategy { task.exitStatus = 1 ? 'ignore' : 'terminate' }
+    //errorStrategy { task.exitStatus = 1 ? 'ignore' : 'terminate' }
 
     input:
         tuple val(name_frag), val(name), val(frag), path(gap_start2gap_length_csv), path(aa_aln_html_raw), path(bp_tsv), path(nt_aln_raw), path(aa_aln_raw)
@@ -135,10 +143,12 @@ process frag_aln_html {
 
     # the calculated aln_length_with_gaps are needed for the NEXT fragment
     FRAG_COUNT=\$(echo ${frag} | sed 's/fragment_//g')
-    FRAG_COUNT=\$((\$FRAG_COUNT+1))
-    NEXT_FRAG="fragment_\${FRAG_COUNT}"
-    NEXT_NAME_FRAG="${name}_\${NEXT_FRAG}" # bats_mx1_fragment_1 -> bats_mx1_fragment_2
-    DUMMY_NAME_FRAG="${name}_fragment_1"
+    if [[ \$FRAG_COUNT != "x" ]]; then 
+        FRAG_COUNT=\$((\$FRAG_COUNT+1))
+        NEXT_FRAG="fragment_\${FRAG_COUNT}"
+        NEXT_NAME_FRAG="${name}_\${NEXT_FRAG}" # bats_mx1_fragment_1 -> bats_mx1_fragment_2
+        DUMMY_NAME_FRAG="${name}_fragment_1"
+    fi
 
     echo \$ALN_LENGTH_WITH_GAPS
     """
@@ -153,13 +163,15 @@ process html_recomb {
         tuple val(name), path(html_index), path(gard_html), path(full_nt_tree), path(frag_nt_trees)
 
     output: 
-        path "recomb.html"
+        path "recomb.html" optional true
         
     script:
     """
-    mkdir -p html/full_aln/
-    touch html/full_aln/recomb.html
-    recombination_html.rb ${html_index} ${gard_html} ${full_nt_tree} '${frag_nt_trees}'
-    cp html/full_aln/recomb.html recomb.html
+    if [ -s index.html ]; then
+        mkdir -p html/full_aln/
+        touch html/full_aln/recomb.html
+        recombination_html.rb ${html_index} ${gard_html} ${full_nt_tree} '${frag_nt_trees}'
+        cp html/full_aln/recomb.html recomb.html
+    fi
     """
 }

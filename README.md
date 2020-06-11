@@ -16,6 +16,8 @@ PoSeiDon relies on a variety of different third-party tools (see below). But don
 
 ## Installation
 
+<img align="right" width="160px" src="https://github.com/hoelzer/poseidon/blob/master/figures/poseidon.gif" /> 
+
 You only need [Nextflow](https://nf-co.re/usage/installation) (version 20.+) and [Docker](https://docs.docker.com/engine/installation/) installed to run the pipeline. All dependencies will be pulled automatically. 
 
 Either run PoSeiDon by cloning this repository:

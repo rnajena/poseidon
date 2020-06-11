@@ -7,15 +7,25 @@ MODELS = %w(M0 M1a M2a M7 M8 M8a)
 codon_freq = ARGV[0]
 codeml_mlcs = {}
 codeml_mlcs[codon_freq] = []
-## we want to have a order of the models
-MODELS.each do |model|
-  Dir.glob("*.mlc").each do |mlc|
-    dn = mlc.split('_')[2].split('.')[0] # e.g. M2a
-    if dn == model
-      codeml_mlcs[codon_freq].push(mlc)
+
+## check if the mlc files are all empty and if so break
+empty = false
+Dir.glob("*.mlc").each do |mlc|
+  empty = true if File.empty?(mlc)
+end
+
+if empty
+  `touch dummy.all.mlc`
+else
+  ## we want to have a order of the models
+  MODELS.each do |model|
+    Dir.glob("*.mlc").each do |mlc|
+      dn = mlc.split('_')[2].split('.')[0] # e.g. M2a
+      if dn == model
+        codeml_mlcs[codon_freq].push(mlc)
+      end
     end
   end
-end
 
 ## for each frequency {F61, F1X4, F3X4} build one codeml mlc file
 #mlcs = []
@@ -58,3 +68,5 @@ codeml_mlcs.each do |freq, codeml_mlc_a|
   #mlcs.push(codeml_all_out.path)
 end
 #mlcs
+
+end
