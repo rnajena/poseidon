@@ -2,7 +2,7 @@ process raxml_nt {
     label 'raxml'  
 //    publishDir "${params.output}/${name}/", mode: 'copy', pattern: ""
 
-  errorStrategy { task.exitStatus = 255 ? 'ignore' : 'terminate' }
+//  errorStrategy { task.exitStatus = 255 ? 'ignore' : 'terminate' }
 
   input: 
     tuple val(name), file(aln)
@@ -13,12 +13,18 @@ process raxml_nt {
   script:
     if (params.outgroup == 'NA')
     """
-      raxmlHPC-PTHREADS-SSE3 -T ${task.cpus} -f a -x 1234 -p 1234 -s ${aln} -n nt -m GTRGAMMA -N ${params.bootstrap} 
+      touch RAxML_bipartitionsBranchLabels.nt
+      if [ -s ${aln} ]; then 
+        raxmlHPC-PTHREADS-SSE3 -T ${task.cpus} -f a -x 1234 -p 1234 -s ${aln} -n nt -m GTRGAMMA -N ${params.bootstrap} 
+      fi
       mv RAxML_bipartitionsBranchLabels.nt ${name}_nt.raxml
     """
     else
     """
-      raxmlHPC-PTHREADS-SSE3 -T ${task.cpus} -f a -x 1234 -p 1234 -s ${aln} -n nt -m GTRGAMMA -N ${params.bootstrap} -o ${params.outgroup.toUpperCase()}
+      touch RAxML_bipartitionsBranchLabels.nt
+      if [ -s ${aln} ]; then 
+        raxmlHPC-PTHREADS-SSE3 -T ${task.cpus} -f a -x 1234 -p 1234 -s ${aln} -n nt -m GTRGAMMA -N ${params.bootstrap} -o ${params.outgroup.toUpperCase()} 
+      fi
       mv RAxML_bipartitionsBranchLabels.nt ${name}_nt.raxml
     """    
 }
@@ -27,7 +33,7 @@ process raxml_aa {
     label 'raxml'  
 //    publishDir "${params.output}/${name}/", mode: 'copy', pattern: ""
 
-  errorStrategy { task.exitStatus = 255 ? 'ignore' : 'terminate' }
+//  errorStrategy { task.exitStatus = 255 ? 'ignore' : 'terminate' }
 
   input: 
     tuple val(name), file(aln)
@@ -38,12 +44,18 @@ process raxml_aa {
   script:
     if (params.outgroup == 'NA')
     """
-      raxmlHPC-PTHREADS-SSE3 -T ${task.cpus} -f a -x 1234 -p 1234 -s ${aln} -n aa -m PROTGAMMAWAG -N ${params.bootstrap} 
+      touch RAxML_bipartitionsBranchLabels.aa
+      if [ -s ${aln} ]; then 
+        raxmlHPC-PTHREADS-SSE3 -T ${task.cpus} -f a -x 1234 -p 1234 -s ${aln} -n aa -m PROTGAMMAWAG -N ${params.bootstrap} 
+      fi
       mv RAxML_bipartitionsBranchLabels.aa ${name}_aa.raxml
     """
     else
     """
-      raxmlHPC-PTHREADS-SSE3 -T ${task.cpus} -f a -x 1234 -p 1234 -s ${aln} -n aa -m PROTGAMMAWAG -N ${params.bootstrap} -o ${params.outgroup.toUpperCase()}
+      touch RAxML_bipartitionsBranchLabels.aa
+      if [ -s ${aln} ]; then 
+        raxmlHPC-PTHREADS-SSE3 -T ${task.cpus} -f a -x 1234 -p 1234 -s ${aln} -n aa -m PROTGAMMAWAG -N ${params.bootstrap} -o ${params.outgroup.toUpperCase()} 
+      fi
       mv RAxML_bipartitionsBranchLabels.aa ${name}_aa.raxml
     """    
 }
@@ -82,22 +94,28 @@ process nw_display {
 
   script:
   """
-    for newick in *.corrected*; do 
+    if [ -s ${newick_nt} ]; then
+      for newick in *.corrected*; do 
 
-    nw_display -v 50 -i 'font-size:11' -l 'font-size:16;font-family:helvetica;font-style:italic' -d 'stroke:black;fill:none;stroke-width:2;stroke-linecap:round' -Il -w 650 -b 'opacity:0' -S -s \${newick} > \${newick}.svg
-    inkscape -f \${newick}.svg -A \${newick}.pdf 
-    #convert \${newick}.svg \${newick}.pdf
+      nw_display -v 50 -i 'font-size:11' -l 'font-size:16;font-family:helvetica;font-style:italic' -d 'stroke:black;fill:none;stroke-width:2;stroke-linecap:round' -Il -w 650 -b 'opacity:0' -S -s \${newick} > \${newick}.svg
+      inkscape -f \${newick}.svg -A \${newick}.pdf 
+      #convert \${newick}.svg \${newick}.pdf
 
-    nw_display -v 50 -i 'font-size:11' -l 'font-size:16;font-family:helvetica;font-style:italic' -d 'stroke:black;fill:none;stroke-width:2;stroke-linecap:round' -Il -w 650 -b 'opacity:0' -s \${newick} > \${newick}.scale.svg
-    inkscape -f \${newick}.scale.svg -A \${newick}.scale.pdf
+      nw_display -v 50 -i 'font-size:11' -l 'font-size:16;font-family:helvetica;font-style:italic' -d 'stroke:black;fill:none;stroke-width:2;stroke-linecap:round' -Il -w 650 -b 'opacity:0' -s \${newick} > \${newick}.scale.svg
+      inkscape -f \${newick}.scale.svg -A \${newick}.scale.pdf
 
-    # png thumbnail
-    ## calculate the export height based on the number of taxa
-    TAXA=\$(grep ">" ${aln} | wc -l | awk '{print \$1}')
-    HEIGHT=\$((25*TAXA))
-    inkscape -f \${newick}.svg --export-width=480 --export-height=\$HEIGHT --without-gui --export-png=\${newick}.png
+      # png thumbnail
+      ## calculate the export height based on the number of taxa
+      TAXA=\$(grep ">" ${aln} | wc -l | awk '{print \$1}')
+      HEIGHT=\$((25*TAXA))
+      inkscape -f \${newick}.svg --export-width=480 --export-height=\$HEIGHT --without-gui --export-png=\${newick}.png
 
-    done
+      done
+    else
+      touch dummy.svg
+      touch dummy.pdf
+      touch dummy.png
+    fi
   """
 }
 
@@ -128,8 +146,6 @@ process barefoot {
 }
 
 /*
-TODO: the second part (the drawing) can be done with the already available function
-from phylo.rb
 // IMPORTANT: file should be named with .rooted then: bats_mx1_nt.raxml.corrected.rooted for further processing
 */
 process reroot {

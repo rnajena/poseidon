@@ -18,17 +18,17 @@ if( !nextflow.version.matches('20.+') ) {
 if (params.help) { exit 0, helpMSG() }
 
 println " "
+println "\033[0;34mP O S E I D O N\033[0m"
+println " "
 println "\u001B[32mProfile: $workflow.profile\033[0m"
 println " "
 println "\033[2mCurrent User: $workflow.userName"
 println "Nextflow-version: $nextflow.version"
 println "Starting time: $nextflow.timestamp"
-println "Workdir location:"
-println "  $workflow.workDir\u001B[0m"
+println "Workdir location: $workflow.workDir\u001B[0m"
 println " "
 if (workflow.profile == 'standard') {
-println "\033[2mCPUs to use: $params.cores"
-println "Output dir name: $params.output\u001B[0m"
+println "\033[2mCPUs to use: $params.cores\u001B[0m"
 println " "}
 
 println "\033[2mTree root species: $params.outgroup"
@@ -41,6 +41,12 @@ if (params.kh) {
     println "\033[2mUse KH-insignificant breakpoints: no\u001B[0m"
     println " "
 }
+println "\033[0;34mResults will be reported here:"
+println "    $params.output/<prefix_of_your_fasta>/html/full_aln/index.html\033[0m"
+println " "
+println "\033[2mPlease cite: https://doi.org/10.1101/2020.05.18.102731\u001B[0m"
+println " "
+
 
 if (params.profile) {
     exit 1, "--profile is WRONG use -profile" }
@@ -52,11 +58,11 @@ if (!params.fasta) {
             .fromPath( params.fasta, checkIfExists: true )
             .splitCsv()
             .map { row -> [row[0], file("${row[1]}", checkIfExists: true)] }
-            .view() }
+            }
     else if (params.fasta) { fasta_input_ch = Channel
             .fromPath( params.fasta, checkIfExists: true, type: 'file')
             .map { file -> tuple(file.simpleName, file) }
-            .view() }
+            }
 
 // tools versions
 tools_ch = Channel.fromPath("${workflow.projectDir}/tools.txt", checkIfExists: true)
@@ -211,8 +217,8 @@ workflow {
     fragments_ch = build_fragments(remove_gaps.out.fna.join(gard_process.out.bp).join(gard_process.out.recombination)).fragments.transpose()
 
     // for each fragment, build a new unrooted tree for CODEML
-    frag_aln_nogaps_nt = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple ("${name}_${fragment_dir.getFileName()}", fragment_nt)}
-    frag_aln_nogaps_aa = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple ("${name}_${fragment_dir.getFileName()}", fragment_aa)}
+    frag_aln_nogaps_nt = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple ("${name}_${fragment_dir.getFileName()}", fragment_nt)}//.view()
+    frag_aln_nogaps_aa = fragments_ch.map{ name, fragment_dir, fragment_nt, fragment_aa -> tuple ("${name}_${fragment_dir.getFileName()}", fragment_aa)}//.view()
 
     frag_raxml_nt(frag_aln_nogaps_nt)
     frag_raxml_aa(frag_aln_nogaps_aa)
@@ -320,6 +326,7 @@ workflow {
 
     gap_adjusted_start_end = frag_aln_html.out.gap_adjusted_start_end
     frag_mlc_files_c = frag_codeml_run.out.mlc_files.groupTuple(by: 1, size: 6).map { it -> tuple ( it[0][1], it[2] )}.groupTuple(by: 0).map { it -> tuple (it[0], it[1][0], it[1][1], it[1][2]) }
+    sleep(10000) // seems to solve an issue with publishing into the same folder that is generated later
     html_frag('fragment',
         frag_aln_html.out.all
             .map{name_frag, name, frag, html, aa_aln, nt_aln -> tuple (name_frag, html, aa_aln)}
@@ -424,12 +431,15 @@ workflow {
 
 }
 
-workflow.onComplete { 
+/*workflow.onComplete { 
+    //file("${params.output}/*_fragment_1").deleteDir()
     println " "
+    println "Pipeline completed at: $workflow.complete"
+    println "Execution status: ${ workflow.success ? 'OK' : 'failed' }"
     println "\033[0;34mResults: $params.output\033[0m"
     println " "
-    println "Please cite: "
-}
+    println "Please cite: https://doi.org/10.1101/2020.05.18.102731"
+}*/
 
 
 /*************  
