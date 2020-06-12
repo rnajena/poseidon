@@ -122,7 +122,8 @@ Sequence IDs must be unique until the first occurrence of a space.
 
 Optional. Default: use first sequence ID as reference. You can define <b>one</b> species ID from your multiple FASTA file as a reference species. Positively selected sites and corresponding amino acids will be drawn in respect to this species. The ID must match the FASTA header until the occurence of the first space. For example, if you want <i>Myotis lucifugus</i> as your reference species and your FASTA file contains:
 
-```>Myotis_lucifugus Mx1 Gene
+```
+>Myotis_lucifugus Mx1 Gene
 ATGGCGATCGAGATACGATACGTA...
 ```
 
