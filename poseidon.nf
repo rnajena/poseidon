@@ -431,16 +431,23 @@ workflow {
 
 }
 
-/*workflow.onComplete { 
-    //file("${params.output}/*_fragment_1").deleteDir()
-    println " "
-    println "Pipeline completed at: $workflow.complete"
-    println "Execution status: ${ workflow.success ? 'OK' : 'failed' }"
-    println "\033[0;34mResults: $params.output\033[0m"
-    println " "
-    println "Please cite: https://doi.org/10.1101/2020.05.18.102731"
-}*/
+/*************  
+* output
+*************/
 
+params.monochrome_logs = false
+c_blue = params.monochrome_logs ? '' : "\033[0;34m";
+c_reset = params.monochrome_logs ? '' : "\033[0m";
+workflow.onComplete { 
+    //file("${params.output}/*_fragment_1").deleteDir()
+    log.info(" ")
+    log.info("PoSeiDon finished after: $workflow.duration")
+    log.info("Execution status: ${ workflow.success ? 'OK' : 'failed' }")
+    log.info("Results are reported here:")
+    log.info("$params.output/<prefix_of_your_fasta>/html/full_aln/index.html")
+    log.info(" ")
+    log.info("Please cite: https://doi.org/10.1101/2020.05.18.102731")
+}
 
 /*************  
 * --help
