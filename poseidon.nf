@@ -447,6 +447,7 @@ workflow.onComplete {
     log.info("$params.output/<prefix_of_your_fasta>/html/full_aln/index.html")
     log.info(" ")
     log.info("Please cite: https://doi.org/10.1101/2020.05.18.102731")
+    log.info(" ")
 }
 
 /*************  
