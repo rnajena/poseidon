@@ -441,7 +441,7 @@ c_reset = params.monochrome_logs ? '' : "\033[0m";
 workflow.onComplete { 
     //file("${params.output}/*_fragment_1").deleteDir()
     log.info(" ")
-    log.info("PoSeiDon finished after: $workflow.duration")
+    //log.info("PoSeiDon finished after: $workflow.duration")
     log.info("Execution status: ${ workflow.success ? 'OK' : 'failed' }")
     log.info("Results are reported here:")
     log.info("$params.output/<prefix_of_your_fasta>/html/full_aln/index.html")
