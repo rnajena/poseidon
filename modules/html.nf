@@ -1,6 +1,5 @@
 process html {
     publishDir "${params.output}/${name}/", mode: 'copy', pattern: "html" 
-    publishDir "${params.output}/${name.split('_fragment_')[0]}/html/", mode: 'copy', pattern: "fragment_*" 
 
     label 'bioruby'
 
@@ -14,7 +13,7 @@ process html {
         tuple val(name), file("index.html"), emit: index
         tuple val(name), file("tex"), emit: tex_dir
         path("html", type: 'dir') optional true
-        path("fragment_*", type: 'dir') optional true
+        tuple val(name), path("fragment_*", type: 'dir') optional true
         
     script:
     """
@@ -55,7 +54,8 @@ process html {
         cp html/*/index.html .
 
         if [[ ${type} == 'fragment' ]]; then
-            cp -r html/\$NAME .
+            ID=\$(basename \$PWD)
+            cp -r html/\$NAME \${NAME}_\${ID}
             rm -rf html
         fi
     else
@@ -175,3 +175,4 @@ process html_recomb {
     fi
     """
 }
+

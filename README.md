@@ -48,11 +48,11 @@ __Important:__ PoSeiDon needs nucleotide sequences with a correct open reading f
 
 ### Profiles
 
-Nextflow can be easily executed on different environments like your local machine, a high-performance cluster or the cloud. Different `-profile` are used to tell Nextflow which system should be used. For local execution `-profile local,docker` should be used (and is also the default). More profiles will be added.   
+Nextflow can be easily executed on different environments like your local machine, a high-performance cluster or the cloud. Different `-profile` are used to tell Nextflow which system should be used. For local execution `-profile local,docker` should be used (and is also the default). You can also run PoSeiDon on a HPC using Singularity via `-profile lsf,singularity` or `-profile slurm,singularity`. In such cases, please also consider to adjust `--cachedir` to point where to store Singularity images on your cluster. The parameter `--workdir` might be also helpful to adjust where to store temporary working directories (e.g. use `/scratch` instead of `/tmp` depending on your HPC configuration.) 
 
 ### Examples 
 
-Now let's assume you used Nextflow to pull the PoSeiDon code and you execute the piepline on a local machine using the default profile `-profile local,docker`. 
+Now let's assume you used Nextflow to pull the PoSeiDon code and you execute the pipeline on a local machine using the default profile `-profile local,docker`. 
 
 ```bash
 # show help 
@@ -66,6 +66,11 @@ nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_d
 # resume a broken run
 nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta \
 --cores 4 -resume
+
+# instead of using all available cores only use a maximum amount on the local machine
+nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta \
+--max_cores 8
+--cores 4
 ```
 
 To reproduce the [positive selection results](http://www.rna.uni-jena.de/supplements/mx1_bats/full_aln/) reported in [Fuchs _et al_. (2017), Journal of Virology](https://doi.org/10.1128/JVI.00361-17) run:

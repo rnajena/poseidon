@@ -27,9 +27,10 @@ println "Nextflow-version: $nextflow.version"
 println "Starting time: $nextflow.timestamp"
 println "Workdir location: $workflow.workDir\u001B[0m"
 println " "
-if (workflow.profile == 'standard') {
-println "\033[2mCPUs to use: $params.cores\u001B[0m"
-println " "}
+if (workflow.profile == 'standard' || workflow.profile.contains('local')) {
+    println "\033[2mCPUs to use per process: $params.cores, maximal CPUs to use: $params.max_cores\u001B[0m"
+    println " "
+}
 
 println "\033[2mTree root species: $params.outgroup"
 println "Reference species: $params.reference\u001B[0m"
@@ -98,7 +99,7 @@ include pdflatex as pdflatex_full from './modules/tex'
 
 include {html; html as html_frag; html_codeml; html_codeml as frag_html_codeml; html_params; frag_aln_html; html_recomb} from './modules/html'
 
-include build_fragments from './modules/fragment'
+include {build_fragments; frag_publish} from './modules/fragment'
 
 
 /************************** 
@@ -366,6 +367,10 @@ workflow {
             //.view()
     )
 
+    // publish fragment dirs
+    // this needs to be done in a separate process because otherwise different processes try to publish to the same folder
+    frag_publish(html_frag.out[3].combine(map_frag_full, by: 0).map{fragment, dir, name -> tuple(name, dir)}.groupTuple(by: 0))
+
     // Frag CODEML SUMMARY
     frag_html_codeml('fragment',
                 html_frag.out.index
@@ -440,13 +445,15 @@ c_blue = params.monochrome_logs ? '' : "\033[0;34m";
 c_reset = params.monochrome_logs ? '' : "\033[0m";
 workflow.onComplete { 
     //file("${params.output}/*_fragment_1").deleteDir()
+
     log.info(" ")
-    log.info("PoSeiDon finished after: $workflow.duration")
+    //log.info("PoSeiDon finished after: $workflow.duration")
     log.info("Execution status: ${ workflow.success ? 'OK' : 'failed' }")
     log.info("Results are reported here:")
     log.info("$params.output/<prefix_of_your_fasta>/html/full_aln/index.html")
     log.info(" ")
     log.info("Please cite: https://doi.org/10.1101/2020.05.18.102731")
+    log.info(" ")
 }
 
 /*************  
@@ -472,7 +479,8 @@ def helpMSG() {
     ${c_dim}  ..change above input to csv:${c_reset} ${c_green}--list ${c_reset}
     
     ${c_yellow}General options:${c_reset}
-    --cores             max cores for local use [default: $params.cores]
+    --cores             max cores per process for local use [default $params.cores]
+    --max_cores         max cores used on the machine for local use [default $params.max_cores]
     --memory            memory limitations for polisher tools in GB [default: $params.memory]
     --output            name of the result folder [default: $params.output]
     --reference         resulting amino acid changes and sites will be reported according to this species (FASTA id) [default: $params.reference]
