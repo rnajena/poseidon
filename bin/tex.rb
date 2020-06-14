@@ -472,7 +472,7 @@ fragment_id = ''
 query_sequence_name = ARGV[3]
 if query_sequence_name != 'NA' && query_sequence_name.length > 0
   query_sequence_name = query_sequence_name.split(' ')[0]
-  query_sequence_name = query_sequence_name.gsub('.','_').gsub('-','_').gsub(':','_').gsub(',','_').gsub(';','_').gsub('|','_')
+  query_sequence_name = query_sequence_name.gsub('.','_').gsub('-','_').gsub(':','_').gsub(',','_').gsub(';','_').gsub('|','_').gsub('/','_').gsub('\\','_')
   query_sequence_name = query_sequence_name.upcase  
 end
 
