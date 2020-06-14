@@ -28,7 +28,7 @@ println "Starting time: $nextflow.timestamp"
 println "Workdir location: $workflow.workDir\u001B[0m"
 println " "
 if (workflow.profile == 'standard' || workflow.profile.contains('local')) {
-    println "\033[2mCPUs to use: $params.cores, maximal CPUs to use: $params.max_cores\u001B[0m"
+    println "\033[2mCPUs to use per process: $params.cores, maximal CPUs to use: $params.max_cores\u001B[0m"
     println " "
 }
 
