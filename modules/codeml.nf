@@ -6,12 +6,13 @@ process codeml_built {
         tuple val(name), path(aln), path(tree)
 
     output: 
-        tuple val(name), path("ctl/*/*/*.ctl"), emit: ctl_files
-        tuple val(name), path('ctl', type: 'dir'), emit: ctl_dir
+        tuple val(name), path("ctl/*/*/*.ctl"), optional: true, emit: ctl_files
+        tuple val(name), path('ctl', type: 'dir'), optional: true, emit: ctl_dir
         
     script:
     """
     codeml_built.rb ctl ${aln} ${tree}
+    #if [ "${aln}" == "x.nt_ali.checked.nogaps.fasta" ]; then rm -r ctl; fi
     """
 }
 

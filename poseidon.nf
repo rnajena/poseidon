@@ -99,7 +99,7 @@ include pdflatex as pdflatex_full from './modules/tex'
 
 include {html; html as html_frag; html_codeml; html_codeml as frag_html_codeml; html_params; frag_aln_html; html_recomb} from './modules/html'
 
-include build_fragments from './modules/fragment'
+include {build_fragments; frag_publish} from './modules/fragment'
 
 
 /************************** 
@@ -367,6 +367,10 @@ workflow {
             //.view()
     )
 
+    // publish fragment dirs
+    // this needs to be done in a separate process because otherwise different processes try to publish to the same folder
+    frag_publish(html_frag.out[3].combine(map_frag_full, by: 0).map{fragment, dir, name -> tuple(name, dir)}.groupTuple(by: 0))
+
     // Frag CODEML SUMMARY
     frag_html_codeml('fragment',
                 html_frag.out.index
@@ -441,6 +445,7 @@ c_blue = params.monochrome_logs ? '' : "\033[0;34m";
 c_reset = params.monochrome_logs ? '' : "\033[0m";
 workflow.onComplete { 
     //file("${params.output}/*_fragment_1").deleteDir()
+
     log.info(" ")
     //log.info("PoSeiDon finished after: $workflow.duration")
     log.info("Execution status: ${ workflow.success ? 'OK' : 'failed' }")

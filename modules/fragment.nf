@@ -23,3 +23,21 @@ process build_fragments {
     fi
     """
 }
+
+process frag_publish {
+    publishDir "${params.output}/${name}/html/", mode: 'copy', pattern: "fragment_*" 
+    label 'bioruby'
+
+    input:
+        tuple val(name), file(dirs)
+
+    output: 
+        path "fragment_*", type: 'dir'
+
+    script:
+    """
+    for DIR in fragment_*; do 
+        cp -r \$DIR \$(echo \$DIR | awk 'BEGIN{FS="_"};{print \$1"_"\$2}')
+    done
+    """
+}
