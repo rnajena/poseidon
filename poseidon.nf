@@ -27,9 +27,10 @@ println "Nextflow-version: $nextflow.version"
 println "Starting time: $nextflow.timestamp"
 println "Workdir location: $workflow.workDir\u001B[0m"
 println " "
-if (workflow.profile == 'standard') {
-println "\033[2mCPUs to use: $params.cores\u001B[0m"
-println " "}
+if (workflow.profile == 'standard' || workflow.profile.contains('local')) {
+    println "\033[2mCPUs to use: $params.cores, maximal CPS to use: $params.max_cores\u001B[0m"
+    println " "
+}
 
 println "\033[2mTree root species: $params.outgroup"
 println "Reference species: $params.reference\u001B[0m"
@@ -473,7 +474,8 @@ def helpMSG() {
     ${c_dim}  ..change above input to csv:${c_reset} ${c_green}--list ${c_reset}
     
     ${c_yellow}General options:${c_reset}
-    --cores             max cores for local use [default: $params.cores]
+    --cores             max cores per process for local use [default $params.cores]
+    --max_cores         max cores used on the machine for local use [default $params.max_cores]
     --memory            memory limitations for polisher tools in GB [default: $params.memory]
     --output            name of the result folder [default: $params.output]
     --reference         resulting amino acid changes and sites will be reported according to this species (FASTA id) [default: $params.reference]
