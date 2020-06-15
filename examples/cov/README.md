@@ -48,7 +48,7 @@ The full output can be [downloaded](Spike_ali_nucl-VIRULIGN.tar.gz) or directly 
 
 ### Recombination
 
-PoSeiDon (using GARD) ![detected many potential breakpoints](https://www.rna.uni-jena.de/supplements/poseidon/Spike_ali_nucl-VIRULIGN/html/full_aln/recomb.html) and one with actual topological incongruence (2526; based on the alignment w/o gaps that GARD uses for testing). This breakpoint was reported as significant (and is therefore considered by PoSeiDon in the downstream analysis).
+PoSeiDon (using GARD) [detected many potential breakpoints](https://www.rna.uni-jena.de/supplements/poseidon/Spike_ali_nucl-VIRULIGN/html/full_aln/recomb.html) and one with actual topological incongruence (2526; based on the alignment w/o gaps that GARD uses for testing). This breakpoint was reported as significant (and is therefore considered by PoSeiDon in the downstream analysis).
 
 ![GARD](gard.png)
 
