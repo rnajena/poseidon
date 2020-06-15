@@ -1,4 +1,4 @@
-# PoSeiDon: SARS-CoV-2 example
+# PoSeiDon: A small SARS-CoV-2 example based on the spike protein
 
 <img align="right" width="160px" src="https://github.com/hoelzer/poseidon/blob/master/images/poseidon_logo.png" alt="PoSeiDon logo" /> 
 
@@ -72,12 +72,12 @@ Positions 503 and 504 (corresponding to marked positions 493 and 494 in Figure 2
 
 Previous studies already showed "Six amino acid residues at the RBD (L455, F486, Q493, S494, N501, and Y505) have been reported to be major determinants of efficient receptor binding of SARS-CoV-2 to ACE2" ([Zhou _et al_. 2020](https://www.cell.com/current-biology/pdf/S0960-9822(20)30662-X.pdf)). Due to differences in the alignment these positions can not directly found in the PoSeiDon output but correspond to: 
 
-L455     = L465 --> no hit in PoSeiDon
-F486     = F496 --> no hit in PoSeiDon 
-Q493     = Q503 --> low support in full aln and fragment 1
-S494     = S504 --> low support in full aln and fragment 1
-N501     = N511 --> low support in full aln
-Y505     = Y515 --> no hit in PoSeiDon 
+* L455     = L465 --> no hit in PoSeiDon
+* F486     = F496 --> no hit in PoSeiDon 
+* Q493     = Q503 --> low support in full aln and fragment 1
+* S494     = S504 --> low support in full aln and fragment 1
+* N501     = N511 --> low support in full aln
+* Y505     = Y515 --> no hit in PoSeiDon 
 
 In summary, only based on the eight coding sequences for the spike protein, PoSeiDon detected three out of the six previously reported positions to be positively selected (although with very low support due to sample size) and an additional position (508), that was only found based on the initial recombination detection and splitting of the alignment. 
 

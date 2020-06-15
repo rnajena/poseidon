@@ -14,6 +14,8 @@ Here we present [PoSeiDon](https://www.biorxiv.org/content/10.1101/2020.05.18.10
 
 PoSeiDon relies on a variety of different third-party tools (see below). But don't worry, we encapsulated each tool in its own [Docker](https://www.docker.com/resources/what-container) container and connected them in the Workflow Management System [Nextflow](https://www.nextflow.io/). 
 
+![Go directly to a small example](examples/cov/) of PoSeiDon output for the SARS-CoV-2 spike protein in comparison to a recent study of [Zhou _et al_. 2020](https://www.cell.com/current-biology/pdf/S0960-9822(20)30662-X.pdf).
+
 ## Installation
 
 <img align="right" width="380px" src="https://github.com/hoelzer/poseidon/blob/nextflow/images/poseidon.gif" /> 
