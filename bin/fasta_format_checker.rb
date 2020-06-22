@@ -2,26 +2,27 @@
 
 require 'bio'
 
-bn = ARGV[0]
-fasta = ARGV[1]
-new_fasta = File.open(ARGV[2],'w')
+fasta = ARGV[0]
+new_fasta = File.open(ARGV[1],'w')
 continue = true
 mail_notes = ''
-log = File.open(ARGV[3], 'w')
+log = File.open(ARGV[2], 'w')
 
 internal2input_species = {}
 input2internal_species = {}
-internal2input_species_out = File.open(ARGV[4],'w')
-input2internal_species_out = File.open(ARGV[5],'w')
+internal2input_species_out = File.open(ARGV[3],'w')
+input2internal_species_out = File.open(ARGV[4],'w')
 
-query_sequence_name = ARGV[6]
-if ARGV[7] != 'NA'
-  root_species = ARGV[7].split(',')
+query_sequence_name = ARGV[5]
+if ARGV[6] != 'NA'
+  root_species = ARGV[6].split(',')
 else
   root_species = []
 end
 
-file = Bio::FastaFormat.open(fasta)
+begin
+
+      file = Bio::FastaFormat.open(fasta)
 
       ids = []
       seqs = {}
@@ -68,7 +69,7 @@ file = Bio::FastaFormat.open(fasta)
         # remove gap symbols '-' from seq
         if entry.seq.include?('-')
           seq = Bio::Sequence::auto(entry.seq.gsub('-',''))          
-          mail_notes << "\nPlease note, your sequence with ID #{entry.definition} does contain gap symbols: '-'. As PoSeiDon performs his own alignment, gap symbols were removed from your data.\n"
+          mail_notes << "\nPlease note, your sequence with ID #{entry.definition} does contain gap symbols. As PoSeiDon performs his own alignment, gap symbols were removed from your data.\n"
         end
 
         if seq.illegal_bases.length > 0 && seq.illegal_bases
@@ -90,11 +91,6 @@ file = Bio::FastaFormat.open(fasta)
           #error_a.push("\nYour sequence with ID #{entry.definition} does contain nucleotide characters different from {A,C,G,T,U}. Found: #{seq.illegal_bases.join(',')}. Please check!\n")
         end
 
-        # check for triplet code
-        unless seq.length.modulo(3) == 0
-          error_a.push("\nYour sequence with ID #{entry.definition} is not a correct coding sequence in the sense of following a correct triplet code.\n")
-        end
-
         # check if multiple and internal stop codons are included
         if seq.illegal_bases.length == 0
           aa_seq = seq.translate
@@ -102,6 +98,15 @@ file = Bio::FastaFormat.open(fasta)
 						illegal_bases_seqs[id] = "\nYour sequence with ID #{entry.definition} does contain multiple/internal stop codons. Please check!\n" unless illegal_bases_seqs.keys.include?(id)
             mail_notes << "\nPlease note, your sequence with ID #{entry.definition} does contain multiple/internal stop codons. We removed this entry from your input file to continue your PoSeiDon run!\n"
             #error_a.push("\nYour sequence with ID #{entry.definition} does contain multiple/internal stop codons!\n")
+          end
+        end
+
+        # check for triplet code (if the seq was not already removed from the FASTA)
+        unless seq.length.modulo(3) == 0
+          if illegal_bases_seqs.keys.include?(id)
+            mail_notes << "\nYour sequence with ID #{entry.definition} is not a correct coding sequence in the sense of following a correct triplet code.\n"
+          else
+            error_a.push("\nYour sequence with ID #{entry.definition} is not a correct coding sequence in the sense of following a correct triplet code.\n")
           end
         end
 
@@ -165,29 +170,41 @@ file = Bio::FastaFormat.open(fasta)
       end
 
       if root_species_mismatch.size > 0
-        mail_notes << "\nPlease note, PoSeiDon was not able to find the following species IDs defined for tree rooting in your input FASTA file: #{root_species_mismatch.join(', ')}. Rerooting of the trees can not be performed on this species.\n"
+        mail_notes << "\nPlease note, PoSeiDon was not able to find the following species IDs defined for tree rooting in your input FASTA file: #{root_species_mismatch.join(', ')}. Rerooting of the trees can not be performed on this species.\n" 
       end
+
+      new_fasta.close
 
       log << mail_notes
 
       if error_a.size > 0
         puts error_a.sort.uniq.join('')
         continue = false
-        puts "There was a problem with the FASTA file (#{bn}), stop."
-        log << "There was a problem with the FASTA file (#{bn}), stop.\n"
+        puts "\nThere was a problem with the FASTA file (#{fasta}), stop."
+        log << "\nThere was a problem with the FASTA file (#{fasta}), stop.\n"
         log << error_a.sort.uniq.join('')
+        log << "\nPlease find details here: " + `pwd`.to_s.chomp() + "/#{File.basename(log.path)}"
       else
-        puts 'The input FASTA file seems to be valid. Continue...'
-        log << "The input FASTA file seems to be valid. Continue...\n"
+        if illegal_bases_seqs.keys.size == 0
+          puts "\nThe input FASTA file seems to be valid. Continue..."
+          log << "\nThe input FASTA file seems to be valid. Continue...\n"
+        else
+          puts "\nWe adjusted your input FASTA, please find details here:\n" + `pwd`.to_s.chomp() + "/#{File.basename(log.path)}\n\nContinue..."
+          log << "\nWe adjusted your input FASTA, please find details here:\n" + `pwd`.to_s.chomp() + "/#{File.basename(log.path)}\n\nContinue...\n"
+        end
       end
 
+      log.close
+      
+    rescue
+      puts "There was a more general problem with the Input file: #{fasta}. Is it no FASTA?\n"
+      file.close if file
+
+      puts "\nPoSeiDon was not able to read your input file: #{fasta}. Please check if your input is in valid nucleotide FASTA format."
+      log << "\nPoSeiDon was not able to read your input file: #{fasta}. Please check if your input is in valid nucleotide FASTA format."
       new_fasta.close
       log.close
-#    rescue
-#      puts "There was a more general problem with the Input file: #{bn}. Is it no FASTA?\n"
-#      file.close if file
-#
-#      puts "\nPoSeiDon was not able to read your input file: #{bn}. Please check if your input is in valid FASTA format."
-#      new_fasta.close
-#      continue = false
-#    end
+      continue = false
+    end
+
+

@@ -18,7 +18,7 @@ if( !nextflow.version.matches('20.+') ) {
 if (params.help) { exit 0, helpMSG() }
 
 println " "
-println "\033[0;34mP O S E I D O N\033[0m"
+println "\u001B[1;34mP O S E I D O N\033[0m"
 println " "
 println "\u001B[32mProfile: $workflow.profile\033[0m"
 println " "
@@ -102,10 +102,39 @@ include {build_fragments; frag_publish} from './modules/fragment'
 
 workflow {
 
+    c_green = "\033[0;32m";
+    c_yellow = "\033[0;33m";
+    c_red = "\u001B[31m";
+    c_blue = "\033[0;34m";
+    c_reset = "\033[0m";
+    c_dim = "\033[2m";
+
     /*******************************
     check input FASTA */
     check_fasta_format(fasta_input_ch)
     
+    check_fasta_format.out.log_string.subscribe onNext: {
+         if (it.contains("The input FASTA file seems to be valid. Continue...")) {
+                log.info """
+            ￼    ${c_reset}${c_dim}LOG:${c_reset}            
+                ${c_green}${it.replaceAll('foobar','\n')}${c_reset}
+                """.stripIndent()
+         } else {
+             if (it.contains("We adjusted your input FASTA")) {
+                log.info """
+            ￼    ${c_reset}${c_dim}LOG:${c_reset}            
+                ${c_yellow}${it.replaceAll('foobar','\n')}${c_reset}
+                """.stripIndent()
+            } else {
+                onError: { exit 1, """
+            ￼        ${c_reset}${c_dim}ERROR:${c_reset}            
+                    ${c_red}${it.replaceAll('foobar','\n')}${c_reset}
+                    """.stripIndent()
+                }
+            }
+         }
+    }
+
     /*******************************
     TODO rndm subsampling if too many sequences, PAML is not inteded for >100 sequences */
 
@@ -115,7 +144,7 @@ workflow {
         check_aln(
             translatorx(
                 check_fasta_format.out.fasta).all
-                .join(check_fasta_format.out.log)
+                .join(check_fasta_format.out.log_file)
         )
     )
 
@@ -437,18 +466,17 @@ workflow {
 c_blue = "\033[0;34m"
 c_reset = "\033[0m"
 workflow.onComplete { 
-    //file("${params.output}/*_fragment_1").deleteDir()
 
-    log.info """
+log.info """
 
-￼   \u001B[1;30m________________________\033[0m
-    Execution status: ${ workflow.success ? 'OK' : 'failed' }
-    ${c_blue}Results are reported here:
-    $params.output/<prefix_of_your_fasta>/html/full_aln/index.html${c_reset}
+￼\u001B[1;30m________________________\033[0m
+Execution status: ${ workflow.success ? 'OK' : 'failed' }
+${c_blue}Results are reported here:
+$params.output/<prefix_of_your_fasta>/html/full_aln/index.html${c_reset}
 
-    Please cite: https://doi.org/10.1101/2020.05.18.102731
-￼   \u001B[1;30m________________________\033[0m
-￼    """.stripIndent()
+Please cite: https://doi.org/10.1101/2020.05.18.102731
+￼\u001B[1;30m________________________\033[0m
+￼""".stripIndent()
 
 }
 
@@ -461,11 +489,12 @@ def helpMSG() {
     c_reset = "\033[0m";
     c_yellow = "\033[0;33m";
     c_blue = "\033[0;34m";
+    c_light_blue = "\u001B[1;34m";
     c_dim = "\033[2m";
     log.info """
     ____________________________________________________________________________________________
     
-    PoSeiDon -- Positive Selection Detection and Recombination Analysis
+    ${c_light_blue}PoSeiDon${c_reset} -- ${c_light_blue}Po${c_reset}sitive ${c_light_blue}Se${c_reset}lect${c_light_blue}i${c_reset}on ${c_light_blue}D${c_reset}etecti${c_light_blue}on${c_reset} and Recombination Analysis
 
     ${c_yellow}Usage example:${c_reset}
     nextflow run poseidon.nf --fasta '*/*.fasta' 
@@ -501,7 +530,6 @@ def helpMSG() {
 
     ${c_yellow}LSF computing:${c_reset}
     For execution of the workflow on a HPC with LSF adjust the following parameters:
-    --databases         defines the path where databases are stored [default: $params.cloudDatabase]
     --workdir           defines the path where nextflow writes tmp files [default: $params.workdir]
     --cachedir          defines the path where images (singularity) are cached [default: $params.cachedir] 
 
