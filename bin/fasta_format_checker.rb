@@ -20,7 +20,7 @@ else
   root_species = []
 end
 
-begin
+#begin
 
       file = Bio::FastaFormat.open(fasta)
 
@@ -39,6 +39,7 @@ begin
         nr_seqs += 1
 
         original_id = entry.definition
+        puts original_id
         id = original_id.split(' ')[0]
         id = id.gsub('.','_').gsub('-','_').gsub(':','_').gsub(',','_').gsub(';','_').gsub('|','_').gsub('/','_').gsub('\\','_')
         id = id.upcase
@@ -81,7 +82,7 @@ begin
               illegal_bases_seqs[id] = "\nYour sequence with ID #{entry.definition} does contain to many ambiguous N bases. Found: #{(percent_n*100).round(2)}% N bases in this sequence. Please check!\n"
               mail_notes << "\nPlease note, your sequence with ID #{entry.definition} does contain to many ambiguous N bases. Found: #{(percent_n*100).round(2)}% N bases in this sequence. We removed this entry from your input file to continue your PoSeiDon run!\n"
             else
-              @mail_notes << "\nPlease note, your sequence with ID #{entry.definition} does contain 'N' values. We automatically remove columns from the final alignment containing 'N' bases.\n"
+              mail_notes << "\nPlease note, your sequence with ID #{entry.definition} does contain 'N' values. We automatically remove columns from the final alignment containing 'N' bases.\n"
             end
           else
             illegal_bases_seqs[id] = "\nYour sequence with ID #{entry.definition} does contain nucleotide characters different from {A,C,G,T,U,N}. Found: #{seq.illegal_bases.join(',')}. Please check!\n"
@@ -196,15 +197,15 @@ begin
 
       log.close
       
-    rescue
-      puts "There was a more general problem with the Input file: #{fasta}. Is it no FASTA?\n"
-      file.close if file
+#    rescue
+#      puts "There was a more general problem with the Input file: #{fasta}. Is it no FASTA?\n"
+#      file.close if file
 
-      puts "\nPoSeiDon was not able to read your input file: #{fasta}. Please check if your input is in valid nucleotide FASTA format."
-      log << "\nPoSeiDon was not able to read your input file: #{fasta}. Please check if your input is in valid nucleotide FASTA format."
-      new_fasta.close
-      log.close
-      continue = false
-    end
+#      puts "\nPoSeiDon was not able to read your input file: #{fasta}. Please check if your input is in valid nucleotide FASTA format."
+#      log << "\nPoSeiDon was not able to read your input file: #{fasta}. Please check if your input is in valid nucleotide FASTA format."
+#      new_fasta.close
+#      log.close
+#      continue = false
+#    end
 
 
