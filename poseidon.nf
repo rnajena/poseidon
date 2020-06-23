@@ -513,7 +513,7 @@ def helpMSG() {
     --bootstrap         number of bootstrap calculations [default: $params.bootstrap]
 
     ${c_yellow}Model parameters:${c_reset}
-    --model             nucleotide model used for recombination analysis [default: $params.model]
+    --model             nucleotide model used for recombination analysis, will be estimated automatically if not defined [default: $params.model]
     --model_rc          model rate classes [default: $params.model_rate_classes]
     --model_sm          model selection method [default: $params.model_selection_method] 
     --model_rl          model rejection level [default: $params.model_rejection_level]
