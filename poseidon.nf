@@ -114,7 +114,7 @@ workflow {
     check_fasta_format(fasta_input_ch)
     
     check_fasta_format.out.log_string.subscribe onNext: {
-         if (it.contains("The input FASTA file seems to be valid. Continue...")) {
+         if (it.contains("seems to be valid. Continue...")) {
                 log.info """
             ￼    ${c_reset}${c_dim}LOG:${c_reset}            
                 ${c_green}${it.replaceAll('foobar','\n')}${c_reset}
