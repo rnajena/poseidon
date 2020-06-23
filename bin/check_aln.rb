@@ -9,12 +9,13 @@ require 'bio'
     nt_aln = Bio::FastaFormat.open("#{ARGV[0]}")
     aa_aln = Bio::FastaFormat.open("#{ARGV[1]}")
     html = File.open("#{ARGV[2]}",'r')
-    log = File.open("#{ARGV[6]}",'r')
 
     #out
     nt_aln_tmp = File.open("#{ARGV[3]}",'w')
     aa_aln_tmp = File.open("#{ARGV[4]}",'w')
     html_tmp = File.open("#{ARGV[5]}",'w')
+
+    log = File.open("#{ARGV[6]}",'r')
 
     # read in the log file
     logs = ''
@@ -52,7 +53,7 @@ require 'bio'
     if @refactor
 
       # refactor aa aln
-      Bio::FastaFormat.open("#{ARGV[2]}").each do |entry|
+      Bio::FastaFormat.open("#{ARGV[1]}").each do |entry|
         id = entry.definition
         seq_a = entry.seq.scan(/./)
         aa_aln_tmp << ">#{id}\n"
