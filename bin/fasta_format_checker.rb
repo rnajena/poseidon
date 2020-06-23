@@ -20,7 +20,7 @@ else
   root_species = []
 end
 
-#begin
+begin
 
       file = Bio::FastaFormat.open(fasta)
 
@@ -187,25 +187,25 @@ end
         log << "\nPlease find details here: " + `pwd`.to_s.chomp() + "/#{File.basename(log.path)}"
       else
         if illegal_bases_seqs.keys.size == 0
-          puts "\nThe input FASTA file seems to be valid. Continue..."
-          log << "\nThe input FASTA file seems to be valid. Continue...\n"
+          puts "\nThe input FASTA file #{fasta} seems to be valid. Continue..."
+          log << "\nThe input FASTA file #{fasta} seems to be valid. Continue...\n"
         else
-          puts "\nWe adjusted your input FASTA, please find details here:\n" + `pwd`.to_s.chomp() + "/#{File.basename(log.path)}\n\nContinue..."
-          log << "\nWe adjusted your input FASTA, please find details here:\n" + `pwd`.to_s.chomp() + "/#{File.basename(log.path)}\n\nContinue...\n"
+          puts "\nWe adjusted your input FASTA #{fasta}, please find details here:\n" + `pwd`.to_s.chomp() + "/#{File.basename(log.path)}\n\nContinue..."
+          log << "\nWe adjusted your input FASTA #{fasta}, please find details here:\n" + `pwd`.to_s.chomp() + "/#{File.basename(log.path)}\n\nContinue...\n"
         end
       end
 
       log.close
       
-#    rescue
-#      puts "There was a more general problem with the Input file: #{fasta}. Is it no FASTA?\n"
-#      file.close if file
+    rescue
+      puts "There was a more general problem with the Input file: #{fasta}. Is it no FASTA?\n"
+      file.close if file
 
-#      puts "\nPoSeiDon was not able to read your input file: #{fasta}. Please check if your input is in valid nucleotide FASTA format."
-#      log << "\nPoSeiDon was not able to read your input file: #{fasta}. Please check if your input is in valid nucleotide FASTA format."
-#      new_fasta.close
-#      log.close
-#      continue = false
-#    end
+      puts "\nPoSeiDon was not able to read your input file: #{fasta}. Please check if your input is in valid nucleotide FASTA format."
+      log << "\nPoSeiDon was not able to read your input file: #{fasta}. Please check if your input is in valid nucleotide FASTA format."
+      new_fasta.close
+      log.close
+      continue = false
+    end
 
 
