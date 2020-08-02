@@ -34,10 +34,10 @@ or let Nextflow do the pull
 nextflow run hoelzer/poseidon --help
 ```
 
-We recommend using a specific release of PoSeiDon (as soon as their are releases) via 
+We recommend using a specific release of PoSeiDon via 
 
 ```bash
-nextflow run hoelzer/poseidon -r v0.1 --help
+nextflow run hoelzer/poseidon -r v1.0.0 --help
 ```
 
 ### Update
