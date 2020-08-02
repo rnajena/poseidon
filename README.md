@@ -31,12 +31,16 @@ nextflow run poseidon.nf --help
 
 or let Nextflow do the pull
 ```bash
-nextflow run hoelzer/poseidon --help
+nextflow pull hoelzer/poseidon
 ```
 
 We recommend using a specific release of PoSeiDon via 
 
 ```bash
+#pull
+nextflow pull hoelzer/poseidon -r v1.0.0
+
+#run
 nextflow run hoelzer/poseidon -r v1.0.0 --help
 ```
 
