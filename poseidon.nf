@@ -474,7 +474,7 @@ Execution status: ${ workflow.success ? 'OK' : 'failed' }
 ${c_blue}Results are reported here:
 $params.output/<prefix_of_your_fasta>/html/full_aln/index.html${c_reset}
 
-Please cite: https://doi.org/10.1101/2020.05.18.102731
+Please cite: https://doi.org/10.1093/bioinformatics/btaa695
 ￼\u001B[1;30m________________________\033[0m
 ￼""".stripIndent()
 
