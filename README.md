@@ -10,7 +10,7 @@
 
 __Please note that the code of PoSeiDon was just transfered to Nextflow so there might be still some bugs. Please feel free to report issues!__
 
-Here we present [PoSeiDon](https://www.biorxiv.org/content/10.1101/2020.05.18.102731v1), a pipeline to detect significantly positive selected sites and possible recombination events in an alignment of multiple protein-coding sequences. Sites that undergo positive selection provide insights in the evolutionary history of your sequences, for example showing important mutation hot spots, accumulated as results of virus-host _arms races_ during evolution.
+Here we present [PoSeiDon](https://doi.org/10.1093/bioinformatics/btaa695), a pipeline to detect significantly positive selected sites and possible recombination events in an alignment of multiple protein-coding sequences. Sites that undergo positive selection provide insights in the evolutionary history of your sequences, for example showing important mutation hot spots, accumulated as results of virus-host _arms races_ during evolution.
 
 PoSeiDon relies on a variety of different third-party tools (see below). But don't worry, we encapsulated each tool in its own [Docker](https://www.docker.com/resources/what-container) container and connected them in the Workflow Management System [Nextflow](https://www.nextflow.io/). 
 
@@ -184,4 +184,4 @@ Please see the `--help` for other parameters (GARD, RAxML, ...) and let us know 
 
 If PoSeiDon helps you please cite:
 
-[Martin Hölzer and Manja Marz, "PoSeiDon: a Nextflow pipeline for the detection of evolutionary recombination events and positive selection", _BioRxiv_ (2020)](https://www.biorxiv.org/content/10.1101/2020.05.18.102731v1)
+[Martin Hölzer and Manja Marz, "PoSeiDon: a Nextflow pipeline for the detection of evolutionary recombination events and positive selection", _OUP Bioinformatics_ (2020)](https://doi.org/10.1093/bioinformatics/btaa695)
