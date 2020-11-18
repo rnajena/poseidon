@@ -29,14 +29,18 @@ process gard_detect {
     if grep -q "ERROR: Too few sites for c-AIC inference." gard.log; then 
         touch gard_processor.log
         echo 'Warning: PoSeiDon was not able to perform a recombination analysis with GARD because of too few sites for c-AIC inference. We do not recommend to use this alignment for positive selection detection. Please be careful with any sites detected as positively selected! If possible, extend your sequences or reduce the number of entries in your FASTA file.' > gard_processor.log
-    else 
-        echo 'Found breakpoints! Run processing and KH test!'
+    else
+        if grep -q "ERROR: There are too few potential break points to support" gard.html; then
+            touch gard_processor.log
+            echo 'Warning: PoSeiDon was not able to perform a recombination analysis with GARD because there are too few potential break points to support recombination events. We do not recommend to use this alignment for positive selection detection. Please be careful with any sites detected as positively selected! If possible, extend your sequences or the number of entries in your FASTA file.' > gard_processor.log
+        else 
+            echo 'Found breakpoints! Run processing and KH test!'
 
-        gard_result_file=\${TMPDIR}/gard_finalout
-        gard_splits_file=\${TMPDIR}/gard_splits
-        gard_processor_log=\${TMPDIR}/gard_processor.log
-        (echo "\${gard_result_file}"; echo "\${gard_splits_file}") | \${OPENMPI} \${OPENMPI_RUN} -np ${task.cpus} \${HYPHYMPI} \${GARD_PROCESSOR_TEMPLATE_BATCH} &> \$gard_processor_log
-
+            gard_result_file=\${TMPDIR}/gard_finalout
+            gard_splits_file=\${TMPDIR}/gard_splits
+            gard_processor_log=\${TMPDIR}/gard_processor.log
+            (echo "\${gard_result_file}"; echo "\${gard_splits_file}") | \${OPENMPI} \${OPENMPI_RUN} -np ${task.cpus} \${HYPHYMPI} \${GARD_PROCESSOR_TEMPLATE_BATCH} &> \$gard_processor_log
+        fi
     fi
 
     """
@@ -60,6 +64,7 @@ process gard_process {
     if grep -q "Warning: PoSeiDon was not able to perform a recombination analysis with GARD" gard_processor.log; then 
         # nothing, maybe write dummy files for output channel
         touch gard.adjusted.html
+        touch bp.tsv
         cat gard_processor.log > gard.adjusted.html 
         RECOMBINATION=false
     else     
