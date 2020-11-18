@@ -5,7 +5,7 @@
 ![](https://img.shields.io/badge/nextflow-20.07.1-brightgreen)
 ![](https://img.shields.io/badge/uses-docker-blue.svg)
 ![](https://img.shields.io/badge/licence-MIT-lightgrey.svg)
-[![](https://img.shields.io/badge/Publication-Some_Journal-violet.svg)](https://doi.org/10.1093/bioinformatics/btaa695)
+[![](https://img.shields.io/badge/Publication-OUP_Bioinformatics-violet.svg)](https://doi.org/10.1093/bioinformatics/btaa695)
 
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/martinhoelzer.svg?style=social)](https://twitter.com/martinhoelzer) 
