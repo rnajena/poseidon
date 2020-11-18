@@ -66,30 +66,30 @@ tools_ch = Channel.fromPath("${workflow.projectDir}/tools.txt", checkIfExists: t
 * MODULES
 **************************/
 
-include check_fasta_format from './modules/check_fasta_format'
+include {check_fasta_format} from './modules/check_fasta_format'
 include {translatorx; check_aln; remove_gaps} from './modules/translatorx'
 
 include {raxml_nt; raxml_aa; raxml2drawing; nw_display; barefoot; reroot; reroot as frag_reroot} from './modules/tree'
-include raxml_nt as frag_raxml_nt from './modules/tree'
-include raxml_aa as frag_raxml_aa from './modules/tree'
-include raxml2drawing as frag_raxml2drawing from './modules/tree'
-include nw_display as frag_nw_display from './modules/tree'
-include barefoot as frag_barefoot from './modules/tree'
+include {raxml_nt as frag_raxml_nt} from './modules/tree'
+include {raxml_aa as frag_raxml_aa} from './modules/tree'
+include {raxml2drawing as frag_raxml2drawing} from './modules/tree'
+include {nw_display as frag_nw_display} from './modules/tree'
+include {barefoot as frag_barefoot} from './modules/tree'
 
-include model_selection from './modules/model_selection'
+include {model_selection} from './modules/model_selection'
 
 include {gard_detect; gard_process} from './modules/gard'
 
 include {codeml_run; codeml_built; codeml_combine} from './modules/codeml'
-include codeml_run as frag_codeml_run from './modules/codeml'
-include codeml_built as frag_codeml_built from './modules/codeml'
-include codeml_combine as frag_codeml_combine from './modules/codeml'
+include {codeml_run as frag_codeml_run} from './modules/codeml'
+include {codeml_built as frag_codeml_built} from './modules/codeml'
+include {codeml_combine as frag_codeml_combine} from './modules/codeml'
 
 include {tex_built; tex_combine} from './modules/tex'
-include frag_tex_built from './modules/tex'
-include pdflatex as pdflatex_single from './modules/tex'
-include pdflatex as frag_pdflatex_single from './modules/tex'
-include pdflatex as pdflatex_full from './modules/tex'
+include {frag_tex_built} from './modules/tex'
+include {pdflatex as pdflatex_single} from './modules/tex'
+include {pdflatex as frag_pdflatex_single} from './modules/tex'
+include {pdflatex as pdflatex_full} from './modules/tex'
 
 include {html; html as html_frag; html_codeml; html_codeml as frag_html_codeml; html_params; frag_aln_html; html_recomb} from './modules/html'
 

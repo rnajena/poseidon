@@ -2,9 +2,11 @@
 
 <img align="right" width="160px" src="https://github.com/hoelzer/poseidon/blob/master/images/poseidon_logo.png" alt="PoSeiDon logo" /> 
 
-![](https://img.shields.io/badge/nextflow-20.01.0-brightgreen)
+![](https://img.shields.io/badge/nextflow-20.07.1-brightgreen)
 ![](https://img.shields.io/badge/uses-docker-blue.svg)
 ![](https://img.shields.io/badge/licence-MIT-lightgrey.svg)
+[![](https://img.shields.io/badge/Publication-Some_Journal-violet.svg)](https://doi.org/10.1093/bioinformatics/btaa695)
+
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/martinhoelzer.svg?style=social)](https://twitter.com/martinhoelzer) 
 
@@ -38,10 +40,10 @@ We recommend using a specific release of PoSeiDon via
 
 ```bash
 #pull
-nextflow pull hoelzer/poseidon -r v1.0.0
+nextflow pull hoelzer/poseidon -r v1.0.1
 
 #run
-nextflow run hoelzer/poseidon -r v1.0.0 --help
+nextflow run hoelzer/poseidon -r v1.0.1 --help
 ```
 
 ### Update
@@ -66,22 +68,22 @@ nextflow run hoelzer/poseidon --help
 
 # run small example on a local machine with 
 # (first time this will need some more time because the Docker containers are downloaded)
-nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta \
+nextflow run hoelzer/poseidon -r v1.0.1 --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta \
 --cores 4
 
 # resume a broken run
-nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta \
+nextflow run hoelzer/poseidon -r v1.0.1 --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta \
 --cores 4 -resume
 
 # instead of using all available cores only use a maximum amount on the local machine
-nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta \
+nextflow run hoelzer/poseidon -r v1.0.1 --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1_small.fasta \
 --max_cores 8
 --cores 4
 ```
 
 To reproduce the [positive selection results](http://www.rna.uni-jena.de/supplements/mx1_bats/full_aln/) reported in [Fuchs _et al_. (2017), Journal of Virology](https://doi.org/10.1128/JVI.00361-17) run:
 ```bash
-nextflow run hoelzer/poseidon --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1.fasta \
+nextflow run hoelzer/poseidon -r v1.0.0 --fasta ~/.nextflow/assets/hoelzer/poseidon/test_data/bats_mx1.fasta \
 --cores 4 --kh --outgroup "Pteropus_alecto,Eidolon_helvum,Rousettus_aegyptiacus,Hypsignatus_monstrosus" \
 --reference "Myotis_daubentonii"
 ```
