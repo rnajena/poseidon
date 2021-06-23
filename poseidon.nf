@@ -1,5 +1,5 @@
 #!/usr/bin/env nextflow
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 /*
 * PoSeiDon -- Positive Selection Detection and Recombination Analysis
@@ -10,9 +10,11 @@ nextflow.preview.dsl=2
 * Help messages, user inputs & checks
 **************************/
 
-if( !nextflow.version.matches('20.+') ) {
-    println "This workflow requires Nextflow version 20.X or greater -- You are running version $nextflow.version"
-    exit 1
+
+
+if ( !workflow.revision ) { 
+    println ""
+    println "\033[0;33mWARNING: not a stable execution. Please use -r for full reproducibility.\033[0m\n"
 }
 
 if (params.help) { exit 0, helpMSG() }
