@@ -15,15 +15,17 @@ process gard_detect {
     OPENMPI_RUN='--allow-run-as-root'
     HYPHYMPI='hyphympi'
 
-    TMPDIR=\${PWD}
-
+    TMPDIR=/tmp
+    mv \$(readlink -f ${aln}) \$TMPDIR/${aln}
+    
     OUTPUT=\${TMPDIR}/gard
     ALN=\${TMPDIR}/${aln}
     MODEL=${model}
 
     (echo "\${ALN}"; echo "\${ALN}"; echo "\${MODEL}"; echo "${params.gard_rate_variation}"; echo "${params.gard_rate_classes}"; echo "\${OUTPUT}") | \${OPENMPI} \${OPENMPI_RUN} -np ${task.cpus} \${HYPHYMPI} \${GARD_TEMPLATE_BATCH} &> \${TMPDIR}/gard.log
 
-    mv gard gard.html
+    mv \${TMPDIR}/gard.log gard.log
+    mv \${TMPDIR}/gard gard.html
 
     # check if GARD was able to detect breakpoints
     if grep -q "ERROR: Too few sites for c-AIC inference." gard.log; then 
@@ -40,9 +42,11 @@ process gard_detect {
             gard_splits_file=\${TMPDIR}/gard_splits
             gard_processor_log=\${TMPDIR}/gard_processor.log
             (echo "\${gard_result_file}"; echo "\${gard_splits_file}") | \${OPENMPI} \${OPENMPI_RUN} -np ${task.cpus} \${HYPHYMPI} \${GARD_PROCESSOR_TEMPLATE_BATCH} &> \$gard_processor_log
+            mv \$gard_processor_log gard_processor.log
         fi
     fi
 
+    mv \$TMPDIR/${aln} ${aln}
     """
 }
 
