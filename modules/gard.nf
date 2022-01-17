@@ -16,7 +16,7 @@ process gard_detect {
     HYPHYMPI='hyphympi'
 
     TMPDIR=/tmp
-    mv \$(readlink -f ${aln}) \$TMPDIR/${aln}
+    cp \$(readlink -f ${aln}) \$TMPDIR/${aln}
     
     OUTPUT=\${TMPDIR}/gard
     ALN=\${TMPDIR}/${aln}
