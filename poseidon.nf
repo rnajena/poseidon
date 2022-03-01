@@ -541,6 +541,7 @@ def helpMSG() {
                              local,conda
                              lsf,docker,singularity (adjust workdir and cachedir according to your HPC config)
                              slurm,conda (adjust workdir and cachedir according to your HPC config)
+                             sge,conda (adjust workdir and cachedir according to your HPC config)
                              gcloud,docker (GCP google-lifescience with docker)
                              ${c_reset}
     """.stripIndent()
