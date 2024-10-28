@@ -56,7 +56,7 @@ __Important:__ PoSeiDon needs nucleotide sequences with a correct open reading f
 
 ### Profiles
 
-Nextflow can be easily executed on different environments like your local machine, a high-performance cluster or the cloud. Different `-profile` are used to tell Nextflow which system should be used. For local execution `-profile local,docker` should be used (and is also the default). You can also run PoSeiDon on a HPC using Singularity via `-profile lsf,singularity` or `-profile slurm,singularity`. In such cases, please also consider to adjust `--cachedir` to point where to store Singularity images on your cluster. The parameter `--workdir` might be also helpful to adjust where to store temporary working directories (e.g. use `/scratch` instead of `/tmp` depending on your HPC configuration.) 
+Nextflow can be easily executed on different environments like your local machine, a high-performance cluster or the cloud. Different `-profile` are used to tell Nextflow which system should be used. For local execution `-profile local,docker` should be used (and is also the default). You can also run PoSeiDon on a HPC using Singularity via `-profile lsf,singularity`, `-profile slurm,singularity` or `-profile sge,singularity`. In such cases, please also consider to adjust `--cachedir` to point where to store Singularity images on your cluster. The parameter `--workdir` might be also helpful to adjust where to store temporary working directories (e.g. use `/scratch` instead of `/tmp` depending on your HPC configuration.) 
 
 ### Examples 
 
