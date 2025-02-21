@@ -44,6 +44,11 @@ if (params.kh) {
     println "\033[2mUse KH-insignificant breakpoints: no\u001B[0m"
     println " "
 }
+println "\033[2mSkip GARD: $params.skip_gard\u001B[0m"
+println " "
+println "\033[2mTranslatorX genetic code: $params.translatorx_code\u001B[0m"
+println "\033[2mCODEML genetic code: $params.codeml_code\u001B[0m"
+println " "
 
 if (params.profile) {
     exit 1, "--profile is WRONG use -profile" }
@@ -208,7 +213,7 @@ workflow {
     gard_process(
         gard_detect(remove_gaps.out.fna.join(model_selection.out.model))
     )
-
+ 
     /*******************************
     CODEML */
     codeml_combine(
@@ -514,6 +519,19 @@ def helpMSG() {
     --root              outgroup species (FASTA id) for tree rooting; comma-separated [default: $params.outgroup]
     --bootstrap         number of bootstrap calculations [default: $params.bootstrap]
 
+                        If you want to change the genetic code, you have to do that for both the alignment process (TranslatorX) and 
+                        selection detection (CODEML). ATTENTION: the two tools use different values for the same genetic code. For example, 
+                        you have to set --translatorx_code 2 and --codeml_code 1 for the vertebrate mitochondrial genetic code. 
+
+    --translatorx_code  change the genetic code to translate the sequences. Default is the standard genetic code [default: $params.translatorx_code]
+                        1 - Standard, 2 - Vertebrate Mitochondrial, 3 - Yeast Mitochondrial, 4 - Mold Mitochondrial; Protozoan Mitochondrial; 
+                        Coelenterate Mitochondrial; Mycoplasma; Spiroplasma, 5 - Invertebrate Mitochondrial, 6 - Ciliate Nuclear; Dasycladacean Nuclear; 
+                        Hexamita Nuclear, 9 - Echinoderm Mitochondrial; Flatworm Mitochondrial, 10 - Euplotid Nuclear, 12 - Alternative Yeast Nuclear, 
+                        13 - Ascidian Mitochondrial, 15 - Blepharisma Macronuclear   
+    --codeml_code       change the genetic code to detect selection with CODEML. Default is the standard genetic code [default: $params.codeml_code]
+                        0 - Universal, 1 (Mammalian Mitochondrial), 2 - yeast mt, 3 - mold mt, 4 - invertebrate mt, 5 - Ciliate Nuclear, 
+                        6 - Echinoderm Mitochondrial, 7 - Euplotid Mitochondrial, 8 - alternative yeast nu, 9 - ascidian mt, 10 - Blepharisma Nuclear
+
     ${c_yellow}Model parameters:${c_reset}
     --model             nucleotide model used for recombination analysis, will be estimated automatically if not defined [default: $params.model]
     --model_rc          model rate classes [default: $params.model_rate_classes]
@@ -524,6 +542,7 @@ def helpMSG() {
     --gard_rv           GARD rate variation [default: $params.gard_rate_variation]
     --gard_rc           GARD rate classes [default: $params.gard_rate_classes]
     --kh                use insignificant breakpoints (based on KH test) for fragment calcuations [default: $params.kh]
+    --skip_gard         deactivate GARD (not recommended, but helpful for large alignments or no expected recombination) [default: $params.skip_gard]
 
     ${c_dim}Nextflow options:
     -with-report rep.html    cpu / ram usage (may cause errors)
