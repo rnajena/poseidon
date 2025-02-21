@@ -5,6 +5,7 @@ require 'fileutils'
 dir = ARGV[0]
 alignment = ARGV[1]
 tree = ARGV[2]
+genetic_code = ARGV[3].chomp
 
 CODON_FREQS = {:F61 => 0, :F1X4 => 1, :F3X4 => 2}
 #  MODELS = [:M0, :M1a, :M2a, :M7, :M8]
@@ -26,7 +27,7 @@ def build_folder_structure(dir1)
 end
 
 
-def write_ctl(ctl_file, aln, tree, leave_path, codon_freq, model, ns_sites, fix_omega)
+def write_ctl(ctl_file, aln, tree, leave_path, codon_freq, model, ns_sites, fix_omega, genetic_code)
   model_out = NS_SITES_TO_MODEL[ns_sites]
   model_out = 'M8a' if fix_omega == 1
   ctl_file << "seqfile  =  #{aln}                         * sequence data file name
@@ -44,7 +45,7 @@ CodonFreq = #{CODON_FREQS[codon_freq]}     * 0:1/61 each, 1:F1X4, 2:F3X4, 3:codo
   model = #{model}     * models for codons:0:one, 1:b, 2:2 or more dN/dS ratios for branches.... or  0:JC69, 1:K80, 2:F81, 3:F84, 4:HKY85 5:T92, 6:TN93, 7:REV, 8:UNREST, 9:REVu; 10:UNRESTu
 
 NSsites = #{ns_sites}       * 0:one w; 1:NearlyNeutral; 2:PositiveSelection; 3:discrete;4:freqs; 5:gamma;6:2gamma;7:beta;8:beta&w;9:beta&gamma;10:3normal
-icode = 0       * 0:standard genetic code; 1:mammalian mt; 2-10:see below
+icode = #{genetic_code}       * 0:standard genetic code; 1:mammalian mt; 2-10:see below
 Mgene = 0       * 0:rates, 1:separate; 2:pi, 3:kappa, 4:all
 
 fix_kappa = 0     * 1: kappa fixed, 0: kappa to be estimated
@@ -103,6 +104,6 @@ leave_folders.each do |leave_path|
   model_out = NS_SITES_TO_MODEL[ns_sites]
   model_out = 'M8a' if fix_omega == 1
   ctl_file = File.open("#{leave_path}/codeml_#{codon_freq}_#{model_out}.ctl",'w')
-  codeml_ctls.push(write_ctl(ctl_file, alignment, tree, leave_path, codon_freq, model, ns_sites, fix_omega))
+  codeml_ctls.push(write_ctl(ctl_file, alignment, tree, leave_path, codon_freq, model, ns_sites, fix_omega, genetic_code))
 
 end

@@ -11,7 +11,7 @@ process translatorx {
 
   script:
     """
-    translatorx -i ${fasta} -p M -o ${name}_aln
+    translatorx -i ${fasta} -p M -o ${name}_aln -c ${params.translatorx_code}
     """
   }
 

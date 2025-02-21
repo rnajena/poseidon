@@ -8,6 +8,13 @@ process gard_detect {
         tuple val(name), path(aln), path("gard.html"), path("gard.log"), path("gard_processor.log")
         
     script:
+    if (params.skip_gard) {
+        """
+        # generate empty dummy files
+        touch gard.html gard.log gard_processor.log
+        """
+
+    } else {
     """
     GARD_TEMPLATE_BATCH='/usr/lib/hyphy/TemplateBatchFiles/GARD.bf'
     GARD_PROCESSOR_TEMPLATE_BATCH='/usr/lib/hyphy/TemplateBatchFiles/GARDProcessor.bf'
@@ -48,6 +55,7 @@ process gard_detect {
 
     mv \$TMPDIR/${aln} ${aln}
     """
+    }
 }
 
 process gard_process {

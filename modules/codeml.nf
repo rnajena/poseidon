@@ -11,7 +11,7 @@ process codeml_built {
         
     script:
     """
-    codeml_built.rb ctl ${aln} ${tree}
+    codeml_built.rb ctl ${aln} ${tree} ${params.codeml_code}
     #if [ "${aln}" == "x.nt_ali.checked.nogaps.fasta" ]; then rm -r ctl; fi
     """
 }
