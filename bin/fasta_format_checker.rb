@@ -40,18 +40,23 @@ begin
 
         original_id = entry.definition
         puts original_id
+        
         id = original_id.split(' ')[0]
-        id = id.gsub('.','_').gsub('-','_').gsub(':','_').gsub(',','_').gsub(';','_').gsub('|','_').gsub('/','_').gsub('\\','_')
+        id = id.gsub('.','_').gsub('-','_').gsub(':','_').gsub(',','_').gsub(';','_').gsub('|','_').gsub('/','_').gsub('\\','_').gsub('#','_')
         id = id.upcase
         # remove tailing '_'
         if id.reverse.start_with?('_')
           id = id.scan(/./).reverse[1..id.length].reverse.join('')
         end
+        # ID needs to be maximum 50 chatacters for CODEML
+        id = id[0,50]
 
         if query_sequence_name != 'NA' && query_sequence_name.length > 0
           query_sequence_name = query_sequence_name.split(' ')[0]
-          query_sequence_name = query_sequence_name.gsub('.','_').gsub('-','_').gsub(':','_').gsub(',','_').gsub(';','_').gsub('|','_').gsub('/','_').gsub('\\','_')
+          query_sequence_name = query_sequence_name.gsub('.','_').gsub('-','_').gsub(':','_').gsub(',','_').gsub(';','_').gsub('|','_').gsub('/','_').gsub('\\','_').gsub('#','_')
           query_sequence_name = query_sequence_name.upcase  
+          # ID needs to be maximum 50 chatacters for CODEML
+          query_sequence_name = query_sequence_name[0,50]
         end
 
         internal2input_species[id] = original_id
@@ -59,7 +64,7 @@ begin
 
         # check for unique IDs in the fasta file
         if ids.include?(id)
-          error_a.push("\nYour IDs are not unique. We only use your FASTA IDs until the first occurrence of a space character. Please check your FASTA file and try again. Duplicate ID: #{id}\n")
+          error_a.push("\nYour IDs are not unique. We only use your FASTA IDs until the first occurrence of a space character and also trim them to maximum 50 characters (needed by CODEML). Please check your FASTA file and try again. Duplicate ID: #{id}\n")
         else
           ids.push(id)
         end
