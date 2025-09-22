@@ -10,9 +10,13 @@
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/martinhoelzer.svg?style=social)](https://twitter.com/martinhoelzer) 
 
-__Please note that the code of PoSeiDon was just transfered to Nextflow so there might be still some bugs. Please feel free to report issues!__
+## Disclaimer
 
-Here we present [PoSeiDon](https://doi.org/10.1093/bioinformatics/btaa695), a pipeline to detect significantly positive selected sites and possible recombination events in an alignment of multiple protein-coding sequences. Sites that undergo positive selection provide insights in the evolutionary history of your sequences, for example showing important mutation hot spots, accumulated as results of virus-host _arms races_ during evolution.
+PoSeiDon uses CODEML from the PAML suite to identify sites under positive selection. However, the tools from the HyPhy suite have been continuously developed and enable more complex analyses, e.g., including [synonymous rate variation across different sites](https://academic. oup.com/mbe/article/37/8/2430/5739973) and [multi-nucleotide mutations](https://pmc.ncbi.nlm.nih.gov/articles/PMC10336034/) can be included, making the results of selection tests easier to interpret. Therefore, when using PoSeiDon (and thus CODEML), please note the possible differences/limitations.
+
+## Intro
+
+Here we present [PoSeiDon](https://doi.org/10.1093/bioinformatics/btaa695), a pipeline to detect significantly positive selected sites and possible recombination events in an alignment of multiple protein-coding sequences. Sites that undergo positive selection provide insights into the evolutionary history of your sequences, for example, showing important mutation hot spots, accumulated as results of virus-host _arms races_ during evolution.
 
 PoSeiDon relies on a variety of different third-party tools (see below). But don't worry, we encapsulated each tool in its own [Docker](https://www.docker.com/resources/what-container) container and connected them in the Workflow Management System [Nextflow](https://www.nextflow.io/). 
 
@@ -52,15 +56,15 @@ Depending on you installation procedure, update the pipeline via `git pull` or `
 
 ## Run
 
-__Important:__ PoSeiDon needs nucleotide sequences with a correct open reading frame as input. In addition, the results heavily depend on your selection of sequences, thus, you might consider running the pipeline multiple times with different samplings of your input sequences. Also the pipeline can't work with too many sequences because in its core PoSeiDon uses CODEML from the [PAML](http://abacus.gene.ucl.ac.uk/software/paml.html) suite that is not inteded for >100 sequences. __Please find a detailed description of the input parameters and settings below.__
+__Important:__ PoSeiDon needs nucleotide sequences with a correct open reading frame as input. In addition, the results heavily depend on your selection of sequences; thus, you might consider running the pipeline multiple times with different samplings of your input sequences. Also, the pipeline can't work with too many sequences because in its core PoSeiDon uses CODEML from the [PAML](http://abacus.gene.ucl.ac.uk/software/paml.html) suite that is not intended for >100 sequences. __Please find a detailed description of the input parameters and settings below.__
 
 ### Profiles
 
-Nextflow can be easily executed on different environments like your local machine, a high-performance cluster or the cloud. Different `-profile` are used to tell Nextflow which system should be used. For local execution `-profile local,docker` should be used (and is also the default). You can also run PoSeiDon on a HPC using Singularity via `-profile lsf,singularity`, `-profile slurm,singularity` or `-profile sge,singularity`. In such cases, please also consider to adjust `--cachedir` to point where to store Singularity images on your cluster. The parameter `--workdir` might be also helpful to adjust where to store temporary working directories (e.g. use `/scratch` instead of `/tmp` depending on your HPC configuration.) 
+Nextflow can be easily executed on different environments like your local machine, a high-performance cluster or the cloud. Different `-profile` are used to tell Nextflow which system should be used. For local execution, `-profile local,docker` should be used (and is also the default). You can also run PoSeiDon on a HPC using Singularity via `-profile lsf,singularity`, `-profile slurm,singularity` or `-profile sge,singularity`. In such cases, please also consider to adjust `--cachedir` to point where to store Singularity images on your cluster. The parameter `--workdir` might be also helpful to adjust where to store temporary working directories (e.g. use `/scratch` instead of `/tmp` depending on your HPC configuration.) 
 
 ### Examples 
 
-Now let's assume you used Nextflow to pull the PoSeiDon code and you execute the pipeline on a local machine using the default profile `-profile local,docker`. 
+Now, let's assume you used Nextflow to pull the PoSeiDon code and executed the pipeline on a local machine using the default profile `-profile local,docker`. 
 
 ```bash
 # show help 
@@ -133,7 +137,7 @@ Sequence IDs must be unique until the first occurrence of a space.
 
 * `--reference`
 
-Optional. Default: use first sequence ID as reference. You can define <b>one</b> species ID from your multiple FASTA file as a reference species. Positively selected sites and corresponding amino acids will be drawn in respect to this species. The ID must match the FASTA header until the occurence of the first space. For example, if you want <i>Myotis lucifugus</i> as your reference species and your FASTA file contains:
+Optional. Default: use the first sequence ID as a reference. You can define <b>one</b> species ID from your multiple FASTA files as a reference species. Positively selected sites and corresponding amino acids will be drawn in respect to this species. The ID must match the FASTA header until the occurrence of the first space. For example, if you want <i>Myotis lucifugus</i> as your reference species and your FASTA file contains:
 
 ```
 >Myotis_lucifugus Mx1 Gene
@@ -144,13 +148,13 @@ use
 
 `--reference "Myotis_lucifugus"`
 
-as parameter to set the reference species. Per default the first ID occurring in the multiple FASTA file will be used.
+as parameter to set the reference species. By default, the first ID occurring in the multiple FASTA files will be used.
 
 ### Outgroup(s)
 
 * `--outgroup`
 
-Optional. Default: trees are unrooted. You can define <b>one</b> or <b>multiple</b> (comma separated) species IDs as outgroup. All phylogenetic trees will be rooted according to this species. For example, if your multiple FASTA file contains
+Optional. Default: trees are unrooted. You can define <b>one</b> or <b>multiple</b> (comma-separated) species IDs as outgroup. All phylogenetic trees will be rooted according to this species. For example, if your multiple FASTA file contains
 
 ````>Myotis_lucifugus Mx1 Gene
 ATGGCGATCGAGATACGATACGTA...
@@ -172,11 +176,11 @@ to root all trees in relation to this two species.
 
 * `--kh`
 
-Optional. Default: false. With this parameter you can decide if insignificant breakpoints should be taken into account. All breakpoints are tested for significant topological incongruence using a Kashino Hasegawa (KH) test [Kishino, H. and Hasegawa, M. (1989)](https://link.springer.com/article/10.1007/BF02100115). KH-insignificant breakpoints most frequently arise from variation in branch lengths between segments. Nevertheless, taking KH-insignificant breakpoints into account could be interesting, because we already observed putative positively selected sites in fragments without any significant topological incongruence. KH-insignificant fragments are marked in the final output, as they might not occur from real recombination events.
+Optional. Default: false. With this parameter you can decide if insignificant breakpoints should be taken into account. All breakpoints are tested for significant topological incongruence using a Kashino Hasegawa (KH) test [Kishino, H. and Hasegawa, M. (1989)](https://link.springer.com/article/10.1007/BF02100115). KH-insignificant breakpoints most frequently arise from variation in branch lengths between segments. Nevertheless, considering KH-insignificant breakpoints could be interesting, as we have already observed putative positively selected sites in fragments without significant topological incongruence. KH-insignificant fragments are marked in the final output, as they might not occur from real recombination events.
 
-Per default only significant breakpoints are used for further calculations.
+By default, only significant breakpoints are used for further calculations.
 
-Please also keep in mind that using also insignificant breakpoints can extend the run time of PoSeiDon from minutes to hours, depending on the number of detected breakpoints.
+Please also keep in mind that using insignificant breakpoints can extend the run time of PoSeiDon from minutes to hours, depending on the number of detected breakpoints.
 
 ### Other parameters
 
@@ -184,6 +188,6 @@ Please see the `--help` for other parameters (GARD, RAxML, ...) and let us know 
 
 ## Citation
 
-If PoSeiDon helps you please cite:
+If PoSeiDon helps you, please cite:
 
 [Martin Hölzer and Manja Marz, "PoSeiDon: a Nextflow pipeline for the detection of evolutionary recombination events and positive selection", _OUP Bioinformatics_ (2020)](https://doi.org/10.1093/bioinformatics/btaa695)
