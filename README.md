@@ -12,7 +12,7 @@
 
 ## Disclaimer
 
-PoSeiDon uses CODEML from the PAML suite to identify sites under positive selection. However, the tools from the HyPhy suite have been continuously developed and enable more complex analyses, e.g., including [synonymous rate variation across different sites](https://academic. oup.com/mbe/article/37/8/2430/5739973) and [multi-nucleotide mutations](https://pmc.ncbi.nlm.nih.gov/articles/PMC10336034/) can be included, making the results of selection tests easier to interpret. Therefore, when using PoSeiDon (and thus CODEML), please note the possible differences/limitations.
+PoSeiDon uses CODEML from the PAML suite to identify sites under positive selection. However, the tools from the HyPhy suite have been continuously developed and enable more complex analyses, e.g., including [synonymous rate variation across different sites](https://academic.oup.com/mbe/article/37/8/2430/5739973) and [multi-nucleotide mutations](https://pmc.ncbi.nlm.nih.gov/articles/PMC10336034/) can be included, making the results of selection tests easier to interpret. Therefore, when using PoSeiDon (and thus CODEML), please note the possible differences/limitations.
 
 ## Intro
 
